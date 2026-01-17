@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Dashboard</span></span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="nav-label">Meus Cursos</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="question.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <span class="nav-label">Questões</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="redacao.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <span class="nav-label">Redação</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ranking.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <span class="nav-label">Ranking</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+            </ul>
+
+            <a  href="/profile.html">
+                <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://i.ibb.co/placeholder/user.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Carregando...</span>
+            </div>
+            </a>
+            
+
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <!-- Welcome Banner -->
+        <section class="welcome-banner">
+            <div class="welcome-content">
+                <h1>Bem-vindo, <span id="welcomeName">Estudante</span>! 👋</h1>
+                <p>Seu desempenho está evoluindo. Continue assim!</p>
+            </div>
+            <div class="welcome-actions">
+                <a href="/courses.html" id="cont">
+                    <button class="btn-action">
+                        <i class="fas fa-play"></i>
+                        <span>Continuar Estudando</span>
+                    </button>
+                </a>
+
+                <button class="btn-action outline">
+                    <i class="fas fa-bullseye"></i>
+                    <span>Definir Meta</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-icon correct">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="correctQuestions">0</h3>
+                    <p>Questões Corretas</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalQuestions">0</h3>
+                    <p>Total de Questões</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon classes">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="watchedClasses">0</h3>
+                    <p>Aulas Assistidas</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon accuracy">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="accuracyRate">0%</h3>
+                    <p>Taxa de Acerto</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Cursos Disponíveis -->
+            <section class="dashboard-card cursos-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-graduation-cap"></i> Meus Cursos</h2>
+                    <button class="card-action" id="addCourseBtn">
+                        <i class="fas fa-plus"></i> Adicionar
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="cursos-grid" id="cursosList">
+                        <!-- Cursos serão carregados via JS -->
+                    </div>
+                    <div class="empty-state" id="noCourses">
+                        <i class="fas fa-book"></i>
+                        <p>Você ainda não tem cursos ativos</p>
+                        <button class="btn-primary">Explorar Cursos</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gráfico de Desempenho -->
+            <section class="dashboard-card chart-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-bar"></i> Desempenho Semanal</h2>
+                    <div class="time-filter">
+                        <select id="chartFilter">
+                            <option value="week">Esta Semana</option>
+                            <option value="month">Este Mês</option>
+                            <option value="year">Este Ano</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Questões Recentes -->
+            <section class="dashboard-card questions-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-question"></i> Questões Recentes</h2>
+                    <button class="card-action" id="practiceMoreBtn">
+                        <i class="fas fa-bolt"></i> Praticar
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="questions-list" id="recentQuestions">
+                        <!-- Questões recentes via JS -->
+                    </div>
+                    <div class="questions-summary">
+                        <div class="summary-item">
+                            <span>Hoje</span>
+                            <strong id="todayQuestions">0</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Esta Semana</span>
+                            <strong id="weekQuestions">0</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Acertos</span>
+                            <strong id="weekCorrect">0%</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Redação -->
+            <section class="dashboard-card redacao-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-edit"></i> Redação</h2>
+                    <button class="card-action" id="newRedacaoBtn">
+                        <i class="fas fa-plus"></i> Nova
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="redacao-stats">
+                        <div class="redacao-stat">
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <h3 id="redacoesCount">0</h3>
+                                <p>Redações Feitas</p>
+                            </div>
+                        </div>
+                        <div class="redacao-stat">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <h3 id="avgGrade">0.0</h3>
+                                <p>Média de Nota</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="redacao-progress">
+                        <div class="progress-label">
+                            <span>Correções Restantes</span>
+                            <span id="correctionsLeft">4/4</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="correctionsProgress"></div>
+                        </div>
+                    </div>
+                    <button class="btn-redacao">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>Ver Minhas Redações</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Modal Adicionar Curso -->
+            <div class="modal" id="courseModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Adicionar Curso</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="course-options">
+                            <div class="course-option">
+                                <div class="option-header">
+                                    <i class="fas fa-university"></i>
+                                    <h4>PSC</h4>
+                                </div>
+                                <p>Processo Seletivo Contínuo</p>
+                                <ul>
+                                    <li>PSC I (1º ano)</li>
+                                    <li>PSC II (2º ano)</li>
+                                    <li>PSC III (3º ano)</li>
+                                </ul>
+                                <button class="btn-add-course" data-course="PSC">
+                                    <span>Adicionar</span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+
+                            <div class="course-option">
+                                <div class="option-header">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <h4>SIS</h4>
+                                </div>
+                                <p>Sistema de Ingresso Seriado</p>
+                                <ul>
+                                    <li>SIS I (1º ano)</li>
+                                    <li>SIS II (2º ano)</li>
+                                    <li>SIS III (3º ano)</li>
+                                </ul>
+                                <button class="btn-add-course" data-course="SIS">
+                                    <span>Adicionar</span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+
+                            <div class="course-option">
+                                <div class="option-header">
+                                    <i class="fas fa-star"></i>
+                                    <h4>ENEM/Macro</h4>
+                                </div>
+                                <p>Enem e vestibulares gerais</p>
+                                <ul>
+                                    <li>Curso Completo ENEM</li>
+                                    <li>Revisão com IA</li>
+                                    <li>Simulados Inteligentes</li>
+                                </ul>
+                                <button class="btn-add-course" data-course="ENEM">
+                                    <span>Adicionar</span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="cursos.html">Meus Cursos</a></li>
+                        <li><a href="questoes.html">Questões</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="#">PSC I, II, III</a></li>
+                        <li><a href="#">SIS I, II, III</a></li>
+                        <li><a href="#">ENEM/Macro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

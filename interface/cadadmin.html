@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Cadastro Administrativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    <link rel="stylesheet" href="cadadmin.css">
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Admin</span></span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <span class="nav-label">Administração</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cadadmin.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <span class="nav-label">Novo Aluno</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/12225/12225881.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Administrador</span>
+            </div>
+
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+        <!-- Cabeçalho do Cadastro -->
+        <header class="admin-header">
+            <div class="admin-info">
+                <div class="admin-badge">
+                    <span>Cadastro Administrativo</span>
+                </div>
+                <h1 class="admin-title">Cadastrar Novo Aluno</h1>
+                <div class="admin-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span id="adminName">Administrador</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentDate">Carregando...</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="currentTime">--:--</span>
+                    </div>
+                </div>
+                <p class="admin-description">
+                    Cadastre novos alunos no sistema do cursinho Pré-Vestibular Método.
+                    Todos os campos marcados com * são obrigatórios.
+                </p>
+            </div>
+            <div class="admin-stats">
+                <h3 style="color: var(--branco); margin-bottom: 1rem; font-size: 1.1rem;">Atenção</h3>
+                <div class="alert-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Verifique todos os dados antes de cadastrar. As informações serão usadas para contato e pagamentos.</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Formulário de Cadastro -->
+        <div class="form-container">
+            <div class="form-card">
+                <div class="form-header">
+                    <h3><i class="fas fa-user-graduate"></i> Dados do Aluno</h3>
+                    <p class="form-subtitle">Preencha todas as informações solicitadas</p>
+                </div>
+                
+                <form id="formCadastro" class="cadastro-form">
+                    <!-- Dados Pessoais -->
+                    <fieldset class="form-section">
+                        <legend class="section-title">
+                            <i class="fas fa-id-card"></i> Dados Pessoais
+                        </legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label class="form-label">Nome Completo *</label>
+                                <input type="text" id="completename" class="form-input" 
+                                       placeholder="Digite o nome completo do aluno" required>
+                                <small class="form-hint">Nome completo como consta no RG</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Data de Nascimento *</label>
+                                <input type="date" id="nascimento" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" id="email" class="form-input" 
+                                       placeholder="aluno@email.com">
+                                <small class="form-hint">Email para contato e recuperação</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Turma *</label>
+                                <select id="turma" class="form-input" required>
+                                    <option value="">Selecione a turma</option>
+                                    <option value="1">1° Turma</option>
+                                    <option value="2">2° Turma</option>
+                                    <option value="3">3° Turma</option>
+                                    <option value="4">4° Turma</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Dia de Pagamento *</label>
+                                <input type="number" id="dia" class="form-input" 
+                                       min="1" max="31" placeholder="5" required>
+                                <small class="form-hint">Dia do mês para pagamento</small>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Dados do Responsável -->
+                    <fieldset class="form-section">
+                        <legend class="section-title">
+                            <i class="fas fa-user-friends"></i> Dados do Responsável
+                        </legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label class="form-label">Nome do Responsável *</label>
+                                <input type="text" id="responsavel" class="form-input" 
+                                       placeholder="Nome completo do responsável" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">RG do Responsável *</label>
+                                <input type="text" id="rgresp" class="form-input" 
+                                       placeholder="XX.XXX.XXX-X" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CPF do Responsável</label>
+                                <input type="text" id="cpfresp" class="form-input" 
+                                       placeholder="000.000.000-00">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Telefone do Responsável *</label>
+                                <input type="text" id="telresp" class="form-input" 
+                                       placeholder="(92) 99999-9999" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Telefone do Aluno (opcional)</label>
+                                <input type="text" id="telal" class="form-input" 
+                                       placeholder="(92) 99999-9999">
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Endereço -->
+                    <fieldset class="form-section">
+                        <legend class="section-title">
+                            <i class="fas fa-home"></i> Endereço
+                        </legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label class="form-label">Endereço</label>
+                                <input type="text" id="endereco" class="form-input" 
+                                       placeholder="Rua, número, complemento">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Bairro</label>
+                                <input type="text" id="bairro" class="form-input" 
+                                       placeholder="Nome do bairro">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CEP</label>
+                                <input type="text" id="cep" class="form-input" 
+                                       placeholder="00000-000">
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Informações Adicionais -->
+                    <fieldset class="form-section">
+                        <legend class="section-title">
+                            <i class="fas fa-info-circle"></i> Informações Adicionais
+                        </legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Tamanho da Camisa</label>
+                                <select id="camisa" class="form-input">
+                                    <option value="">Não solicitado</option>
+                                    <option value="P">P</option>
+                                    <option value="M">M</option>
+                                    <option value="G">G</option>
+                                    <option value="XG">XG</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Situação da Bolsa</label>
+                                <select id="bolsista" class="form-input">
+                                    <option value="n">Não bolsista</option>
+                                    <option value="y">Bolsista integral</option>
+                                    <option value="p">Bolsista parcial</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label class="form-label">Observações</label>
+                                <textarea id="observacoes" class="form-input" rows="3" 
+                                          placeholder="Observações adicionais sobre o aluno..."></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btnVoltar">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                        <button type="button" class="btn btn-warning" id="btnLimpar">
+                            <i class="fas fa-eraser"></i> Limpar Formulário
+                        </button>
+                        <button type="submit" class="btn btn-success" id="btnCadastrar">
+                            <i class="fas fa-check"></i> Cadastrar Aluno
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-check-circle"></i> Confirmação de Cadastro</h3>
+                <button class="modal-close" id="closeConfirmModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="confirm-icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <h4 id="confirmTitle">Cadastro realizado com sucesso!</h4>
+                <p id="confirmMessage">O aluno foi cadastrado no sistema com sucesso.</p>
+                <div class="confirm-details" id="confirmDetails">
+                    <!-- Detalhes do cadastro serão inseridos aqui -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnFecharConfirm">Fechar</button>
+                <button class="btn btn-primary" id="btnNovoCadastro">
+                    <i class="fas fa-user-plus"></i> Novo Cadastro
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Erro -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header" style="background: var(--vermelho);">
+                <h3><i class="fas fa-exclamation-triangle"></i> Erro no Cadastro</h3>
+                <button class="modal-close" id="closeErrorModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="error-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <h4 id="errorTitle">Erro ao cadastrar aluno</h4>
+                <p id="errorMessage">Ocorreu um erro ao tentar cadastrar o aluno.</p>
+                <div class="error-details" id="errorDetails">
+                    <!-- Detalhes do erro serão inseridos aqui -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnFecharError">Fechar</button>
+                <button class="btn btn-primary" id="btnTentarNovamente">
+                    <i class="fas fa-redo"></i> Tentar Novamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="admin.html">Administração</a></li>
+                        <li><a href="cadadmin.html">Cadastro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Administração</h4>
+                    <ul>
+                        <li><a href="#relatorios">Relatórios</a></li>
+                        <li><a href="#financeiro">Financeiro</a></li>
+                        <li><a href="#config">Configurações</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                        <li><a href="tel:+55929486365">Telefone</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="cadadmin.js"></script>
+</body>
+
+</html>

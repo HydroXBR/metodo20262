@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Aula</title>
+    <link rel="stylesheet" href="class.css"> <!-- Usar mesmo CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Dashboard</span></span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="courses.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="nav-label">Meus Cursos</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="backToCourse">
+                        <div class="nav-icon">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <span class="nav-label">Voltar ao Curso</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="questoes.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <span class="nav-label">Questões</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://i.ibb.co/placeholder/user.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Carregando...</span>
+            </div>
+            
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="lesson-main">
+        <!-- Player de Vídeo -->
+        <section class="lesson-player-section">
+            <div class="video-container" id="videoContainer">
+                <div class="video-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Carregando aula...</p>
+                </div>
+            </div>
+            
+            <div class="lesson-info">
+                <div class="lesson-header">
+                    <h1 id="lessonTitle">Carregando...</h1>
+                    <div class="lesson-actions">
+                        <button class="btn-lesson-action" id="prevLessonBtn" title="Aula anterior">
+                            <i class="fas fa-chevron-left"></i>
+                            <span>Anterior</span>
+                        </button>
+                        <button class="btn-lesson-action" id="markCompleteBtn">
+                            <i class="fas fa-check"></i>
+                            <span>Marcar como concluída</span>
+                        </button>
+                        <button class="btn-lesson-action" id="nextLessonBtn" title="Próxima aula">
+                            <span>Próxima</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="lesson-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user-graduate"></i>
+                        <span id="lessonProfessor">Professor</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="lessonDuration">--:--</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-book"></i>
+                        <span id="lessonSubject">Matéria</span>
+                    </div>
+                </div>
+                
+                <div class="lesson-description" id="lessonDescription">
+                    <p>Descrição da aula será carregada aqui.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layout Principal -->
+        <div class="lesson-layout">
+            <!-- Conteúdo Principal -->
+            <div class="lesson-content">
+                <!-- Recursos da Aula -->
+                <section class="resources-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-paperclip"></i> Recursos da Aula</h3>
+                    </div>
+                    <div class="resources-grid" id="resourcesGrid">
+                        <!-- Recursos serão carregados via JS -->
+                    </div>
+                </section>
+
+                <!-- Comentários -->
+                <section class="comments-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-comments"></i> Comentários</h3>
+                        <button class="btn-add-comment" id="addCommentBtn">
+                            <i class="fas fa-plus"></i>
+                            <span>Adicionar Comentário</span>
+                        </button>
+                    </div>
+                    
+                    <div class="comments-container" id="commentsContainer">
+                        <!-- Comentários serão carregados via JS -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="lesson-sidebar">
+                <!-- Aulas do curso -->
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        <i class="fas fa-list"></i>
+                        <h3>Aulas do Curso</h3>
+                    </div>
+                    <div class="sidebar-lessons" id="courseLessons">
+                        <!-- Lista de aulas será carregada via JS -->
+                    </div>
+                </div>
+                
+                <!-- Informações da aula -->
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Informações</h3>
+                    </div>
+                    <div class="sidebar-info">
+                        <div class="info-item">
+                            <span>Data de publicação:</span>
+                            <strong id="lessonDate">--/--/----</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>Nível:</span>
+                            <strong>Básico</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>Visualizações:</span>
+                            <strong id="lessonViews">0</strong>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+            
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">Meus Cursos</a></li>
+                        <li><a href="course.html">Aulas</a></li>
+                        <li><a href="questoes.html">Questões</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="#psc">PSC I, II, III</a></li>
+                        <li><a href="#sis">SIS I, II, III</a></li>
+                        <li><a href="#enem">ENEM/Macro</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="class.js"></script>
+</body>
+</html>

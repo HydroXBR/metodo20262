@@ -1,367 +1,731 @@
-async function simul(){
-	const response = await fetch(`/varsimulados`)
-	const rr = await response
-	if(!rr) return false
-	return rr.json()
-}
-// Classe Cookie para manipular cookies
-class Cookie {
-	static set(name, value, days) {
-		let expires = "";
-		if (days) {
-			let date = new Date();
-			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-			expires = "; expires=" + date.toUTCString();
-		}
-		document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-	}
+document.addEventListener('DOMContentLoaded', function () {
+    const API_BASE_URL = '/api';
+    let currentSimulado = null;
+    let currentRankingData = [];
+    let currentTurma = null;
+    let currentPage = 1;
+    const itemsPerPage = 15;
+    let totalPages = 1;
 
-	static get(name) {
-		let nameEQ = name + "=";
-		let ca = document.cookie.split(';');
-		for (let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == ' ') {
-				c = c.substring(1, c.length);
-			}
-			if (c.indexOf(nameEQ) == 0) {
-				return c.substring(nameEQ.length, c.length);
-			}
-		}
-		return null;
-	}
+    // Verificar autenticação
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || !user.id) {
+        window.location.href = 'login.html';
+        return;
+    }
 
-	static erase(name) {   
-		document.cookie = name+'=; Max-Age=-99999999;';  
-	}
-}
+    // Elementos DOM
+    const userAvatarElement = document.getElementById('userAvatar');
+    const userNameElement = document.getElementById('userName');
+    const simuladoSelect = document.getElementById('simuladoSelect');
+    const turmaSelect = document.getElementById('turmaSelect');
+    const applyFiltersBtn = document.getElementById('applyFilters');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const rankingBody = document.getElementById('rankingBody');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+    const pageInfo = document.getElementById('pageInfo');
+    const resultsCount = document.getElementById('resultsCount');
+    const pageNumbers = document.getElementById('pageNumbers');
+    const viewDetailsBtn = document.getElementById('viewDetailsBtn');
 
-// Classe User para armazenar informações do usuário em cookies
-class User {
-	constructor(email, permissions, profilePicture, completename) {
-		this.email = email;
-		this.completename = completename;
-		this.permissions = permissions;
-		this.profilePicture = profilePicture;
-	}
+    // Estatísticas
+    const totalStudentsElement = document.getElementById('totalStudents');
+    const averageScoreElement = document.getElementById('averageScore');
+    const totalQuestionsElement = document.getElementById('totalQuestions');
 
-	static fromJson(json) {
-		return new User(json.email, json.permissions, json.profilePicture, json.completename);
-	}
+    // Informações do simulado
+    const simuladoNameElement = document.getElementById('simuladoName');
+    const simuladoDateElement = document.getElementById('simuladoDate');
+    const simuladoQuestionsElement = document.getElementById('simuladoQuestions');
+    const simuladoModelElement = document.getElementById('simuladoModel');
+    const simuladoDescriptionElement = document.getElementById('simuladoDescription');
+    const turmasListElement = document.getElementById('turmasList');
 
-	saveToCookies() {
-		Cookie.set("loggedIn", "true", 1); // Expira em 1 dia
-		Cookie.set("userEmail", this.email, 1);
-		Cookie.set("userPermissions", this.permissions, 1);
-		Cookie.set("userProfilePicture", this.profilePicture, 1);
-		Cookie.set("completename", this.completename, 1);
-	}
+    // Medalhas
+    const goldNameElement = document.getElementById('goldName');
+    const goldScoreElement = document.getElementById('goldScore');
+    const silverNameElement = document.getElementById('silverName');
+    const silverScoreElement = document.getElementById('silverScore');
+    const bronzeNameElement = document.getElementById('bronzeName');
+    const bronzeScoreElement = document.getElementById('bronzeScore');
 
-	static isLoggedIn() {
-		return Cookie.get("loggedIn") === "true";
-	}
+    // Desempenho do usuário
+    const myPerformanceSection = document.getElementById('myPerformanceSection');
+    const myRankElement = document.getElementById('myRank');
+    const myScoreElement = document.getElementById('myScore');
+    const myPercentElement = document.getElementById('myPercent');
 
-	static getUserInfo() {
-		if (User.isLoggedIn()) {
-			return {
-				email: Cookie.get("userEmail"),
-				permissions: Cookie.get("userPermissions"),
-				profilePicture: Cookie.get("userProfilePicture"),
-				completename: Cookie.get("completename")
-			};
-		} else {
-			return null;
-		}
-	}
+    // Inicializar
+    async function init() {
+        updateUserInfo();
+        await loadSimulados();
+        setupEventListeners();
+        addAdminItemToNavbar();
+        
+        // Carregar último simulado visto
+        const lastSimuladoId = localStorage.getItem('lastViewedSimulado');
+        if (lastSimuladoId) {
+            simuladoSelect.value = lastSimuladoId;
+            await loadSimuladoInfo(lastSimuladoId);
+        }
+    }
 
-	static logout() {
-		Cookie.erase("loggedIn");
-		Cookie.erase("userEmail");
-		Cookie.erase("userPermissions");
-		Cookie.erase("userProfilePicture");
-		Cookie.erase("completename");
-	}
-}
+    // Atualizar informações do usuário
+    function updateUserInfo() {
+        if (userAvatarElement && user.profilePicture) {
+            userAvatarElement.src = user.profilePicture;
+        }
+        if (userNameElement) {
+            userNameElement.textContent = user.completename || 'Usuário';
+        }
+    }
 
-function isElementInViewport(el) {
-		var rect = el.getBoundingClientRect();
-		return (
-				rect.top >= 0 &&
-				rect.left >= 0 &&
-				rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-				rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-		);
-}
+    // Carregar lista de simulados
+    async function loadSimulados() {
+        try {
+            const response = await fetch('/varsimulados');
+            const simulados = await response.json();
+            
+            if (Array.isArray(simulados)) {
+                populateSimuladoSelect(simulados);
+            } else {
+                throw new Error('Formato de dados inválido');
+            }
+        } catch (error) {
+            console.error('Erro ao carregar simulados:', error);
+            showError('Erro ao carregar lista de simulados');
+            // Usar dados mockados como fallback
+            useMockSimulados();
+        }
+    }
 
-// Função para adicionar classe de animação quando o elemento está visível
-function addAnimationOnScroll() {
-		var animatedElements = document.querySelectorAll('.animated');
-		animatedElements.forEach(function(el) {
-				if (isElementInViewport(el)) {
-						el.classList.add('fadeIn');
-				}
-		});
-}
+    function populateSimuladoSelect(simulados) {
+        simuladoSelect.innerHTML = '<option value="">Escolha um simulado...</option>';
+        
+        // Ordenar por data (mais recentes primeiro)
+        const sortedSimulados = simulados.sort((a, b) => {
+            const dateA = parseDate(a.date);
+            const dateB = parseDate(b.date);
+            return dateB - dateA;
+        });
 
-// Adicionar evento de scroll para chamar a função quando o usuário rolar a página
-window.addEventListener('scroll', addAnimationOnScroll);
+        sortedSimulados.forEach(simulado => {
+            const option = document.createElement('option');
+            option.value = simulado.id;
+            option.textContent = `${simulado.name} (${simulado.date.replace(/-/g, '/')})`;
+            simuladoSelect.appendChild(option);
+        });
+    }
 
-document.addEventListener('DOMContentLoaded', function(){
-	if (User.isLoggedIn()) {
-		const userInfo = User.getUserInfo();
-		let li = document.getElementById("login")
-		li.innerHTML = ""
-		let newa = document.createElement("a")
-		let btn = document.createElement("button")
-		btn.innerText = "Sair"
-		btn.classList.add("btn2")
-		btn.onclick = function(event){
-			User.logout();
-			window.location.href = "/"
-		}
-		newa.appendChild(btn)
-		li.appendChild(newa)
+    function parseDate(dateString) {
+        const [day, month, year] = dateString.split('-').map(Number);
+        return new Date(year, month - 1, day);
+    }
 
-		if(userInfo.profilePicture !== 'null'&& userInfo.profilePicture) {
-			document.getElementById("profile").src = userInfo.profilePicture;
-		}
+    // Carregar informações do simulado selecionado
+    async function loadSimuladoInfo(simuladoId) {
+        try {
+            // Buscar dados dos simulados
+            const response = await fetch('/varsimulados');
+            const simulados = await response.json();
+            
+            currentSimulado = simulados.find(s => s.id === simuladoId);
+            
+            if (!currentSimulado) {
+                throw new Error('Simulado não encontrado');
+            }
 
-		if(userInfo.permissions > 0){
-			let ul = document.getElementById("nav-links")
-			let admin = document.createElement("li")
-			let aadmin = document.createElement("a")
-			aadmin.href = "/admin"
-			aadmin.innerText = "Admin"
-			admin.appendChild(aadmin)
-			ul.appendChild(admin)
-		}
-	} else {
-		console.log("Usuário não está logado.");
-	}
+            updateSimuladoInfo(currentSimulado);
+            updateTurmaSelect(currentSimulado.turmas);
+            
+            // Selecionar primeira turma por padrão
+            if (currentSimulado.turmas && currentSimulado.turmas.length > 0) {
+                turmaSelect.value = currentSimulado.turmas[0];
+                currentTurma = currentSimulado.turmas[0];
+                await loadRanking();
+            }
 
-	const ec = txt => encodeURIComponent(txt)
-	const dec = txt => decodeURIComponent(txt)
-	const gebi = id => document.getElementById(id)
-	const gebc = c => document.getElementsByClassName(c)
-	
-	const queryString = window.location.search;
-	const params = new URLSearchParams(queryString);
-	let idd = params.get("id")
-	var link = document.createElement('link');
-	link.type = 'image/png';
-	link.rel = 'icon';
-	var existingIcon = document.querySelector("link[rel='shortcut icon']")
-	if (existingIcon) {
-		document.head.removeChild(existingIcon);
-	}
+        } catch (error) {
+            console.error('Erro ao carregar informações do simulado:', error);
+            showError('Erro ao carregar informações do simulado');
+        }
+    }
 
-	// Adiciona o novo favicon
-	document.head.appendChild(link);
-	let caat;
-	
-	if(idd.includes("NA")){
-		caat = "NA";
-		gebi("simulinks").setAttribute("href", "/simulados?cat=NA")
-		gebi("logoclass").innerHTML = "Núcleo da Aprovação - LS"
-		logoclass.classList.remove("logo")
-		logoclass.classList.add("logona")
-		gebi("metodo").setAttribute("src", "https://i.ibb.co/1QvjfDp/Design-sem-nome-2.png")
-		document.body.style.backgroundImage = "url(https://img.freepik.com/vetores-gratis/fundo-de-conexao-gradiente_23-2150462053.jpg?semt=ais_hybrid&w=740)"
-		link.href = "https://i.ibb.co/1QvjfDp/Design-sem-nome-2.png"
-		document.head.appendChild(link)
-		gebi("inicio").style.display = "none"
-		gebi("pphoto").style.display = "none"
-		gebi("sobre").style.display = "none"
-		gebi("login").style.display = "none"
-		
-	}else{
-		gebi("logoclass").innerHTML = "Método Pré-Vestibular"
-		gebi("metodo").setAttribute("src", "https://i.ibb.co/jryH3q8/Min-Branca.png")
-		document.body.style.backgroundImage = "url(https://i.ibb.co/8nYqzCNT/mett.png)"
-		link.href = "https://i.ibb.co/jryH3q8/Min-Branca.png"
-		document.head.appendChild(link);
-	}
+    function updateSimuladoInfo(simulado) {
+        simuladoNameElement.textContent = simulado.name;
+        simuladoDescriptionElement.textContent = simulado.description || '-';
+        
+        // Formatar data
+        const dateParts = simulado.date.split('-');
+        simuladoDateElement.innerHTML = `<i class="fas fa-calendar"></i> ${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+        
+        // Modelo
+        simuladoModelElement.innerHTML = `<i class="fas fa-university"></i> ${simulado.model}`;
+        
+        // Questões
+        simuladoQuestionsElement.innerHTML = `<i class="fas fa-question-circle"></i> ${simulado.questions} questões`;
+        totalQuestionsElement.textContent = simulado.questions;
+        
+        // Turmas disponíveis
+        updateTurmasList(simulado.turmas);
+    }
 
-	async function generate_table() {
-		simul().then(async simulados => {
-			let id = params.get("id")
-			let selectedSeries = params.get("serie")
-			var simuatual = simulados.find(simu => simu.id === id)
-			let num = selectedSeries || gebi("serie").value || simuatual.turmas[0]
+    function updateTurmaSelect(turmas) {
+        turmaSelect.innerHTML = '<option value="">Escolha uma turma...</option>';
+        
+        turmas.forEach(turma => {
+            const option = document.createElement('option');
+            option.value = turma;
+            option.textContent = turma > 3 ? `${turma - 3}° ano (Faltosos)` : `${turma}° ano`;
+            turmaSelect.appendChild(option);
+        });
+    }
 
-			const response = await fetch(`/apiranking?sel=${num}&id=${id}`)
-			const rr = await response.json()
+    function updateTurmasList(turmas) {
+        turmasListElement.innerHTML = '';
+        
+        turmas.forEach(turma => {
+            const turmaBadge = document.createElement('div');
+            turmaBadge.className = 'turma-badge';
+            if (turma === currentTurma) {
+                turmaBadge.classList.add('active');
+            }
+            turmaBadge.textContent = turma > 3 ? `${turma - 3}° (F)` : `${turma}°`;
+            turmasListElement.appendChild(turmaBadge);
+        });
+    }
 
-			gebi("title").innerHTML = simuatual.name + ` (${simuatual.date.replace(/\-/gmi, "/")})`
-			for (var i = 0; i < simuatual.turmas.length; i++) {
-					let turma = simuatual.turmas[i];
-					let opcaoExistente = document.querySelector("#serie option[value='" + turma + "']")
-					
-					if (!opcaoExistente) {
-						let opt = document.createElement("option");
-						let t = turma
-						if (t>4) t = turma - 3
-						opt.value = turma
-						opt.innerText = turma > 4 ? t + "° ano (faltosos)" : t + "° ano"
-						gebi("serie").appendChild(opt);
-					}
-			}
+    // Carregar ranking
+    async function loadRanking() {
+        if (!currentSimulado || !currentTurma) {
+            showError('Selecione um simulado e uma turma');
+            return;
+        }
 
-			if (selectedSeries) {
-					gebi("serie").value = selectedSeries;
-			}
+        try {
+            showLoading();
+            
+            // Buscar ranking da API (usando o endpoint existente)
+            const response = await fetch(`/apiranking?id=${currentSimulado.id}&sel=${currentTurma}`);
+            const rankingData = await response.json();
 
-			let logs = rr
-			let alogs = rr
+            currentRankingData = rankingData;
+            currentPage = 1;
+            
+            updateStatistics(rankingData);
+            updateMedals(rankingData);
+            updateUserPerformance(rankingData);
+            renderRankingTable();
+            updatePagination();
+            
+            // Salvar último simulado visto
+            localStorage.setItem('lastViewedSimulado', currentSimulado.id);
 
-			var body = gebi('center')
-			var tbl = document.createElement("table");
-			tbl.id = "tabela"
-			tbl.classList.add('tablecenter')
-			tbl.classList.add("fl-table")
-			tbl.style.align = 'center'
-			var tblBody = document.createElement("tbody");
+        } catch (error) {
+            console.error('Erro ao carregar ranking:', error);
+            showError('Erro ao carregar dados do ranking');
+        } finally {
+            hideLoading();
+        }
+    }
 
-			function create(){
-				var newRow = document.createElement('tr')
-				var newCell = document.createElement('td')
-				newCell.style.align = 'center'
-				var ncText = document.createElement('strong')
-				ncText.innerText = 'RANK'
-					newCell.id = "rankCell"
-				newCell.appendChild(ncText)
-				newRow.appendChild(newCell)
+    function updateStatistics(rankingData) {
+        totalStudentsElement.textContent = rankingData.length;
+        
+        if (rankingData.length > 0) {
+            const totalScore = rankingData.reduce((sum, student) => sum + student.pont, 0);
+            const totalPossible = rankingData.length * currentSimulado.questions;
+            const averagePercent = rankingData.length > 0 
+                ? Math.round((totalScore / (rankingData.length * currentSimulado.questions)) * 1000) / 10
+                : 0;
+            averageScoreElement.textContent = `${averagePercent}%`;
+        } else {
+            averageScoreElement.textContent = '0%';
+        }
+    }
 
-				var newCell1 = document.createElement('td')
-				var ncText1 = document.createElement('strong')
-				ncText1.innerText= 'NOME'
-					newCell1.id = "nomeCell"
-				newCell1.appendChild(ncText1)
-				newRow.appendChild(newCell1)
+    function updateMedals(rankingData) {
+        if (rankingData.length >= 1) {
+            goldNameElement.textContent = rankingData[0].name;
+            goldScoreElement.textContent = `${rankingData[0].pont} acertos`;
+        } else {
+            goldNameElement.textContent = '-';
+            goldScoreElement.textContent = '0 acertos';
+        }
 
-				if(Number(num) < 4){
-				var newCell2 = document.createElement('td')
-				var ncText2 = document.createElement('strong')
-				ncText2.innerText = 'ACERTOS'
-					newCell2.id = "acertosCell"
-				newCell2.appendChild(ncText2)
-				newRow.appendChild(newCell2)
-				}
+        if (rankingData.length >= 2) {
+            silverNameElement.textContent = rankingData[1].name;
+            silverScoreElement.textContent = `${rankingData[1].pont} acertos`;
+        } else {
+            silverNameElement.textContent = '-';
+            silverScoreElement.textContent = '0 acertos';
+        }
 
-				/*var newCell3 = document.createElement('td')
-				var ncText3 = document.createElement('strong')
-				ncText3.innerText = '%'
-				newCell3.appendChild(ncText3)
-				newRow.appendChild(newCell3)*/
+        if (rankingData.length >= 3) {
+            bronzeNameElement.textContent = rankingData[2].name;
+            bronzeScoreElement.textContent = `${rankingData[2].pont} acertos`;
+        } else {
+            bronzeNameElement.textContent = '-';
+            bronzeScoreElement.textContent = '0 acertos';
+        }
+    }
 
-				tblBody.appendChild(newRow)
+    function updateUserPerformance(rankingData) {
+        const userRank = rankingData.findIndex(student => 
+            student.id === user.id || 
+            student.completename === user.completename
+        );
 
-				for (var i = 0; i < alogs.length; i++) {
-					var row = document.createElement("tr");
+        if (userRank !== -1) {
+            const userData = rankingData[userRank];
+            myPerformanceSection.style.display = 'block';
+            myRankElement.textContent = `#${userRank + 1}`;
+            myScoreElement.textContent = userData.pont;
+            myPercentElement.textContent = `${userData.percent}%`;
+            
+            // Adicionar classe de percentual
+            myPercentElement.className = 'stat-value percent';
+        } else {
+            myPerformanceSection.style.display = 'none';
+        }
+    }
 
-					if(Number(num) < 4){
-						for (var j = 0; j < 1; j++) {
-							var cell = document.createElement("td");
-							var cellText = document.createElement('a')
-							if(i == 0){
-								cell.classList.add("namecolorouro")
-							}
-							if(i == 1){
-								cell.classList.add("namecolorprata")
-							}
-							if(i == 2){
-								cell.classList.add("namecolorbronze")
-							}
-							cellText.innerText = alogs[i].rank
-							cell.appendChild(cellText);
-							row.appendChild(cell);
-						}
-					}else{
-						for (var j = 0; j < 1; j++) {
-							var cell = document.createElement("td");
-							var cellText = document.createElement('a')
-							cellText.innerText = "-"
-							cell.appendChild(cellText);
-							row.appendChild(cell);
-						}
-					}
+    function renderRankingTable() {
+        rankingBody.innerHTML = '';
 
-					for (var a = 0; a < 1; a++) {
-						var cella = document.createElement("td");
-						var cellTexta = document.createElement('a')
-						cellTexta.innerText = alogs[i].name
-						if(Number(num) < 4){
-							if(i == 0){
-								cellTexta.classList.add("namecolorouro")
-								cellTexta.innerText = "🥇" + cellTexta.innerText 
-							}
-							if(i == 1){
-								cellTexta.classList.add("namecolorprata")
-								cellTexta.innerText = "🥈" + cellTexta.innerText 
-							}
-							if(i == 2){
-								cellTexta.classList.add("namecolorbronze")
-								cellTexta.innerText = "🥉" + cellTexta.innerText 
-							}
-						}
+        if (currentRankingData.length === 0) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = `
+                <td colspan="6" style="text-align: center; padding: 3rem;">
+                    <div class="empty-state">
+                        <i class="fas fa-users-slash"></i>
+                        <h3>Nenhum participante</h3>
+                        <p>Nenhum estudante encontrado para esta turma</p>
+                    </div>
+                </td>
+            `;
+            rankingBody.appendChild(emptyRow);
+            return;
+        }
 
-						cellTexta.href = caat ? '/desempenhols?id='+alogs[i].id+"&simulado="+id : '/desempenho?id='+alogs[i].id+"&simulado="+id
-						cella.appendChild(cellTexta);
-						row.appendChild(cella);
-					}
+        // Calcular índices para paginação
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, currentRankingData.length);
+        const pageData = currentRankingData.slice(startIndex, endIndex);
 
-					if(Number(num) < 4){
-						for (var e = 0; e < 1; e++) {
-							var cell1 = document.createElement("td");
-							var cellText1 = document.createElement('a')
-								if(i == 0){
-									cell1.classList.add("namecolorouro")
-								}
-								if(i == 1){
-									cell1.classList.add("namecolorprata")
-								}
-								if(i == 2){
-									cell1.classList.add("namecolorbronze")
-								}
-							cellText1.innerText = alogs[i].pont
-							cell1.appendChild(cellText1);
-							row.appendChild(cell1);
-						}
-					}
+        pageData.forEach((student, index) => {
+            const globalIndex = startIndex + index;
+            const row = document.createElement('tr');
+            row.classList.add('ranking-row', 'fade-in');
+            
+            // Adicionar classes para medalhas
+            if (globalIndex === 0) {
+                row.classList.add('gold');
+            } else if (globalIndex === 1) {
+                row.classList.add('silver');
+            } else if (globalIndex === 2) {
+                row.classList.add('bronze');
+            }
+            
+            // Verificar se é o usuário atual
+            if (student.id === user.id || student.completename === user.completename) {
+                row.classList.add('user-row');
+            }
 
-					tblBody.appendChild(row);
-				}
+            // Determinar turma para exibição
+            let turmaDisplay = student.turma;
+            if (currentTurma > 3) {
+                turmaDisplay = `${student.turma}° (F)`;
+            } else {
+                turmaDisplay = `${student.turma}°`;
+            }
 
-				tbl.appendChild(tblBody);
+            // Determinar classe do percentual
+            let percentClass = 'low';
+            if (student.percent >= 70) percentClass = 'high';
+            else if (student.percent >= 50) percentClass = 'medium';
 
-				gebi("c").appendChild(tbl)
-			}
+            row.innerHTML = `
+                <td class="position-cell">${globalIndex + 1}</td>
+                <td>
+                    <div class="student-name">
+                        <a href="desempenho.html?id=${student.id}&simulado=${currentSimulado.id}" 
+                           title="Ver desempenho detalhado">
+                            ${student.name}
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    <span class="class-badge">${turmaDisplay}</span>
+                </td>
+                <td>
+                    <span class="score-value">${student.pont}</span>
+                </td>
+                <td>
+                    <span class="percent-value ${percentClass}">${student.percent}%</span>
+                </td>
+                <td>
+                    <button class="details-btn" onclick="viewStudentDetails('${student.id}', '${currentSimulado.id}')">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Detalhes</span>
+                    </button>
+                </td>
+            `;
 
-			create()
+            rankingBody.appendChild(row);
+        });
+    }
 
-			var nnp = document.createElement('p')
-			nnp.innerText = "Programação e desenvolvimento: © Isaías Nascimento, 2025"
-			nnp.id = "copy"
-			nnp.classList.add("copy")
-			body.appendChild(nnp)
-		})
-	}
+    function updatePagination() {
+        totalPages = Math.ceil(currentRankingData.length / itemsPerPage);
+        
+        pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+        resultsCount.textContent = `${currentRankingData.length} participantes`;
+        
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+        
+        updatePageNumbers();
+    }
 
-	generate_table().then(()=> addoptions())
+    function updatePageNumbers() {
+        pageNumbers.innerHTML = '';
+        
+        // Mostrar até 5 números de página
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        
+        if (endPage - startPage < 4) {
+            startPage = Math.max(1, endPage - 4);
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = 'page-btn';
+            if (i === currentPage) {
+                pageBtn.classList.add('active');
+            }
+            pageBtn.textContent = i;
+            pageBtn.addEventListener('click', () => {
+                currentPage = i;
+                renderRankingTable();
+                updatePagination();
+            });
+            pageNumbers.appendChild(pageBtn);
+        }
+    }
 
+    // Funções de utilidade
+    function showLoading() {
+        rankingBody.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 3rem;">
+                    <div class="loading-spinner"></div>
+                    <p style="margin-top: 1rem; color: var(--azul);">Carregando ranking...</p>
+                </td>
+            </tr>
+        `;
+    }
 
+    function hideLoading() {
+        // A renderização do ranking já acontece
+    }
 
-	function addoptions(){
-		gebi("serie").addEventListener("click", (e) => {
-			gebi(e.target.id).addEventListener("change", (j) => {
-				let body = gebi("center")
-				gebi("c").removeChild(gebi("tabela"))
-				body.removeChild(gebi("copy"))
-				generate_table().then(() => {
-					params.set("serie", gebi("serie").value)
-					addoptions()
-				})
-			})
-		});
-	}
-})
+    function showError(message) {
+        showNotification(message, 'error');
+    }
+
+    function showSuccess(message) {
+        showNotification(message, 'success');
+    }
+
+    function showNotification(message, type) {
+        // Remover notificações existentes
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(notif => notif.remove());
+
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+            <span>${message}</span>
+        `;
+
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: ${type === 'error' ? '#f8d7da' : '#d4edda'};
+            color: ${type === 'error' ? '#721c24' : '#155724'};
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 9999;
+            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            max-width: 400px;
+            border-left: 4px solid ${type === 'error' ? '#dc3545' : '#28a745'};
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.4s ease forwards';
+            setTimeout(() => notification.remove(), 400);
+        }, 4000);
+    }
+
+    // Dados mockados para fallback
+    function useMockSimulados() {
+        const mockSimulados = [
+            {
+                id: "052025",
+                name: "14° Simulado - 2025",
+                description: "14° Simulado - 2025",
+                model: "SIS",
+                date: "31-08-2025",
+                questions: 60,
+                turmas: [1, 2, 3]
+            }
+        ];
+
+        populateSimuladoSelect(mockSimulados);
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // Quando selecionar um simulado
+        simuladoSelect.addEventListener('change', async function() {
+            const simuladoId = this.value;
+            if (simuladoId) {
+                await loadSimuladoInfo(simuladoId);
+            } else {
+                clearSimuladoInfo();
+            }
+        });
+
+        // Quando selecionar uma turma
+        turmaSelect.addEventListener('change', function() {
+            currentTurma = this.value;
+            updateTurmasList(currentSimulado.turmas);
+            if (currentTurma) {
+                loadRanking();
+            }
+        });
+
+        // Aplicar filtros
+        applyFiltersBtn.addEventListener('click', () => {
+            if (simuladoSelect.value && turmaSelect.value) {
+                loadRanking();
+            } else {
+                showError('Selecione um simulado e uma turma');
+            }
+        });
+
+        // Atualizar
+        refreshBtn.addEventListener('click', () => {
+            if (currentSimulado && currentTurma) {
+                loadRanking();
+            } else {
+                showError('Selecione um simulado e uma turma primeiro');
+            }
+        });
+
+        // Exportar
+        exportBtn.addEventListener('click', exportRanking);
+
+        // Paginação
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderRankingTable();
+                updatePagination();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderRankingTable();
+                updatePagination();
+            }
+        });
+
+        // Ver detalhes do usuário
+        if (viewDetailsBtn) {
+            viewDetailsBtn.addEventListener('click', function() {
+                if (currentSimulado) {
+                    window.location.href = `desempenho.html?id=${user.id}&simulado=${currentSimulado.id}`;
+                } else {
+                    showError('Selecione um simulado primeiro');
+                }
+            });
+        }
+
+        // Menu mobile
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileMenuBtn && navMenu) {
+            mobileMenuBtn.addEventListener('click', function () {
+                this.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Logout
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (confirm('Tem certeza que deseja sair?')) {
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+    }
+
+    // Limpar informações do simulado
+    function clearSimuladoInfo() {
+        simuladoNameElement.textContent = 'Selecione um simulado';
+        simuladoDescriptionElement.textContent = '-';
+        simuladoDateElement.innerHTML = '<i class="fas fa-calendar"></i> -';
+        simuladoModelElement.innerHTML = '<i class="fas fa-university"></i> -';
+        simuladoQuestionsElement.innerHTML = '<i class="fas fa-question-circle"></i> 0 questões';
+        turmasListElement.innerHTML = '';
+        totalQuestionsElement.textContent = '0';
+        currentRankingData = [];
+        renderRankingTable();
+        updatePagination();
+        myPerformanceSection.style.display = 'none';
+    }
+
+    // Exportar ranking
+    function exportRanking() {
+        if (currentRankingData.length === 0) {
+            showError('Não há dados para exportar');
+            return;
+        }
+
+        // Criar conteúdo CSV
+        let csvContent = "data:text/csv;charset=utf-8,";
+        
+        // Cabeçalho
+        const headers = ["Posição", "Nome", "Turma", "Acertos", "Percentual"];
+        csvContent += headers.join(",") + "\n";
+
+        // Dados
+        currentRankingData.forEach((student, index) => {
+            const row = [
+                index + 1,
+                student.name,
+                student.turma,
+                student.pont,
+                student.percent + "%"
+            ];
+
+            csvContent += row.join(",") + "\n";
+        });
+
+        // Criar link de download
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `ranking_${currentSimulado.id}_turma${currentTurma}_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showSuccess('Ranking exportado com sucesso!');
+    }
+
+    // Função global para visualizar detalhes do estudante
+    window.viewStudentDetails = function(studentId, simuladoId) {
+        window.location.href = `desempenho.html?id=${studentId}&simulado=${simuladoId}`;
+    };
+
+    // Adicionar item admin na navbar
+    function addAdminItemToNavbar() {
+        const userData = JSON.parse(localStorage.getItem('user') || '{}');
+
+        if (!userData || !userData.permissions || userData.permissions < 1) {
+            return;
+        }
+
+        const navMenu = document.querySelector('.nav-menu');
+        const logoutItem = document.querySelector('.nav-item .nav-link[href="#"]');
+
+        if (!navMenu) {
+            console.error('Menu de navegação não encontrado');
+            return;
+        }
+
+        // Verificar se o item de admin já existe
+        if (document.querySelector('.nav-item .nav-link[href="admin.html"]')) {
+            return;
+        }
+
+        if (userData.permissions > 1) {
+            const adminItem = document.createElement('li');
+            adminItem.className = 'nav-item';
+            adminItem.innerHTML = `
+                <a href="admin.html" class="nav-link">
+                    <div class="nav-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <span class="nav-label">Administração</span>
+                    <div class="nav-glow"></div>
+                </a>
+            `;
+
+            if (logoutItem && logoutItem.closest('.nav-item')) {
+                const logoutListItem = logoutItem.closest('.nav-item');
+                navMenu.insertBefore(adminItem, logoutListItem);
+            }
+        }
+    }
+
+    // Adicionar estilos CSS para animações
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { 
+                transform: translateX(100%) translateY(20px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateX(0) translateY(0); 
+                opacity: 1; 
+            }
+        }
+        
+        @keyframes slideOut {
+            from { 
+                transform: translateX(0) translateY(0); 
+                opacity: 1; 
+            }
+            to { 
+                transform: translateX(100%) translateY(20px); 
+                opacity: 0; 
+            }
+        }
+        
+        .ranking-row {
+            animation: fadeIn 0.6s ease-out forwards;
+            animation-delay: calc(var(--row-index, 0) * 0.05s);
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Inicializar
+    init();
+});
+
+document.getElementsByClassName("logo-text")[0].onclick = function () {
+    window.location.href = "/index.html";
+};

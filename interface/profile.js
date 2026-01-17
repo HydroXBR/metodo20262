@@ -1,295 +1,675 @@
-// Classe Cookie para manipular cookies
-class Cookie {
-	static set(name, value, days) {
-		let expires = "";
-		if (days) {
-			let date = new Date();
-			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-			expires = "; expires=" + date.toUTCString();
-		}
-		document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-	}
+document.addEventListener('DOMContentLoaded', function () {
+    const API_BASE_URL = '/api';
 
-	static get(name) {
-		let nameEQ = name + "=";
-		let ca = document.cookie.split(';');
-		for (let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == ' ') {
-				c = c.substring(1, c.length);
-			}
-			if (c.indexOf(nameEQ) == 0) {
-				return c.substring(nameEQ.length, c.length);
-			}
-		}
-		return null;
-	}
+    // Verificar autenticação
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || !user.id) {
+        window.location.href = 'login.html';
+        return;
+    }
 
-	static erase(name) {   
-		document.cookie = name+'=; Max-Age=-99999999;';  
-	}
+    // Elementos DOM
+    const userNameElement = document.getElementById('userName');
+    const userAvatarElement = document.getElementById('userAvatar');
+    
+    // Perfil elements
+    const profileAvatarElement = document.getElementById('profileAvatar');
+    const profileNameElement = document.getElementById('profileName');
+    const profileEmailElement = document.getElementById('profileEmail');
+    const profileTurmaElement = document.getElementById('profileTurma');
+    const memberSinceElement = document.getElementById('memberSince');
+    
+    // Info elements
+    const infoFullNameElement = document.getElementById('infoFullName');
+    const infoEmailElement = document.getElementById('infoEmail');
+    const infoCPFElement = document.getElementById('infoCPF');
+    const infoTurmaElement = document.getElementById('infoTurma');
+    const infoRegisteredElement = document.getElementById('infoRegistered');
+    
+    // Stats elements
+    const accuracyPercentElement = document.getElementById('accuracyPercent');
+    const completionPercentElement = document.getElementById('completionPercent');
+    const totalCorrectElement = document.getElementById('totalCorrect');
+    const totalQuestionsElement = document.getElementById('totalQuestions');
+    const totalClassesElement = document.getElementById('totalClasses');
+    const totalRedacoesElement = document.getElementById('totalRedacoes');
+    
+    // System elements
+    const accountStatusElement = document.getElementById('accountStatus');
+    const permissionsLevelElement = document.getElementById('permissionsLevel');
+    const lastAccessElement = document.getElementById('lastAccess');
+
+    // Carregar dados do perfil
+    async function loadProfileData() {
+        try {
+            // 1. Buscar dados do usuário
+            const userResponse = await fetch(`${API_BASE_URL}/user/${user.id}`);
+            let userData;
+            
+            if (userResponse.ok) {
+                userData = await userResponse.json();
+            } else {
+                // Fallback: buscar do dashboard
+                const dashboardResponse = await fetch(`${API_BASE_URL}/dashboard?userId=${user.id}`);
+                const dashboardData = await dashboardResponse.json();
+                userData = dashboardData.data;
+            }
+
+            // 2. Buscar cursos do usuário
+            const cursosResponse = await fetch(`${API_BASE_URL}/user-cursos?userId=${user.id}`);
+            const cursosResult = await cursosResponse.json();
+
+            // 3. Buscar estatísticas detalhadas
+            const statsResponse = await fetch(`${API_BASE_URL}/dashboard?userId=${user.id}`);
+            const statsData = await statsResponse.json();
+
+            // Atualizar interface
+            updateUserProfile(userData, statsData);
+            renderCursosPerfil(cursosResult);
+            renderRecentActivity(userData, statsData);
+            updateSystemInfo(userData);
+
+        } catch (error) {
+            console.error('Erro ao carregar perfil:', error);
+            showError('Erro ao carregar dados do perfil. Tente novamente.');
+            usarDadosMockados();
+        }
+    }
+
+    function updateUserProfile(userData, statsData) {
+        // Usar dados do userData primeiro, depois statsData
+        const userInfo = userData.userInfo || userData;
+        const estatisticas = statsData.data?.estatisticas || statsData.estatisticas || {};
+
+        // Atualizar avatar (em todos os lugares)
+        const profilePicture = userInfo.profilePicture || 'https://i.ibb.co/placeholder/user.png';
+        
+        if (userAvatarElement) userAvatarElement.src = profilePicture;
+        if (profileAvatarElement) profileAvatarElement.src = profilePicture;
+
+        // Atualizar nome
+        const fullName = userInfo.completename || userInfo.name || 'Usuário';
+        if (userNameElement) userNameElement.textContent = fullName;
+        if (profileNameElement) profileNameElement.textContent = fullName;
+        if (infoFullNameElement) infoFullNameElement.textContent = fullName;
+
+        // Atualizar email
+        const email = userInfo.email || user.email || 'Não informado';
+        if (profileEmailElement) profileEmailElement.textContent = email;
+        if (infoEmailElement) infoEmailElement.textContent = email;
+
+        // Atualizar CPF (se disponível no modelo)
+        if (infoCPFElement) infoCPFElement.textContent = userInfo.cpf || 'Não informado';
+
+        // Atualizar turma
+        const turma = userInfo.turma || user.turma || 0;
+        if (profileTurmaElement) profileTurmaElement.textContent = `Turma: ${turma}`;
+        if (infoTurmaElement) infoTurmaElement.textContent = turma;
+
+        // Atualizar data de cadastro
+        if (userInfo.registered) {
+            const registeredDate = new Date(userInfo.registered);
+            const formattedDate = registeredDate.toLocaleDateString('pt-BR');
+            if (memberSinceElement) memberSinceElement.textContent = `Membro desde ${formattedDate}`;
+            if (infoRegisteredElement) infoRegisteredElement.textContent = formattedDate;
+        }
+
+        // Atualizar estatísticas
+        updateProfileStats(estatisticas, userData);
+    }
+
+    function updateProfileStats(estatisticas, userData) {
+        // Taxa de acerto
+        const taxaAcerto = estatisticas.taxaAcerto || 0;
+        if (accuracyPercentElement) {
+            accuracyPercentElement.textContent = `${taxaAcerto}%`;
+            updateProgressCircle('accuracyCircle', taxaAcerto);
+        }
+
+        // Conclusão de cursos (simplificado - usando aulas assistidas como proxy)
+        const totalAulasAssistidas = estatisticas.aulasAssistidas || 0;
+        const completionRate = Math.min(Math.round((totalAulasAssistidas / 100) * 100), 100);
+        if (completionPercentElement) {
+            completionPercentElement.textContent = `${completionRate}%`;
+            updateProgressCircle('completionCircle', completionRate);
+        }
+
+        // Estatísticas gerais
+        if (totalCorrectElement) {
+            totalCorrectElement.textContent = estatisticas.questoesCorretas || 0;
+        }
+        if (totalQuestionsElement) {
+            totalQuestionsElement.textContent = estatisticas.totalQuestoes || 0;
+        }
+        if (totalClassesElement) {
+            totalClassesElement.textContent = estatisticas.aulasAssistidas || 0;
+        }
+        
+        // Redações
+        const redacoes = userData.redacoes || userData.data?.redacao?.total || 0;
+        if (totalRedacoesElement) {
+            totalRedacoesElement.textContent = redacoes;
+        }
+    }
+
+    function updateProgressCircle(circleId, percent) {
+        const circle = document.querySelector(`#${circleId} circle:nth-child(2)`);
+        if (circle) {
+            const radius = 27;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (percent / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+            
+            // Animação
+            setTimeout(() => {
+                circle.style.transition = 'stroke-dashoffset 1s ease';
+            }, 100);
+        }
+    }
+
+    async function renderCursosPerfil(cursosResult) {
+        const coursesList = document.getElementById('profileCoursesList');
+        const noCourses = document.getElementById('noProfileCourses');
+
+        if (!coursesList) return;
+
+        coursesList.innerHTML = '';
+
+        if (!cursosResult.success || !cursosResult.cursos || cursosResult.cursos.length === 0) {
+            if (noCourses) noCourses.style.display = 'flex';
+            return;
+        }
+
+        if (noCourses) noCourses.style.display = 'none';
+
+        // Limitar a 3 cursos para exibição
+        const cursosExibicao = cursosResult.cursos.slice(0, 3);
+
+        for (const cursoId of cursosExibicao) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/course/${cursoId}?userId=${user.id}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const curso = result.course;
+                    const progress = result.progress;
+
+                    const cursoElement = createCursoElementPerfil(curso, progress);
+                    coursesList.appendChild(cursoElement);
+                } else {
+                    const cursoElement = createCursoElementBasicoPerfil(cursoId);
+                    coursesList.appendChild(cursoElement);
+                }
+            } catch (error) {
+                const cursoElement = createCursoElementBasicoPerfil(cursoId);
+                coursesList.appendChild(cursoElement);
+            }
+        }
+
+        // Adicionar botão "Ver todos" se houver mais cursos
+        if (cursosResult.cursos.length > 3) {
+            const verTodosElement = document.createElement('div');
+            verTodosElement.className = 'ver-todos-btn';
+            verTodosElement.innerHTML = `
+                <a href="courses.html" class="btn-primary" style="width: 100%; text-align: center; display: block;">
+                    <i class="fas fa-eye"></i> Ver todos os cursos (${cursosResult.cursos.length})
+                </a>
+            `;
+            coursesList.appendChild(verTodosElement);
+        }
+    }
+
+    function createCursoElementPerfil(curso, progress) {
+        const cursoElement = document.createElement('div');
+        cursoElement.className = 'course-item-small';
+
+        // Determinar tipo de curso
+        let iconClass = 'psc';
+        let icon = 'fas fa-book';
+        let tipoTexto = 'Curso';
+
+        if (curso.type === 'enem') {
+            iconClass = 'enem';
+            icon = 'fas fa-star';
+            tipoTexto = 'ENEM/Macro';
+        } else if (curso.type === 'sis') {
+            iconClass = 'sis';
+            icon = 'fas fa-graduation-cap';
+            tipoTexto = 'SIS';
+        } else if (curso.type === 'psc') {
+            iconClass = 'psc';
+            icon = 'fas fa-university';
+            tipoTexto = 'PSC';
+        }
+
+        // Calcular progresso
+        const totalAulas = curso.totalLessons || 1;
+        const aulasConcluidas = progress?.completedLessons?.length || 0;
+        const progressoPercent = Math.round((aulasConcluidas / totalAulas) * 100);
+
+        cursoElement.innerHTML = `
+            <div class="course-icon-small ${iconClass}">
+                <i class="${icon}"></i>
+            </div>
+            <div class="course-info-small">
+                <h4>${curso.title}</h4>
+                <p>${tipoTexto} • ${progressoPercent}% concluído</p>
+            </div>
+        `;
+
+        cursoElement.onclick = () => acessarCurso(curso.courseId);
+        cursoElement.style.cursor = 'pointer';
+
+        return cursoElement;
+    }
+
+    function createCursoElementBasicoPerfil(cursoId) {
+        const cursoElement = document.createElement('div');
+        cursoElement.className = 'course-item-small';
+
+        let iconClass = 'psc';
+        let icon = 'fas fa-book';
+        let cursoNome = cursoId;
+
+        if (cursoId.includes('enem')) {
+            iconClass = 'enem';
+            icon = 'fas fa-star';
+            cursoNome = 'ENEM/Macro';
+        } else if (cursoId.includes('sis')) {
+            iconClass = 'sis';
+            icon = 'fas fa-graduation-cap';
+        } else if (cursoId.includes('psc')) {
+            iconClass = 'psc';
+            icon = 'fas fa-university';
+        }
+
+        cursoElement.innerHTML = `
+            <div class="course-icon-small ${iconClass}">
+                <i class="${icon}"></i>
+            </div>
+            <div class="course-info-small">
+                <h4>${cursoNome}</h4>
+                <p>Curso ativo</p>
+            </div>
+        `;
+
+        cursoElement.onclick = () => acessarCurso(cursoId);
+        cursoElement.style.cursor = 'pointer';
+
+        return cursoElement;
+    }
+
+    function renderRecentActivity(userData, statsData) {
+        const activityTimeline = document.getElementById('activityTimeline');
+        const noActivity = document.getElementById('noActivity');
+
+        if (!activityTimeline) return;
+
+        activityTimeline.innerHTML = '';
+
+        // Combinar atividades de diferentes fontes
+        const activities = [];
+        
+        // Adicionar questões recentes
+        const questoesRecentes = statsData.data?.questoesRecentes || userData.questoesRecentes || [];
+        questoesRecentes.slice(0, 3).forEach(q => {
+            activities.push({
+                type: 'question',
+                content: q.correct ? 'Acertou uma questão' : 'Errou uma questão',
+                time: getTimeAgo(new Date(q.date)),
+                correct: q.correct,
+                materia: q.materia
+            });
+        });
+
+        // Adicionar aulas recentes
+        const aulasRecentes = statsData.data?.aulasRecentes || userData.aulasRecentes || [];
+        aulasRecentes.slice(0, 2).forEach(a => {
+            activities.push({
+                type: 'video',
+                content: `Assistiu aula: ${a.course || 'Curso'}`,
+                time: getTimeAgo(new Date(a.date))
+            });
+        });
+
+        // Ordenar por data (mais recente primeiro)
+        activities.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+        if (activities.length === 0) {
+            if (noActivity) noActivity.style.display = 'flex';
+            return;
+        }
+
+        if (noActivity) noActivity.style.display = 'none';
+
+        // Mostrar apenas 5 atividades mais recentes
+        activities.slice(0, 5).forEach(activity => {
+            const activityElement = document.createElement('div');
+            activityElement.className = `activity-item ${activity.type} ${activity.correct ? 'correct' : 'incorrect'}`;
+            
+            let iconClass = '';
+            let icon = '';
+            
+            if (activity.type === 'question') {
+                iconClass = activity.correct ? 'fas fa-check-circle' : 'fas fa-times-circle';
+                icon = activity.correct ? 'question' : 'question';
+            } else if (activity.type === 'video') {
+                iconClass = 'fas fa-play-circle';
+                icon = 'video';
+            } else {
+                iconClass = 'fas fa-edit';
+                icon = 'redacao';
+            }
+
+            activityElement.innerHTML = `
+                <div class="activity-icon ${icon}">
+                    <i class="${iconClass}"></i>
+                </div>
+                <div class="activity-content">
+                    <p>${activity.content}</p>
+                    <div class="activity-time">${activity.time}</div>
+                </div>
+            `;
+
+            activityTimeline.appendChild(activityElement);
+        });
+    }
+
+    function updateSystemInfo(userData) {
+        // Status da conta
+        if (accountStatusElement) {
+            accountStatusElement.textContent = 'Ativa';
+            accountStatusElement.style.color = '#4CAF50';
+        }
+
+        // Permissões
+        if (permissionsLevelElement) {
+            const permissions = userData.permissions || user.permissions || 0;
+            let levelText = 'Estudante';
+            let color = '#070738';
+            
+            if (permissions === 1) {
+                levelText = 'Professor';
+                color = '#FF9800';
+            } else if (permissions > 1) {
+                levelText = 'Administrador';
+                color = '#FE0000';
+            }
+            
+            permissionsLevelElement.textContent = levelText;
+            permissionsLevelElement.style.color = color;
+        }
+
+        // Último acesso
+        if (lastAccessElement) {
+            lastAccessElement.textContent = 'Hoje';
+        }
+    }
+
+    // Helper functions
+    function getTimeAgo(date) {
+        if (!date) return 'Há algum tempo';
+        
+        const now = new Date();
+        const dateObj = new Date(date);
+        const diff = now - dateObj;
+
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 1) return 'Agora mesmo';
+        if (minutes < 60) return `${minutes} min atrás`;
+        if (hours < 24) return `${hours} h atrás`;
+        if (days === 1) return 'Ontem';
+        return `${days} dias atrás`;
+    }
+
+    function showError(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification error';
+        notification.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <span>${message}</span>
+        `;
+
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    // Dados mockados como fallback
+    function usarDadosMockados() {
+        const mockData = {
+            userInfo: {
+                name: user.name || 'Estudante',
+                email: user.email || 'estudante@email.com',
+                turma: user.turma || 1,
+                cpf: '000.000.000-00',
+                registered: user.registered || Date.now(),
+                profilePicture: 'https://i.ibb.co/placeholder/user.png'
+            },
+            estatisticas: {
+                totalQuestoes: 0,
+                questoesCorretas: 0,
+                taxaAcerto: 0,
+                aulasAssistidas: 0
+            }
+        };
+
+        updateUserProfile(mockData, mockData);
+        renderCursosPerfil({ success: true, cursos: user.cursos || [] });
+        renderRecentActivity(mockData, mockData);
+        updateSystemInfo(user);
+    }
+
+    // Event listeners
+    function setupEventListeners() {
+        // Logout
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (confirm('Tem certeza que deseja sair?')) {
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+
+        // Menu mobile
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (mobileMenuBtn && navMenu) {
+            mobileMenuBtn.addEventListener('click', function () {
+                this.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Clique fora do menu mobile para fechar
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.nav-menu') && !e.target.closest('.mobile-menu-btn') && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+            }
+        });
+    }
+
+    // Funções globais
+    window.acessarCurso = function (cursoId) {
+        window.location.href = `course.html?curso=${cursoId}`;
+    };
+
+    // Inicialização
+    setupEventListeners();
+    loadProfileData();
+
+    // Adicionar animações CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        
+        .ver-todos-btn {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(7, 7, 56, 0.1);
+        }
+        
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--vermelho), #FF4444);
+            color: var(--branco);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(254, 0, 0, 0.3);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .notification.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    `;
+    document.head.appendChild(style);
+});
+
+// Adicionar função de admin (copiada do dashboard)
+function adicionarItemAdminNaNavbar() {
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (!userData || !userData.permissions || userData.permissions < 1) {
+        return;
+    }
+
+    if (userData.permissions > 1) {
+        const navMenu = document.querySelector('.nav-menu');
+        const logoutItem = document.querySelector('.nav-item .nav-link[href="#"]');
+
+        if (!navMenu || document.querySelector('.nav-item .nav-link[href="admin.html"]')) {
+            return;
+        }
+
+        const adminItem = document.createElement('li');
+        adminItem.className = 'nav-item';
+        const admin2Item = document.createElement('li');
+        admin2Item.className = 'nav-item';
+
+        if (logoutItem && logoutItem.closest('.nav-item')) {
+            const logoutListItem = logoutItem.closest('.nav-item');
+            adminItem.innerHTML = `
+                <a href="admin.html" class="nav-link">
+                    <div class="nav-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <span class="nav-label">Administração</span>
+                    <div class="nav-glow"></div>
+                </a>
+            `;
+
+            admin2Item.innerHTML = `
+                <a href="admincourse.html" class="nav-link">
+                    <div class="nav-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <span class="nav-label">Gerenciar</span>
+                    <div class="nav-glow"></div>
+                </a>
+            `;
+
+            navMenu.insertBefore(adminItem, logoutListItem);
+            navMenu.insertBefore(admin2Item, logoutListItem);
+        }
+    } else if (userData.permissions == 1) {
+        const navMenu = document.querySelector('.nav-menu');
+        const logoutItem = document.querySelector('.nav-item .nav-link[href="#"]');
+
+        if (!navMenu || document.querySelector('.nav-item .nav-link[href="admincourse.html"]')) {
+            return;
+        }
+
+        const adminItem = document.createElement('li');
+        adminItem.className = 'nav-item';
+
+        if (logoutItem && logoutItem.closest('.nav-item')) {
+            const logoutListItem = logoutItem.closest('.nav-item');
+            adminItem.innerHTML = `
+                <a href="admincourse.html" class="nav-link">
+                    <div class="nav-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <span class="nav-label">Gerenciar</span>
+                    <div class="nav-glow"></div>
+                </a>
+            `;
+
+            navMenu.insertBefore(adminItem, logoutListItem);
+        }
+    }
 }
 
-// Classe User para armazenar informações do usuário em cookies
-class User {
-	constructor(email, permissions, profilePicture, completename) {
-		this.email = email;
-		this.completename = completename;
-		this.permissions = permissions;
-		this.profilePicture = profilePicture;
-	}
+// Chamar após o DOM carregar
+document.addEventListener('DOMContentLoaded', adicionarItemAdminNaNavbar);
 
-	static fromJson(json) {
-		return new User(json.email, json.permissions, json.profilePicture, json.completename);
-	}
-
-	saveToCookies() {
-		Cookie.set("loggedIn", "true", 1); // Expira em 1 dia
-		Cookie.set("userEmail", this.email, 1);
-		Cookie.set("userPermissions", this.permissions, 1);
-		Cookie.set("userProfilePicture", this.profilePicture, 1);
-		Cookie.set("completename", this.completename, 1);
-	}
-
-	static isLoggedIn() {
-		return Cookie.get("loggedIn") === "true";
-	}
-
-	static getUserInfo() {
-		if (User.isLoggedIn()) {
-			return {
-				email: Cookie.get("userEmail"),
-				permissions: Cookie.get("userPermissions"),
-				profilePicture: Cookie.get("userProfilePicture"),
-				completename: Cookie.get("completename")
-			};
-		} else {
-			return null;
-		}
-	}
-
-	static logout() {
-		Cookie.erase("loggedIn");
-		Cookie.erase("userEmail");
-		Cookie.erase("userPermissions");
-		Cookie.erase("userProfilePicture");
-		Cookie.erase("completename");
-	}
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-	if (User.isLoggedIn()) {
-		const userInfo = User.getUserInfo();
-		let li = document.getElementById("login")
-		li.innerHTML = ""
-		let newa = document.createElement("a")
-		let btn = document.createElement("button")
-		btn.innerText = "Sair"
-		btn.classList.add("btn2")
-		btn.onclick = function(event){
-			User.logout();
-			window.location.href = "/"
-		}
-		newa.appendChild(btn)
-		li.appendChild(newa)
-
-		if(userInfo.profilePicture !== 'null'&& userInfo.profilePicture) {
-			document.getElementById("profile").src = userInfo.profilePicture;
-			document.getElementById("profile2").src = userInfo.profilePicture;
-		}
-
-		document.getElementById("name").innerText = userInfo.completename;
-		
-		async function getalunobynameadm(name){
-			const response = await fetch(`/getalunobynameadm?name=${name}`)
-			console.log("fetched aluno: ", name)
-			const rr = await response
-			if(!rr) return false
-			return rr
-		}
-
-		async function getsimuladosbyname(name){
-			const response = await fetch(`/getsimuladosbyname?name=${name}`)
-			console.log("fetched aluno: ", name)
-			const rr = await response
-			if(!rr) return false
-			return rr
-		}
-
-		function formatDate(isoDate) {
-			const [year, month, day] = isoDate.split('-');
-			return `${day}/${month}/${year}`;
-		}
-
-		async function simul(){
-			const response = await fetch(`/varsimulados`)
-			const rr = await response
-			if(!rr) return false
-			return rr.json()
-		}
-
-
-		async function fetchsimul(id){
-			const response = await fetch(`/apiranking?sel=general&id=${id}`)
-			const rr = await response
-			if(!rr) return false
-			return rr.json()
-		}
-
-		getalunobynameadm(userInfo.completename).then(async (response) => {
-			const aluno = await response.json();
-			if (aluno && Object.keys(aluno).length !== 0) { 
-				document.getElementById("turma").innerText = aluno.turma == 3 ? "Projeto Medicina" : aluno.turma + "° Ano";
-				document.getElementById("nasc").innerText = formatDate(aluno.nascimento)
-				document.getElementById("resp").innerText = aluno.responsavel
-				document.getElementById("telresp").innerText = aluno.telresp
-				document.getElementById("diapgto").innerText = aluno.dia
-			} else {
-				alert("Ops! Verifique seu cadastro para uma experiência completa! Seu nome não foi encontrado na base de alunos Método.")
-			}
-		}).catch(error => {
-			console.error("Erro ao buscar o aluno:", error);
-		});
-
-		getsimuladosbyname(userInfo.completename).then(async (response) => {
-			const aluno = await response.json();
-			const simuladosdiv = document.getElementById("simulados");
-			if (aluno.success && Object.keys(aluno).length !== 0) {
-				simul().then(simulados => {
-					let loading1 = document.getElementById("loading1")
-					simuladosdiv.removeChild(loading1)
-					for(var i = 0; i < aluno.users.length; i++){
-						console.log(aluno.users[i])
-						let inforow = document.createElement("div")
-						inforow.classList.add("info-row")
-						let strong = document.createElement("strong")
-						strong.innerText = simulados.find(simulado => simulado.id == aluno.users[i].simulado).name
-						let a = document.createElement("a")
-						a.href = `/desempenho?id=${aluno.users[i]._id}&simulado=${aluno.users[i].simulado}`
-						a.innerText = "Ver meu desempenho"
-
-						inforow.appendChild(strong)
-						inforow.appendChild(a)
-						simuladosdiv.appendChild(inforow)
-					}
-
-					let c = document.createElement("canvas")
-					c.id = "graficous"
-					simuladosdiv.appendChild(c)
-				})
-
-				async function history(name) {
-					try{
-						const simuladoss = await simul();
-						const anteriores = simuladoss
-						var data = [];
-
-						var coresHex = {
-							'azul': '#0000FF',
-							'verde': '#008000',
-							'vermelho': '#FF0000',
-							'laranja': '#FFA500',
-							'rosa': '#FFC0CB',
-							'amarelo': '#FFFF00',
-							'ciano': '#00FFFF'
-						};
-
-						const coresArray = Object.values(coresHex);
-						function escolherCorAleatoria(array) {
-							if (array.length >= coresArray.length) {
-								throw new Error("Não há cores únicas disponíveis para selecionar.");
-							}
-
-							var corAleatoria;
-							do {
-								var indiceAleatorio = Math.floor(Math.random() * coresArray.length);
-								corAleatoria = coresArray[indiceAleatorio];
-							} while (array.find(e => e.color === corAleatoria));
-
-							return corAleatoria;
-						}
-
-						function removerAcentos(str) {
-							return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-						}
-
-						const promises = anteriores.map(simulado => {
-							return fetchsimul(simulado.id).then(anterior => {
-								var anteriorAluno = anterior.find(e => removerAcentos(e.completename).toLowerCase() == removerAcentos(userInfo.completename).toLowerCase());
-
-								if (anteriorAluno) {
-									let obj = {
-										label: anteriorAluno.simulado.date,
-										realvalue: anteriorAluno.percent,
-										value: `${anteriorAluno.percent}% (${anteriorAluno.pont}/${anteriorAluno.simulado.questions})`,
-										color: escolherCorAleatoria(data)
-									}
-
-									data.push(obj);
-								}
-							});
-						});
-
-						await Promise.all(promises);
-
-						if (data.length == 1) {
-							gebi("graficous").style.display = "none";
-							gebi("nota2").innerText = "Parabéns! É seu primeiro #Simulado registrado! Frequente todos os próximos simulados para que você compare a sua pontuação com os simulados anteriores :)"
-						} else {
-							graphus();
-						}
-
-						function graphus() {
-							var canvas = document.getElementById('graficous');
-							var ctx = canvas.getContext('2d');
-							ctx.fillText("Comp. com simulados anteriores", canvas.width / 2.5, canvas.height - 10);
-							var barWidth = 30;
-							var barMargin = 40;
-							var startX = 35;
-							var startY = canvas.height - 50;
-
-							var maxPercentage = Math.max(...data.map(item => item.realvalue));
-							var maxBarHeight = canvas.height * 0.8; 
-							var scale = maxBarHeight / maxPercentage;
-
-							function parseDate(dateString) {
-								let parts = dateString.split('-');
-								let formattedDate = `${parts[1]}-${parts[0]}-${parts[2]}`;
-								return new Date(formattedDate);
-							}
-
-							data.sort((a, b) => parseDate(a.label) - parseDate(b.label));
-
-							for (var i = 0; i < data.length; i++) {
-								var barHeight = data[i].realvalue * scale; 
-								var x = startX + (barWidth + barMargin) * i; 
-								var y = startY - barHeight;
-
-								ctx.fillStyle = data[i].color;
-								ctx.fillRect(x, y, barWidth, barHeight);
-
-								var textWidth = ctx.measureText(data[i].label).width;
-								var textX = x + (barWidth - textWidth) / 2; 
-								var textY = y - 5;
-
-								ctx.fillStyle = '#000';
-								ctx.fillText(data[i].label, textX, startY + 20);
-								ctx.fillText(data[i].value, textX, startY +10);
-							}
-						}
-					} catch (error) {
-						console.error("Erro ao carregar simulados:", error);
-					}
-				}
-
-				history(userInfo.completename);
-			} else {
-				alert("Seu nome não foi encontrado na base de simulados. Se isso estiver errado, corrija seu nome na base do Método (ou mesmo nos simulados) entrando em contato com o Isaías ou Kerolainy.")
-			}
-		}).catch(error => {
-			console.error("Erro ao buscar o aluno:", error);
-		});
-	} else {
-		return window.location.href="/login"
-	}
-})
+document.getElementsByClassName("logo-text")[0].onclick = function () {
+    window.location.href = "/dashboard.html";
+};

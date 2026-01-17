@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Admin - Cursos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="admincourse.css"> <!-- CSS específico -->
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Admin</span></span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <span class="nav-label">Administração</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admincourse.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <span class="nav-label">Gerenciar</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cadadmin.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <span class="nav-label">Novo Aluno</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/12225/12225881.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Professor</span>
+            </div>
+
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+        <!-- Cabeçalho da Administração de Cursos -->
+        <header class="admin-header">
+            <div class="admin-info">
+                <div class="admin-badge">
+                    <span>Painel de Conteúdo</span>
+                </div>
+                <h1 class="admin-title" id="adminTitle">Gerenciamento de Cursos</h1>
+                <div class="admin-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span id="adminName">Professor</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentDate">Carregando...</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="currentTime">--:--</span>
+                    </div>
+                </div>
+                <p class="admin-description">
+                    Gerencie cursos, aulas e questões do Método Pré-Vestibular.
+                </p>
+            </div>
+            <div class="admin-stats">
+                <h3 style="color: var(--branco); margin-bottom: 1rem; font-size: 1.1rem;">Estatísticas</h3>
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Estatísticas serão carregadas via JS -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Layout Principal -->
+        <div class="admin-layout">
+            <!-- Conteúdo Principal -->
+            <div class="admin-content">
+                <!-- Seção de Ações Rápidas -->
+                <section class="acoes-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-bolt"></i> Navegação</h3>
+                    </div>
+
+                    <div class="acoes-grid">
+                        <a href="#cursos" class="acao-card tab-navigation" data-tab="cursos">
+                            <i class="fas fa-book"></i>
+                            <h4>Gerenciar Cursos</h4>
+                            <p>Crie e edite cursos da plataforma</p>
+                        </a>
+
+                        <a href="#aulas" class="acao-card tab-navigation" data-tab="aulas">
+                            <i class="fas fa-video"></i>
+                            <h4>Gerenciar Aulas</h4>
+                            <p>Adicione e organize aulas</p>
+                        </a>
+
+                        <a href="#questoes" class="acao-card tab-navigation" data-tab="questoes">
+                            <i class="fas fa-question-circle"></i>
+                            <h4>Gerenciar Questões</h4>
+                            <p>Crie e edite questões</p>
+                        </a>
+
+
+                        <a href="#redacoes" class="acao-card tab-navigation" data-tab="redacoes">
+                            <i class="fas fa-edit"></i>
+                            <h4>Corrigir Redações</h4>
+                            <p>Corrija redações dos alunos</p>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Seção de Cursos (Ativa por padrão) -->
+                <section id="cursos-section" class="alunos-section tab-section active">
+                    <div class="section-header">
+                        <h3><i class="fas fa-book"></i> Gerenciar Cursos</h3>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchCourse" placeholder="Buscar curso...">
+                            </div>
+                            <select class="filter-select" id="filterCourseType">
+                                <option value="">Todos os tipos</option>
+                                <option value="psc">PSC</option>
+                                <option value="sis">SIS</option>
+                                <option value="enem">ENEM/Macro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Formulário de Adicionar/Editar Curso -->
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h4><i class="fas fa-plus-circle"></i> <span id="formTitle">Adicionar Novo Curso</span></h4>
+                            <button class="btn btn-secondary btn-sm" id="btnCancelEdit" style="display: none;">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+
+                        <form id="courseForm" class="admin-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">ID do Curso*</label>
+                                    <input type="text" id="courseId" class="form-input" required
+                                        placeholder="ex: ps1, ps2, enem">
+                                    <small class="form-hint">Identificador único (sem espaços)</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Título*</label>
+                                    <input type="text" id="courseTitle" class="form-input" required
+                                        placeholder="ex: PSC I - 1º Ano">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Descrição*</label>
+                                <textarea id="courseDescription" class="form-input" rows="3" required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Tipo*</label>
+                                    <select id="courseType" class="form-input" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="psc">PSC</option>
+                                        <option value="sis">SIS</option>
+                                        <option value="enem">ENEM/Macro</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Total de Horas</label>
+                                    <input type="number" id="totalHours" class="form-input" placeholder="ex: 120">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Professores</label>
+                                <input type="text" id="professors" class="form-input"
+                                    placeholder="Prof. João Silva, Prof. Maria Santos">
+                                <small class="form-hint">Separar por vírgula</small>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-success" id="btnSubmitCourse">
+                                    <i class="fas fa-plus"></i> <span id="btnSubmitText">Criar Curso</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="limparFormularioCurso()">
+                                    <i class="fas fa-eraser"></i> Limpar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Lista de Cursos -->
+                    <div class="section-header" style="margin-top: 2rem;">
+                        <h3><i class="fas fa-list"></i> Cursos Existentes</h3>
+                    </div>
+
+                    <div class="courses-grid" id="coursesList">
+                        <!-- Cursos serão carregados aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Aulas -->
+                <section id="aulas-section" class="alunos-section tab-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-video"></i> Gerenciar Aulas</h3>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchLesson" placeholder="Buscar aula...">
+                            </div>
+                            <select class="filter-select" id="filterLessonCourse">
+                                <option value="">Todos os cursos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Formulário de Adicionar Aula -->
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h4><i class="fas fa-plus-circle"></i> Adicionar Nova Aula</h4>
+                        </div>
+
+                        <form id="lessonForm" class="admin-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Curso*</label>
+                                    <select id="lessonCourseId" class="form-input" required>
+                                        <option value="">Selecione um curso...</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Matéria*</label>
+                                    <select id="lessonSubject" class="form-input" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="mat">Matemática</option>
+                                        <option value="port">Português</option>
+                                        <option value="hist">História</option>
+                                        <option value="geo">Geografia</option>
+                                        <option value="bio">Biologia</option>
+                                        <option value="quim">Química</option>
+                                        <option value="fis">Física</option>
+                                        <option value="lit">Literatura</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Título da Aula*</label>
+                                <input type="text" id="lessonTitle" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Descrição</label>
+                                <textarea id="lessonDescription" class="form-input" rows="2"></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">URL do Vídeo</label>
+                                    <input type="url" id="videoUrl" class="form-input"
+                                        placeholder="https://youtube.com/...">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Duração (minutos)</label>
+                                    <input type="number" id="lessonDuration" class="form-input">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Ordem</label>
+                                    <input type="number" id="lessonOrder" class="form-input"
+                                        placeholder="Sequência na matéria">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Professor</label>
+                                    <input type="text" id="lessonProfessor" class="form-input">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Recursos</label>
+                                <div id="resourcesContainer">
+                                    <!-- Recursos serão adicionados dinamicamente -->
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="addResourceField()">
+                                    <i class="fas fa-plus"></i> Adicionar Recurso
+                                </button>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Adicionar Aula
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="limparFormularioAula()">
+                                    <i class="fas fa-eraser"></i> Limpar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Lista de Aulas -->
+                    <div class="section-header" style="margin-top: 2rem;">
+                        <h3><i class="fas fa-list"></i> Aulas Existentes</h3>
+                    </div>
+
+                    <div id="lessonsList" class="lessons-list">
+                        <!-- Aulas serão carregadas aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Questões -->
+                <section id="questoes-section" class="alunos-section tab-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-question-circle"></i> Gerenciar Questões</h3>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchQuestion" placeholder="Buscar questão...">
+                            </div>
+                            <select class="filter-select" id="filterQuestionSubject">
+                                <option value="">Todas as matérias</option>
+                                <option value="MATEMATICA">Matemática</option>
+                                <option value="PORTUGUES">Português</option>
+                                <option value="FISICA">Física</option>
+                                <option value="QUIMICA">Química</option>
+                                <option value="BIOLOGIA">Biologia</option>
+                            </select>
+                            <select class="filter-select" id="filterQuestionOrigin">
+                                <option value="">Todas as origens</option>
+                                <option value="ENEM">ENEM</option>
+                                <option value="PSC">PSC</option>
+                                <option value="SIS">SIS</option>
+                                <option value="FUVEST">FUVEST</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Formulário de Adicionar Questão -->
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h4><i class="fas fa-plus-circle"></i> Adicionar Nova Questão</h4>
+                        </div>
+
+                        <form id="questionForm" class="admin-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Matéria*</label>
+                                    <select id="questionSubject" class="form-input" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="MATEMATICA">Matemática</option>
+                                        <option value="PORTUGUES">Português</option>
+                                        <option value="FISICA">Física</option>
+                                        <option value="QUIMICA">Química</option>
+                                        <option value="BIOLOGIA">Biologia</option>
+                                        <option value="HISTORIA">História</option>
+                                        <option value="GEOGRAFIA">Geografia</option>
+                                        <option value="FILOSOFIA">Filosofia</option>
+                                        <option value="SOCIOLOGIA">Sociologia</option>
+                                        <option value="INGLES">Inglês</option>
+                                        <option value="ESPANHOL">Espanhol</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Origem*</label>
+                                    <select id="questionOrigin" class="form-input" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="ENEM">ENEM</option>
+                                        <option value="PSC">PSC</option>
+                                        <option value="SIS">SIS</option>
+                                        <option value="FUVEST">FUVEST</option>
+                                        <option value="UNICAMP">UNICAMP</option>
+                                        <option value="OUTRA">Outra</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Ano*</label>
+                                    <input type="number" id="questionYear" class="form-input" required min="1990"
+                                        max="2026" value="2024">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Dificuldade</label>
+                                    <select id="questionDifficulty" class="form-input">
+                                        <option value="MEDIA">Média</option>
+                                        <option value="FACIL">Fácil</option>
+                                        <option value="DIFICIL">Difícil</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Enunciado*</label>
+                                <textarea id="questionStatement" class="form-input" rows="4" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">URL da Imagem do Enunciado (opcional)</label>
+                                <input type="text" id="questionImage" class="form-input"
+                                    placeholder="https://exemplo.com/imagem.jpg">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Alternativas*</label>
+                                <div id="alternativesContainer">
+                                    <!-- Alternativas serão adicionadas dinamicamente -->
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="addAlternative()">
+                                    <i class="fas fa-plus"></i> Adicionar Alternativa
+                                </button>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Alternativa Correta*</label>
+                                <select id="correctAlternative" class="form-input" required>
+                                    <option value="">Selecione a correta</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Assuntos (hashtags)</label>
+                                <input type="text" id="questionHashtags" class="form-input"
+                                    placeholder="funções, geometria, álgebra (separar por vírgula)">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Explicação (opcional)</label>
+                                <textarea id="questionExplanation" class="form-input" rows="3"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">URL da Imagem da Explicação (opcional)</label>
+                                <input type="text" id="explanationImage" class="form-input"
+                                    placeholder="https://exemplo.com/explicacao.jpg">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Adicionar Questão
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="limparFormularioQuestao()">
+                                    <i class="fas fa-eraser"></i> Limpar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Lista de Questões -->
+                    <div class="section-header" style="margin-top: 2rem;">
+                        <h3><i class="fas fa-list"></i> Questões Existentes</h3>
+                    </div>
+
+                    <div id="questionsList" class="questions-list">
+                        <!-- Questões serão carregadas aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Usuários -->
+                <section id="usuarios-section" class="alunos-section tab-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-users"></i> Gerenciar Usuários</h3>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchUser" placeholder="Buscar usuário...">
+                            </div>
+                            <select class="filter-select" id="filterUserType">
+                                <option value="">Todos os tipos</option>
+                                <option value="aluno">Aluno</option>
+                                <option value="professor">Professor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Funcionalidade em Desenvolvimento</h4>
+                            <p>O gerenciamento completo de usuários estará disponível em breve.</p>
+                            <p>Enquanto isso, você pode gerenciar alunos na página de <a
+                                    href="admin.html">Administração</a>.</p>
+                        </div>
+                    </div>
+                </section>
+                <!-- Seção de Correção de Redações -->
+                <section id="redacoes-section" class="alunos-section tab-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-edit"></i> Correção de Redações</h3>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchRedacao" placeholder="Buscar aluno ou título...">
+                            </div>
+                            <select class="filter-select" id="filterRedacaoStatus">
+                                <option value="pendente">Aguardando correção</option>
+                                <option value="corrigido">Já corrigidas</option>
+                                <option value="all">Todas</option>
+                            </select>
+                            <select class="filter-select" id="filterRedacaoEstilo">
+                                <option value="">Todos os estilos</option>
+                                <option value="enem">ENEM</option>
+                                <option value="psc">PSC</option>
+                                <option value="sis">SIS</option>
+                                <option value="macro">MACRO</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Estatísticas Rápidas -->
+                    <div class="stats-row"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div class="stat-card-mini">
+                            <i class="fas fa-clock" style="color: var(--laranja);"></i>
+                            <div>
+                                <h4 id="pendentesCount">0</h4>
+                                <p>Aguardando correção</p>
+                            </div>
+                        </div>
+                        <div class="stat-card-mini">
+                            <i class="fas fa-check-circle" style="color: var(--verde);"></i>
+                            <div>
+                                <h4 id="corrigidasCount">0</h4>
+                                <p>Corrigidas</p>
+                            </div>
+                        </div>
+                        <div class="stat-card-mini">
+                            <i class="fas fa-users" style="color: var(--azul);"></i>
+                            <div>
+                                <h4 id="alunosCount">0</h4>
+                                <p>Alunos com redações</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Redações para Correção -->
+                    <div class="redacoes-correcao-list" id="redacoesCorrecaoList">
+                        <!-- Redações serão carregadas aqui -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar de Informações -->
+            <aside class="admin-sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Informações do Sistema</h3>
+                    </div>
+                    <div class="sidebar-content">
+                        <div class="user-stats">
+                            <div class="user-stat">
+                                <span>Usuário:</span>
+                                <strong id="sidebarAdmin">Carregando...</strong>
+                            </div>
+                            <div class="user-stat">
+                                <span>Permissões:</span>
+                                <strong id="sidebarLevel">Professor</strong>
+                            </div>
+                            <div class="user-stat">
+                                <span>Seção Ativa:</span>
+                                <strong id="sidebarActiveSection">Cursos</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Estatísticas de Conteúdo</h3>
+                    </div>
+                    <div class="sidebar-content">
+                        <div class="user-stat">
+                            <span>Cursos Ativos:</span>
+                            <strong id="sidebarCourses">0</strong>
+                        </div>
+                        <div class="user-stat">
+                            <span>Aulas Publicadas:</span>
+                            <strong id="sidebarLessons">0</strong>
+                        </div>
+                        <div class="user-stat">
+                            <span>Questões:</span>
+                            <strong id="sidebarQuestions">0</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Dicas Rápidas</h3>
+                    </div>
+                    <div class="sidebar-content">
+                        <ul class="tips-list">
+                            <li>Use IDs únicos para cada curso</li>
+                            <li>Organize as aulas por ordem</li>
+                            <li>Adicione hashtags nas questões</li>
+                            <li>Verifique sempre os dados antes de salvar</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        
+    </main>
+
+    <div class="modal" id="correcaoModal">
+            <div class="modal-content modal-correcao">
+                <div class="modal-header">
+                    <h3 id="modalCorrecaoTitulo">Corrigir Redação</h3>
+                    <button class="modal-close" id="closeCorrecaoModal">&times;</button>
+                </div>
+                <div class="modal-correcao-body">
+                    <div class="redacao-view-container">
+                        <div class="redacao-view-header">
+                            <div class="redacao-view-title" id="viewRedacaoTitulo"></div>
+                            <div class="redacao-view-info" id="viewRedacaoInfo"></div>
+                        </div>
+
+                        <div class="redacao-view-texto" id="viewRedacaoTexto"></div>
+
+                        <div class="redacao-view-observacoes" id="viewRedacaoObservacoes" style="display: none;">
+                            <strong><i class="fas fa-comment-dots"></i> Observações do aluno:</strong>
+                            <p id="viewObservacoesTexto"></p>
+                        </div>
+                    </div>
+
+                    <form id="correcaoForm">
+                        <div class="correcao-form-grid" id="competenciaContainer">
+                            <!-- Competências serão preenchidas dinamicamente -->
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Comentários Gerais do Professor</label>
+                            <textarea class="comentarios-input" id="comentariosProfessor"
+                                placeholder="Forneça feedback construtivo sobre a redação..." rows="4"></textarea>
+                        </div>
+
+                        <div class="nota-total-container">
+                            <h4>Nota Final</h4>
+                            <div class="nota-final" id="notaFinal">0</div>
+                            <div class="nota-max-total" id="notaMaxTotal"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="btnCancelCorrecao">Cancelar</button>
+                    <button class="btn btn-primary" id="btnSalvarCorrecao">Salvar Correção</button>
+                </div>
+            </div>
+        </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Educação que transforma vidas.</p>
+                </div>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">Meus Cursos</a></li>
+                        <li><a href="question.html">Questões</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Administração</h4>
+                    <ul>
+                        <li><a href="admin.html">Alunos</a></li>
+                        <li><a href="admincourse.html">Conteúdo</a></li>
+                        <li><a href="cadadmin.html">Cadastro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                        <li><a href="tel:+55929486365">Telefone</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="admincourse.js"></script>
+</body>
+
+</html>

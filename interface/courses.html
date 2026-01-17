@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Meus Cursos</title>
+    <link rel="stylesheet" href="courses.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Dashboard</span></span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link ">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="courses.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="nav-label">Meus Cursos</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="question.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <span class="nav-label">Questões</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="redacao.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <span class="nav-label">Redação</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ranking.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <span class="nav-label">Ranking</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://i.ibb.co/placeholder/user.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Carregando...</span>
+            </div>
+            
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="courses-main">
+        <!-- Hero Section -->
+        <section class="courses-hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>Meus Cursos</span>
+                    <div class="badge-glow"></div>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-line">Sua <span class="highlight-text" data-text="jornada">jornada</span> de</span>
+                    <span class="title-line">aprendizado começa aqui</span>
+                </h1>
+                <p class="hero-subtitle">Acesse todos os cursos que você adquiriu e continue sua preparação</p>
+            </div>
+            <div class="hero-actions">
+                <button class="btn-hero" id="exploreMoreBtn">
+                    <i class="fas fa-plus"></i>
+                    <span>Adquirir Mais Cursos</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Cursos Adquiridos -->
+        <section class="my-courses-section">
+            <div class="section-header">
+                <h2><i class="fas fa-graduation-cap"></i> Cursos Adquiridos</h2>
+                <p class="section-subtitle">Continue de onde parou ou explore novos conteúdos</p>
+            </div>
+            
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Cursos serão carregados via JavaScript -->
+            </div>
+            
+            <div class="empty-state" id="noCourses">
+                <div class="empty-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Nenhum curso adquirido</h3>
+                <p>Você ainda não tem cursos ativos em sua conta.</p>
+                <button class="btn-primary" id="getStartedBtn">
+                    <i class="fas fa-rocket"></i>
+                    <span>Começar Agora</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Progresso Geral -->
+        <section class="progress-section">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-line"></i> Seu Progresso</h2>
+                <p class="section-subtitle">Acompanhe sua evolução em cada curso</p>
+            </div>
+            
+            <div class="progress-cards">
+                <div class="progress-card">
+                    <div class="progress-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="progress-info">
+                        <h3 id="totalAulas">0</h3>
+                        <p>Aulas Assisitidas</p>
+                    </div>
+                </div>
+                
+                <div class="progress-card">
+                    <div class="progress-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="progress-info">
+                        <h3 id="totalQuestoes">0</h3>
+                        <p>Questões Respondidas</p>
+                    </div>
+                </div>
+                
+                <div class="progress-card">
+                    <div class="progress-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="progress-info">
+                        <h3 id="taxaAcerto">0%</h3>
+                        <p>Taxa de Acerto</p>
+                    </div>
+                </div>
+                
+                <div class="progress-card">
+                    <div class="progress-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="progress-info">
+                        <h3 id="tempoEstudo">0h</h3>
+                        <p>Tempo de Estudo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recomendações de Conteúdo
+        <section class="recommendations-section">
+            <div class="section-header">
+                <h2><i class="fas fa-lightbulb"></i> Continue Aprendendo</h2>
+                <p class="section-subtitle">Conteúdos recomendados baseados no seu progresso</p>
+            </div>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="recommendation-header">
+                        <i class="fas fa-video"></i>
+                        <span class="recommendation-badge">Aula</span>
+                    </div>
+                    <div class="recommendation-content">
+                        <h4>Funções Trigonométricas</h4>
+                        <p>Domine as principais funções trigonométricas e suas aplicações</p>
+                        <div class="recommendation-meta">
+                            <span><i class="fas fa-clock"></i> 45 min</span>
+                            <span><i class="fas fa-chart-bar"></i> Matemática</span>
+                        </div>
+                    </div>
+                    <button class="btn-recommendation">
+                        <i class="fas fa-play"></i>
+                        <span>Assistir</span>
+                    </button>
+                </div>
+                
+                <div class="recommendation-card">
+                    <div class="recommendation-header">
+                        <i class="fas fa-question-circle"></i>
+                        <span class="recommendation-badge">Simulado</span>
+                    </div>
+                    <div class="recommendation-content">
+                        <h4>Simulado PSC I - Matemática</h4>
+                        <p>Teste seus conhecimentos com questões inéditas</p>
+                        <div class="recommendation-meta">
+                            <span><i class="fas fa-clock"></i> 90 min</span>
+                            <span><i class="fas fa-question"></i> 30 questões</span>
+                        </div>
+                    </div>
+                    <button class="btn-recommendation">
+                        <i class="fas fa-play"></i>
+                        <span>Iniciar</span>
+                    </button>
+                </div>
+                
+                <div class="recommendation-card">
+                    <div class="recommendation-header">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="recommendation-badge">Material</span>
+                    </div>
+                    <div class="recommendation-content">
+                        <h4>Resumo de Biologia Celular</h4>
+                        <p>Material completo sobre estrutura e função celular</p>
+                        <div class="recommendation-meta">
+                            <span><i class="fas fa-file-pdf"></i> PDF</span>
+                            <span><i class="fas fa-book"></i> 25 páginas</span>
+                        </div>
+                    </div>
+                    <button class="btn-recommendation">
+                        <i class="fas fa-download"></i>
+                        <span>Baixar</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section class="available-courses">
+            <div class="section-header">
+                <h2><i class="fas fa-store"></i> Mais Cursos Disponíveis</h2>
+                <p class="section-subtitle">Amplie seus conhecimentos com novos cursos</p>
+            </div>
+            
+            <div class="available-grid" id="availableCourses">
+            </div>
+            
+            <div class="cta-section">
+                <div class="cta-content">
+                    <h3>Quer acesso completo?</h3>
+                    <p>Adquira todos os cursos e tenha uma preparação completa para o vestibular</p>
+                    <button class="btn-cta" id="goToPricingBtn">
+                        <i class="fas fa-gem"></i>
+                        <span>Ver Planos e Preços</span>
+                    </button>
+                </div>
+                <div class="cta-image">
+                    <i class="fas fa-rocket"></i>
+                </div>
+            </div>
+        </section> -->
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+            
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">Meus Cursos</a></li>
+                        <li><a href="questoes.html">Questões</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="#psc">PSC I, II, III</a></li>
+                        <li><a href="#sis">SIS I, II, III</a></li>
+                        <li><a href="#enem">ENEM/Macro</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="courses.js"></script>
+</body>
+</html>

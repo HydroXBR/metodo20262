@@ -1,208 +1,180 @@
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('nav-links');
-
-hamburger.addEventListener('click', () => {
-	hamburger.classList.toggle('active');
-	navLinks.classList.toggle('active');
-});
-
-document.querySelectorAll('.nav-links a').forEach(link => {
-	link.addEventListener('click', () => {
-		hamburger.classList.remove('active');
-		navLinks.classList.remove('active');
-	});
-});
-async function addd(completename, email, senha, turma, cpf){
-	const response = await fetch(`/cadastrar?completename=${completename}&email=${email}&senha=${senha}&turma=${turma}&cpf=${cpf}`)
-	console.log("addded")
-	const rr = await response
-	if(!rr) return false
-	return rr
-}
-
-// Classe Cookie para manipular cookies
-class Cookie {
-	static set(name, value, days) {
-		let expires = "";
-		if (days) {
-			let date = new Date();
-			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-			expires = "; expires=" + date.toUTCString();
-		}
-		document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-	}
-
-	static get(name) {
-		let nameEQ = name + "=";
-		let ca = document.cookie.split(';');
-		for (let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == ' ') {
-				c = c.substring(1, c.length);
-			}
-			if (c.indexOf(nameEQ) == 0) {
-				return c.substring(nameEQ.length, c.length);
-			}
-		}
-		return null;
-	}
-
-	static erase(name) {   
-		document.cookie = name+'=; Max-Age=-99999999;';  
-	}
-}
-
-// Classe User para armazenar informações do usuário em cookies
-class User {
-	constructor(email, permissions, profilePicture, completename) {
-		this.email = email;
-		this.completename = completename;
-		this.permissions = permissions;
-		this.profilePicture = profilePicture;
-	}
-
-	static fromJson(json) {
-		return new User(json.email, json.permissions, json.profilePicture, json.completename);
-	}
-
-	saveToCookies() {
-		Cookie.set("loggedIn", "true", 1); // Expira em 1 dia
-		Cookie.set("userEmail", this.email, 1);
-		Cookie.set("userPermissions", this.permissions, 1);
-		Cookie.set("userProfilePicture", this.profilePicture, 1);
-		Cookie.set("completename", this.completename, 1);
-	}
-
-	static isLoggedIn() {
-		return Cookie.get("loggedIn") === "true";
-	}
-
-	static getUserInfo() {
-		if (User.isLoggedIn()) {
-			return {
-				email: Cookie.get("userEmail"),
-				permissions: Cookie.get("userPermissions"),
-				profilePicture: Cookie.get("userProfilePicture"),
-				completename: Cookie.get("completename")
-			};
-		} else {
-			return null;
-		}
-	}
-
-	static logout() {
-		Cookie.erase("loggedIn");
-		Cookie.erase("userEmail");
-		Cookie.erase("userPermissions");
-		Cookie.erase("userProfilePicture");
-		Cookie.erase("completename");
-	}
-}
-
-
-async function add(completename, email, senha, turma, cpf){
-	async function checkcpf(cpff){
-		const response = await fetch(`/checkcpf?cpf=${cpff}`)
-		const rr = await response
-		if(!rr) return false
-		return rr
-	}
-
-	checkcpf(cpf).then(async response =>{
-		const rr = await response.json();
-		console.log(rr);
-
-		if(rr.success === false){
-			alert("Erro ao consultar veracidade! Contate o Isaías, por favor.");
-			console.log("Reason", rr.reason);
-		} else {
-			if(rr.reason.includes("already")){
-				alert("CPF já cadastrado anteriormente!")
-			}else if(rr.reason.includes("success")){
-				addd(completename, email, senha, turma, cpf).then(async response => {
-					const rr = await response.json();
-					console.log(rr);
-
-					if(rr.success === false){
-						alert("Erro no cadastro! Contate o Isaías, por favor.");
-						console.log("Reason", rr.reason);
-					} else {
-						const user = User.fromJson(rr.user);
-						user.saveToCookies(); 
-						window.location.href = "/index.html";
-					}
-				});
-			}
-		}
-	})
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-	if (User.isLoggedIn()) {
-		const userInfo = User.getUserInfo();
-
-		if(userInfo.profilePicture !== 'null'&& userInfo.profilePicture) {
-			document.getElementById("profile").src = userInfo.profilePicture;
-		}
-
-		let li = document.getElementById("login")
-		li.innerHTML = ""
-		let btn = document.createElement("a")
-		btn.innerText = "Sair"
-		btn.classList.add("btn-login")
-		btn.onclick = function(event){
-			User.logout();
-			window.location.href = "/"
-		}
-		li.appendChild(btn)
-
-		if(userInfo.permissions > 0){
-			let ul = document.getElementById("nav-links")
-			let admin = document.createElement("li")
-			let aadmin = document.createElement("a")
-			aadmin.href = "/admin"
-			aadmin.innerText = "Admin"
-			admin.appendChild(aadmin)
-			ul.appendChild(admin)
-		}
-
-	} else {
-		console.log("Usuário não está logado.");
-	}
-	
-	const form = document.getElementById('formcadastro');
-	const cpfInput = document.getElementById('cpf');
-	const voltarBtn = document.getElementById('voltar');
-	voltarBtn.addEventListener('click', function() {
-			window.location.href = '/admin';
-	});
-	
-	cpfInput.addEventListener('input', function() {
-		let cpf = cpfInput.value.replace(/\D/g, ''); 
-			cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); 
-			cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); 
-			cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); 
-			cpfInput.value = cpf;
-	});
-	
-	form.addEventListener('submit', function(event) {
-		event.preventDefault();
-
-		const completename = document.getElementById('completename').value;
-		const email = document.getElementById('email').value;
-		const senha = document.getElementById('senha').value;
-		const csenha = document.getElementById('csenha').value;
-		const turma = document.getElementById('turma').value;
-		const cpf = document.getElementById('cpf').value;
-
-		const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if(!regexEmail.test(email)){
-			return alert("Email inválido!");
-		}
-		if(senha !== csenha){
-			return alert("Senhas não conferem!");
-		}
-
-		add(completename, email, senha, turma, cpf)
-	})
-})
+    const passwordToggles = document.querySelectorAll('.password-toggle');
+    passwordToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.form-input');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        });
+    });
+    
+    const cpfInput = document.getElementById('cpf');
+    if (cpfInput) {
+        cpfInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            }
+            
+            e.target.value = value;
+        });
+    }
+    
+    function showNotification(message, type = 'error') {
+        const notification = document.getElementById('authNotification');
+        notification.textContent = message;
+        notification.className = 'auth-notification ' + type;
+        
+        setTimeout(() => {
+            notification.className = 'auth-notification';
+        }, 5000);
+    }
+    
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                email: formData.get('email'),
+                senha: formData.get('senha')
+            };
+            
+            try {
+                const response = await fetch('/api/login?' + new URLSearchParams({
+                    email: data.email,
+                    senha: data.senha
+                }), {
+                    method: 'GET'
+                });
+                
+                const result = await response.json();
+                console.log(result)
+                
+                if (result.success) {
+                    showNotification('Login realizado com sucesso! Redirecionando...', 'success');
+                    
+                    localStorage.setItem('user', JSON.stringify({
+                        id: result.user._id,
+                        name: result.user.completename,
+                        email: result.user.email,
+                        turma: result.user.turma,
+                        profilePicture: result.user.profilePicture,
+                        permissions: result.user.permissions
+                    }));
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    showNotification(result.reason || 'Erro ao fazer login', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Erro no login:', error);
+                showNotification('Erro de conexão. Verifique o servidor.', 'error');
+            }
+        });
+    }
+    
+    const cadastroForm = document.getElementById('cadastroForm');
+    if (cadastroForm) {
+        cadastroForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const completename = formData.get('completename');
+            let cpf = formData.get('cpf');
+            const email = formData.get('email');
+            const senha = formData.get('senha');
+            const confirmarSenha = formData.get('confirmarSenha');
+            const turma = formData.get('turma');
+            
+            if (senha !== confirmarSenha) {
+                showNotification('As senhas não coincidem.', 'error');
+                return;
+            }
+            
+            if (senha.length < 6) {
+                showNotification('A senha deve ter no mínimo 6 caracteres.', 'error');
+                return;
+            }
+            
+            cpf = cpf.replace(/\D/g, '');
+            
+            if (cpf.length !== 11) {
+                showNotification('CPF deve ter 11 dígitos.', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/cadastro?' + new URLSearchParams({
+                    completename: completename,
+                    cpf: cpf,
+                    email: email,
+                    senha: senha,
+                    turma: turma
+                }), {
+                    method: 'GET'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('Cadastro realizado com sucesso! Redirecionando para login...', 'success');
+                    
+                    cadastroForm.reset();
+                    
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                } else {
+                    showNotification(result.reason || 'Erro ao cadastrar', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Erro no cadastro:', error);
+                showNotification('Erro de conexão. Verifique o servidor.', 'error');
+            }
+        });
+    }
+    
+    function checkAuth() {
+        const user = localStorage.getItem('user');
+        if (user && (window.location.pathname.includes('login.html') || 
+                     window.location.pathname.includes('cadastro.html'))) {
+            window.location.href = 'index.html';
+        }
+    }
+    
+    checkAuth();
+    
+    window.logout = function() {
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+    };
+    
+    window.requireAuth = function() {
+        const user = localStorage.getItem('user');
+        if (!user && !window.location.pathname.includes('login.html') && 
+            !window.location.pathname.includes('cadastro.html')) {
+            window.location.href = 'login.html';
+        }
+        return user ? JSON.parse(user) : null;
+    };
+});

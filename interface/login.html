@@ -1,51 +1,186 @@
 <!DOCTYPE html>
-<html lang="pt-vr">
+<html lang="pt-BR">
 <head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height" />
-		<link rel="stylesheet" href="cadastro.css" type="text/css"/>
-		<title>Login - Método Pré-Vestibular</title>
-		<link rel="icon" type="image/png" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Login</title>
+    <link rel="stylesheet" href="cadastro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
 </head>
 <body>
-	<nav class="navbar">
-		<div class="container">
-			<div class="logo-container">
-				<img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método" class="logo-img">
-				<h1 class="logo">Método Pré-Vestibular</h1>
-			</div>
-			<button class="hamburger" id="hamburger" aria-label="Abrir menu">
-				<span class="hamburger-line"></span>
-				<span class="hamburger-line"></span>
-				<span class="hamburger-line"></span>
-			</button>
-			<ul class="nav-links" id="nav-links">
-				<li><a href="/">Início</a></li>
-				<li><a href="/sobre">Sobre</a></li>
-				<li><a href="/simulados">Simulados</a></li>
-				<li id="login"><a id="login" href="/login" class="btn-login">Login</a></li>
-				<li><a href="/profile"><img id="profile" src="https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png" alt="Foto de Perfil" class="profile-picture"></a></li>
-			</ul>
-		</div>
-	</nav>
-<div class="container2">
-		<div class="wrapper fadeInDown">
-				<div class="content-login">
-						<img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo do Método Pré-Vestibular" class="logo">
-						<h2 class="active"> Login - Método </h2>
-						<form class="box-login" id="formlogin" action="#">
-								<input type="text" id="email" class="campo" name="username" placeholder="Email" minLength=7>
-								<input type="password" id="senha" class="campo" name="senha" placeholder="Senha" minLength=7>
-								<input type="submit" class="botao" id="continuar">
-						</form>
-						<div class="box-lembrar-senha">  
-								<a class="link" href="https://api.whatsapp.com/send?phone=+5592984507170&text=Ol%C3%A1%2C%20Isa%C3%ADas!%20Gostaria%20de%20falar%20sobre%20minha%20senha%20no%20na%20plataforma%20Metodo">Lembrar Senha ?</a> <br></br>
-								<a class="link" href="/cadastro">Cadastre-se</a>
-						</div>
-				</div>
-		</div>
-</div>
-<script type="text/javascript" src="login.js"></script>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Minerva">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Home</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cadastro.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <span class="nav-label">Cadastrar</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-icon">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <div class="icon-glow"></div>
+                </div>
+                <h2 class="auth-title">Acesse sua conta</h2>
+                <p class="auth-subtitle">Entre no Método Pré-Vestibular</p>
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i> E-mail
+                    </label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                    <div class="input-glow"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="senha" class="form-label">
+                        <i class="fas fa-lock"></i> Senha
+                    </label>
+                    <input type="password" id="senha" name="senha" class="form-input" required>
+                    <div class="input-glow"></div>
+                    <button type="button" class="password-toggle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember">
+                        <span class="checkmark"></span>
+                        Lembrar-me
+                    </label>
+                    <a href="#" class="forgot-link">Esqueci a senha</a>
+                </div>
+                
+                <button type="submit" class="auth-btn">
+                    <span>Entrar</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <div class="auth-divider">
+                    <span>ou</span>
+                </div>
+                
+                <p class="auth-redirect">
+                    Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+                </p>
+            </form>
+            
+            <div class="auth-notification" id="authNotification"></div>
+        </div>
+        
+        <div class="auth-info">
+            <div class="floating-logo">
+                <div class="logo-orb">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Minerva">
+                </div>
+                <div class="logo-ring"></div>
+                <div class="logo-ring logo-ring-2"></div>
+            </div>
+            
+            <div class="info-card">
+                <h3>Benefícios do Método</h3>
+                <ul class="benefits-list">
+                    <li><i class="fas fa-check-circle"></i> 7 Cursos Completos</li>
+                    <li><i class="fas fa-check-circle"></i> Simulados com IA</li>
+                    <li><i class="fas fa-check-circle"></i> Monitoramento em Tempo Real</li>
+                    <li><i class="fas fa-check-circle"></i> Suporte 24/7</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Minerva">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Minerva<span class="logo-highlight">Método</span></span>
+                    <p class="footer-tagline">Educação do Futuro</p>
+                </div>
+            </div>
+            
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Acesso</h4>
+                    <ul>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="cadastro.html">Cadastro</a></li>
+                        <li><a href="index.html">Home</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Suporte</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="cadastro.js"></script>
 </body>
 </html>

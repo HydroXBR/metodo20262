@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Banco de Questões</title>
+    <link rel="stylesheet" href="question.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Questões</span></span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="nav-label">Meus Cursos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="questoes.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <span class="nav-label">Questões</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="redacao.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <span class="nav-label">Redação</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ranking.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <span class="nav-label">Ranking</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://i.ibb.co/placeholder/user.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Carregando...</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="questions-main">
+        <!-- Header do Banco de Questões -->
+        <header class="questions-header">
+            <div class="questions-info">
+                <h1><i class="fas fa-database"></i> Banco de Questões</h1>
+                <p class="subtitle">Pratique com milhares de questões de vestibulares</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-card">
+                    <i class="fas fa-question-circle"></i>
+                    <div>
+                        <strong id="totalQuestions">0</strong>
+                        <span>Questões</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong id="userCorrect">0</strong>
+                        <span>Acertos</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <strong id="userAccuracy">0%</strong>
+                        <span>Taxa de Acerto</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filtros e Controles -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="subjectFilter"><i class="fas fa-book"></i> Matéria</label>
+                    <select id="subjectFilter" class="filter-select">
+                        <option value="">Todas as matérias</option>
+                        <option value="MATEMATICA">Matemática</option>
+                        <option value="PORTUGUES">Português</option>
+                        <option value="FISICA">Física</option>
+                        <option value="QUIMICA">Química</option>
+                        <option value="BIOLOGIA">Biologia</option>
+                        <option value="HISTORIA">História</option>
+                        <option value="GEOGRAFIA">Geografia</option>
+                        <option value="FILOSOFIA">Filosofia</option>
+                        <option value="SOCIOLOGIA">Sociologia</option>
+                        <option value="INGLES">Inglês</option>
+                        <option value="ESPANHOL">Espanhol</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="originFilter"><i class="fas fa-university"></i> Origem</label>
+                    <select id="originFilter" class="filter-select">
+                        <option value="">Todas as origens</option>
+                        <option value="ENEM">ENEM</option>
+                        <option value="PSC">PSC</option>
+                        <option value="SIS">SIS</option>
+                        <option value="FUVEST">FUVEST</option>
+                        <option value="UNICAMP">UNICAMP</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="yearFilter"><i class="fas fa-calendar-alt"></i> Ano</label>
+                    <select id="yearFilter" class="filter-select">
+                        <option value="">Todos os anos</option>
+                        <!-- Anos serão preenchidos via JS -->
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="difficultyFilter"><i class="fas fa-signal"></i> Dificuldade</label>
+                    <select id="difficultyFilter" class="filter-select">
+                        <option value="">Todas as dificuldades</option>
+                        <option value="FACIL">Fácil</option>
+                        <option value="MEDIA">Média</option>
+                        <option value="DIFICIL">Difícil</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button id="applyFilters" class="btn-primary">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
+                <button id="clearFilters" class="btn-secondary">
+                    <i class="fas fa-times"></i> Limpar
+                </button>
+                <button id="practiceModeBtn" class="btn-success">
+                    <i class="fas fa-play-circle"></i> Modo Prática
+                </button>
+            </div>
+        </div>
+
+        <!-- Container Principal -->
+        <div class="questions-container">
+            <!-- Sidebar de Estatísticas -->
+            <aside class="stats-sidebar">
+                <div class="stats-card">
+                    <h3><i class="fas fa-chart-pie"></i> Seu Desempenho</h3>
+                    <div class="stats-content">
+                        <div class="performance-chart">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                        <div class="stats-list">
+                            <div class="stat-item">
+                                <span>Questões Feitas</span>
+                                <strong id="statsTotal">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Acertos</span>
+                                <strong id="statsCorrect">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Erros</span>
+                                <strong id="statsWrong">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Taxa de Acerto</span>
+                                <strong id="statsAccuracy">0%</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </aside>
+
+            <!-- Lista de Questões -->
+            <div class="questions-list" id="questionsList">
+                <!-- Questões serão carregadas via JS -->
+                <div class="loading-questions">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Carregando questões...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal da Questão -->
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Questão</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalQuestionContent">
+                <!-- Conteúdo da questão será carregado aqui -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <!-- Footer igual ao course.html -->
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">Meus Cursos</a></li>
+                        <li><a href="course.html">Aulas</a></li>
+                        <li><a href="questoes.html">Questões</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="#psc">PSC I, II, III</a></li>
+                        <li><a href="#sis">SIS I, II, III</a></li>
+                        <li><a href="#enem">ENEM/Macro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="question.js"></script>
+</body>
+
+</html>

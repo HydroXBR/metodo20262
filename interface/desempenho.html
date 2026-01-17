@@ -1,214 +1,364 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desempenho - Método Pré-Vestibular</title>
+    <title>Desempenho no Simulado | Método</title>
     <link rel="stylesheet" href="desempenho.css">
-    <link rel="icon" type="image/png" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
 </head>
 <body>
-    <!-- Navbar mantida conforme original -->
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
     <nav class="navbar">
-		<div class="container">
-			<div class="logo-container">
-				<img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método" class="logo-img">
-				<h1 class="logo">Método Pré-Vestibular</h1>
-			</div>
-			<button class="hamburger" id="hamburger" aria-label="Abrir menu">
-				<span class="hamburger-line"></span>
-				<span class="hamburger-line"></span>
-				<span class="hamburger-line"></span>
-			</button>
-			<ul class="nav-links" id="nav-links">
-				<li><a href="/">Início</a></li>
-				<li><a href="/sobre">Sobre</a></li>
-				<li><a href="/simulados">Simulados</a></li>
-				<li id="login"><a id="login" href="/login" class="btn-login">Login</a></li>
-				<li><a href="/profile"><img id="profile" src="https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png" alt="Foto de Perfil" class="profile-picture"></a></li>
-			</ul>
-		</div>
-	</nav>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Desempenho</span></span>
+            </div>
 
-    <div class="performance-container">
-        <!-- Cabeçalho -->
-        <div class="glass-card header-section">
-            <div class="student-info">
-                <h1 class="student-name" id="name">Carregando...</h1>
-                <div class="performance-badge">
-                    <span class="badge-text" id="serie">Carregando...</span>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="nav-label">Meus Cursos</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="question.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <span class="nav-label">Questões</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="redacao.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <span class="nav-label">Redação</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ranking.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <span class="nav-label">Ranking</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+            </ul>
+
+            <a href="/profile.html">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <img src="https://i.ibb.co/placeholder/user.png" alt="Usuário" id="userAvatar">
+                    </div>
+                    <span class="user-name" id="userName">Carregando...</span>
+                </div>
+            </a>
+
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="performance-main">
+        <!-- Cabeçalho do Desempenho -->
+        <section class="performance-header">
+            <div class="student-card">
+                <div class="student-info">
+                    <div class="student-avatar">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="Estudante" id="studentAvatar">
+                    </div>
+                    <div class="student-details">
+                        <h1 id="studentName">Carregando...</h1>
+                        <div class="student-tags">
+                            <span class="tag turma-tag" id="studentTurma">Carregando...</span>
+                            <!--<span class="tag position-tag" id="studentPosition">-</span>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn back-btn" id="backBtn">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Voltar ao Ranking</span>
+                    </button>
+                    <button class="action-btn problem-btn" id="problemBtn">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Problema com Resultado</span>
+                    </button>
+                    <button class="action-btn print-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>Imprimir</span>
+                    </button>
                 </div>
             </div>
-            <div class="simulado-info">
-                <h2 class="simulado-title" id="title"></h2>
-                <div class="button-group">
-                    <button class="modern-button" id="voltar">Voltar para o ranking</button>
-                    <button class="modern-button red" id="prob">Problemas com o resultado</button>
-		<button class="modern-button yellow" id="print">Imprimir</button>
+
+            <div class="simulado-card">
+                <div class="simulado-header">
+                    <h2 id="simuladoName">Selecione um simulado</h2>
+                    <div class="simulado-metadata">
+                        <span class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span id="simuladoDate">-</span>
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-university"></i>
+                            <span id="simuladoModel">-</span>
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-question-circle"></i>
+                            <span id="simuladoQuestions">0 questões</span>
+                        </span>
+                    </div>
+                </div>
+                <p class="simulado-description" id="simuladoDescription">-</p>
+            </div>
+        </section>
+
+        <!-- Grid Principal -->
+        <div class="performance-grid">
+            <!-- Desempenho Total -->
+            <section class="performance-card main-score">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-pie"></i> Desempenho Total</h3>
+                </div>
+                <div class="score-content">
+                    <div class="circular-progress-container">
+                        <div class="circular-progress">
+                            <svg class="progress-ring" width="200" height="200">
+                                <circle class="progress-ring-bg" cx="100" cy="100" r="90" stroke-width="15"></circle>
+                                <circle class="progress-ring-fill" cx="100" cy="100" r="90" stroke-width="15"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span id="totalPercentage">0%</span>
+                                <small>de acerto</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="score-breakdown">
+                        <div class="breakdown-item correct">
+                            <div class="breakdown-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="breakdown-info">
+                                <span class="breakdown-value" id="correctCount">0</span>
+                                <span class="breakdown-label">Corretas</span>
+                            </div>
+                        </div>
+                        <div class="breakdown-item wrong">
+                            <div class="breakdown-icon">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="breakdown-info">
+                                <span class="breakdown-value" id="wrongCount">0</span>
+                                <span class="breakdown-label">Incorretas</span>
+                            </div>
+                        </div>
+                        <div class="breakdown-item total">
+                            <div class="breakdown-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="breakdown-info">
+                                <span class="breakdown-value" id="totalCount">0</span>
+                                <span class="breakdown-label">Total</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Destaques -->
+            <section class="performance-card highlights">
+                <div class="card-header">
+                    <h3><i class="fas fa-star"></i> Destaques</h3>
+                </div>
+                <div class="highlights-content" id="highlightsContent">
+                    <div class="empty-state">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Carregando destaques...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Desempenho por Matéria -->
+            <section class="performance-card subjects">
+                <div class="card-header">
+                    <h3><i class="fas fa-book-open"></i> Desempenho por Matéria</h3>
+                </div>
+                <div class="subjects-content" id="subjectsContent">
+                    <!-- Matérias serão carregadas dinamicamente -->
+                    <div class="loading-subjects">
+                        <div class="loading-spinner"></div>
+                        <p>Carregando matérias...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparativos -->
+            <section class="performance-card comparisons">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-bar"></i> Comparativos</h3>
+                </div>
+                <div class="comparisons-content">
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h4>Radar de Desempenho</h4>
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4>Histórico de Simulados</h4>
+                            <canvas id="historyChart"></canvas>
+                        </div>
+                    </div>
+                    <p class="chart-note" id="historyNote"></p>
+                </div>
+            </section>
+
+            <!-- Espelho de Respostas -->
+            <section class="performance-card answer-mirror">
+                <div class="card-header">
+                    <h3><i class="fas fa-file-alt"></i> Espelho de Respostas</h3>
+                    <div class="card-actions">
+                        <button class="mirror-action" id="toggleAnswers">
+                            <i class="fas fa-eye"></i>
+                            <span>Alternar Visualização</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="mirror-content">
+                    <div class="mirror-table-container">
+                        <table class="mirror-table" id="answerTable">
+                            <thead>
+                                <tr>
+                                    <th class="number-col">N°</th>
+                                    <th class="answer-col">Gabarito Oficial</th>
+                                    <th class="answer-col">Sua Resposta</th>
+                                    <th class="result-col">Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="answerTableBody">
+                                <!-- Espelho será carregado dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mirror-footer">
+                        <div class="legend">
+                            <div class="legend-item">
+                                <span class="legend-icon correct">✔</span>
+                                <span>Resposta correta</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-icon wrong">✗</span>
+                                <span>Resposta incorreta</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-icon null">X</span>
+                                <span>Questão anulada</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-icon blank">N</span>
+                                <span>Sem resposta/Rasurada</span>
+                            </div>
+                        </div>
+                        <p class="footer-note">Programação e desenvolvimento: © Isaías Nascimento, 2025</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="cursos.html">Meus Cursos</a></li>
+                        <li><a href="questoes.html">Questões</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                        <li><a href="ranking.html">Ranking</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="#">PSC I, II, III</a></li>
+                        <li><a href="#">SIS I, II, III</a></li>
+                        <li><a href="#">ENEM/Macro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </div>
+    </footer>
 
-        <!-- Desempenho Total -->
-        <div class="glass-card">
-    <h2 class="section-title">Desempenho total</h2>
-    <div class="total-performance">
-        <div class="circular-progress">
-            <div class="progress-fill" id="idgtotal"></div>
-            <div class="progress-text">
-                <span id="pctotal">0%</span>
-                <small>de acerto</small>
-            </div>
-        </div>
-        <div class="performance-details">
-            <div class="detail-item correct">
-                <span class="detail-value" id="correct-count">0</span>
-                <span class="detail-label">Corretas</span>
-            </div>
-            <div class="detail-item total">
-                <span class="detail-value" id="total-questions">0</span>
-                <span class="detail-label">Total</span>
-            </div>
-            <div class="detail-item wrong">
-                <span class="detail-value" id="wrong-count">0</span>
-                <span class="detail-label">Incorretas</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-        <!-- Desempenho por Matéria -->
-        <div class="glass-card" id="dpmateria">
-            <h2 class="section-title">Desempenho por matéria</h2>
-            
-            <!-- Português -->
-            <div id="divport" class="subject-container">
-                <div class="subject-progress">
-                    <span class="subject-name">Português</span>
-                    <div class="progress-bar-container">
-                        <div class="progress-line" id="idgport"></div>
-                    </div>
-                    <span class="progress-percent" id="pcport"></span>
-                </div>
-                <p class="subject-detail" id="descport"></p>
-            </div>
-            
-            <!-- Literatura -->
-            <div id="divlit" class="subject-container">
-                <div class="subject-progress">
-                    <span class="subject-name">Literatura</span>
-                    <div class="progress-bar-container">
-                        <div class="progress-line" id="idglit"></div>
-                    </div>
-                    <span class="progress-percent" id="pclit"></span>
-                </div>
-                <p class="subject-detail" id="desclit"></p>
-            </div>
-            
-            <!-- História -->
-			 <div id="divhist" class="subject-container">
-                <div class="subject-progress">
-                    <span class="subject-name">História</span>
-                    <div class="progress-bar-container">
-                        <div class="progress-line" id="idghist"></div>
-                    </div>
-                    <span class="progress-percent" id="pchist"></span>
-                </div>
-                <p class="subject-detail" id="deschist"></p>
-            </div>
-
-			<!-- Geografia -->
-			 <div id="divgeo" class="subject-container">
-                <div class="subject-progress">
-                    <span class="subject-name">Geografia</span>
-                    <div class="progress-bar-container">
-                        <div class="progress-line" id="idggeo"></div>
-                    </div>
-                    <span class="progress-percent" id="pcgeo"></span>
-                </div>
-                <p class="subject-detail" id="descgeo"></p>
-            </div>
-
-			<!-- Biologia -->
-			 <div id="divbio" class="subject-container">
-                <div class="subject-progress">
-                    <span class="subject-name">Biologia</span>
-                    <div class="progress-bar-container">
-                        <div class="progress-line" id="idgbio"></div>
-                    </div>
-                    <span class="progress-percent" id="pcbio"></span>
-                </div>
-                <p class="subject-detail" id="descbio"></p>
-            </div>
-
-			<!-- Química -->
-			 <div id="divquim" class="subject-container">
-                <div class="subject-progress">
-                    <span class="subject-name">Química</span>
-                    <div class="progress-bar-container">
-                        <div class="progress-line" id="idgquim"></div>
-                    </div>
-                    <span class="progress-percent" id="pcquim"></span>
-                </div>
-                <p class="subject-detail" id="descquim"></p>
-            </div>
-
-			<!-- Física -->
-			 <div id="divfis" class="subject-container">
-                <div class="subject-progress">
-                    <span class="subject-name">Física</span>
-                    <div class="progress-bar-container">
-                        <div class="progress-line" id="idgfis"></div>
-                    </div>
-                    <span class="progress-percent" id="pcfis"></span>
-                </div>
-                <p class="subject-detail" id="descfis"></p>
-            </div>
-
-			<!-- Matemática -->
-			 <div id="divmat" class="subject-container">
-                <div class="subject-progress">
-                    <span class="subject-name">Matemática</span>
-                    <div class="progress-bar-container">
-                        <div class="progress-line" id="idgmat"></div>
-                    </div>
-                    <span class="progress-percent" id="pcmat"></span>
-                </div>
-                <p class="subject-detail" id="descmat"></p>
-            </div>
-            
-        </div>
-
-        <!-- Destaques -->
-        <div class="glass-card">
-            <h2 class="section-title">Destaque(s)</h2>
-            <div id="destaques" class="highlights-container"></div>
-        </div>
-
-        <!-- Comparativos -->
-        <div class="glass-card">
-            <h2 class="section-title" id="relatorio">Comparativos</h2>
-            <div class="chart-container">
-                <canvas id="radarChart"></canvas>
-                <canvas id="graficous"></canvas>
-            </div>
-            <p id="nota2" class="chart-note"></p>
-        </div>
-
-        <!-- Espelho de respostas -->
-        <div class="glass-card">
-            <h2 class="section-title">Espelho de respostas</h2>
-            <div id="center">
-                <div id="tabelaa"></div>
-                <div id="final">
-                    <p id="nota3" class="chart-note">Resposta "N" = Questão sem resposta ou rasurada | Gabarito "X" = Questão anulada</p>
-                    <p id="notaa" class="footer-note">Programação e desenvolvimento: © Isaías Nascimento, 2025</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="desempenho.js"></script>
 </body>
 </html>

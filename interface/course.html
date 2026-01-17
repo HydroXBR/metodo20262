@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Curso</title>
+    <link rel="stylesheet" href="course.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Dashboard</span></span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link ">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="courses.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="nav-label">Meus Cursos</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="question.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <span class="nav-label">Questões</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="redacao.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <span class="nav-label">Redação</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ranking.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <span class="nav-label">Ranking</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://i.ibb.co/placeholder/user.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Carregando...</span>
+            </div>
+            
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="course-main">
+        <!-- Cabeçalho do Curso -->
+        <header class="course-header">
+            <div class="course-info">
+                <div class="course-badge" id="courseBadge">
+                    <span id="courseType">PSC/SIS</span>
+                </div>
+                <h1 class="course-title" id="courseTitle">Carregando...</h1>
+                <div class="course-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user-graduate"></i>
+                        <span id="courseProf">Professor</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-play-circle"></i>
+                        <span id="courseClasses">0 aulas</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-star"></i>
+                        <span id="courseRating">0.0</span>
+                    </div>
+                </div>
+                <p class="course-description" id="courseDescription">
+                    Descrição do curso será carregada aqui.
+                </p>
+            </div>
+            <div class="course-progress">
+                <div class="progress-circle">
+                    <svg width="120" height="120">
+                        <circle cx="60" cy="60" r="54" fill="none" stroke="#E9ECEF" stroke-width="8"/>
+                        <circle id="progressCircle" cx="60" cy="60" r="54" fill="none" 
+                                stroke="#FE0000" stroke-width="8" stroke-linecap="round"
+                                transform="rotate(-90 60 60)" stroke-dasharray="339.292" stroke-dashoffset="339.292"/>
+                    </svg>
+                    <div class="progress-text">
+                        <span id="progressPercent">0%</span>
+                    </div>
+                </div>
+                <div class="progress-info">
+                    <h3>Seu Progresso</h3>
+                    <p id="progressText">0 de 0 aulas concluídas</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Layout Principal -->
+        <div class="course-layout">
+            <!-- Conteúdo Principal -->
+            <div class="course-content">
+                <!-- Seção de Matérias -->
+                <section class="subjects-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-book"></i> Matérias do Curso</h3>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchSubject" placeholder="Buscar matéria...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grid de Matérias -->
+                    <div class="subjects-grid" id="subjectsGrid">
+                        <!-- Matérias serão carregadas via JS -->
+                    </div>
+                </section>
+                
+                <!-- Seção de Aulas Recentes -->
+                <section class="recent-lessons-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-history"></i> Aulas Recentes</h3>
+                        <div class="view-all">
+                            <a href="#" id="viewAllLessons">Ver todas</a>
+                        </div>
+                    </div>
+                    
+                    <div class="lessons-grid" id="recentLessonsGrid">
+                        <!-- Aulas recentes serão carregadas via JS -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar de Informações -->
+            <aside class="info-sidebar">
+                <div class="info-card">
+                    <div class="info-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Sobre o Curso</h3>
+                    </div>
+                    <div class="info-content">
+                        <p id="courseAbout">Informações sobre o curso serão carregadas aqui.</p>
+                        <div class="info-stats">
+                            <div class="stat">
+                                <i class="fas fa-video"></i>
+                                <div>
+                                    <strong id="totalAulas">0</strong>
+                                    <span>Aulas</span>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong id="totalHours">0h</strong>
+                                    <span>Duração</span>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-users"></i>
+                                <div>
+                                    <strong id="totalStudents">0</strong>
+                                    <span>Alunos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-header">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Seu Desempenho</h3>
+                    </div>
+                    <div class="info-content">
+                        <div class="performance-item">
+                            <span>Aulas Concluídas</span>
+                            <strong id="completedAulas">0</strong>
+                        </div>
+                        <div class="performance-item">
+                            <span>Sequência Atual</span>
+                            <strong id="currentStreak">0 dias</strong>
+                        </div>
+                        <div class="performance-item">
+                            <span>Último Acesso</span>
+                            <strong id="lastAccess">Hoje</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-header">
+                        <i class="fas fa-download"></i>
+                        <h3>Material Extra</h3>
+                    </div>
+                    <div class="info-content">
+                        <div class="material-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div>
+                                <h4>E-book Completo</h4>
+                                <p>Material teórico completo</p>
+                            </div>
+                            <button class="btn-material">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="material-item">
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <h4>Lista de Exercícios</h4>
+                                <p>300 questões resolvidas</p>
+                            </div>
+                            <button class="btn-material">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="material-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <div>
+                                <h4>Simulados</h4>
+                                <p>10 simulados completos</p>
+                            </div>
+                            <button class="btn-material">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+            
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">Meus Cursos</a></li>
+                        <li><a href="course.html">Aulas</a></li>
+                        <li><a href="questoes.html">Questões</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="#psc">PSC I, II, III</a></li>
+                        <li><a href="#sis">SIS I, II, III</a></li>
+                        <li><a href="#enem">ENEM/Macro</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="course.js"></script>
+</body>
+</html>

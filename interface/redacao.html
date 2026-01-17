@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Redação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    <link rel="stylesheet" href="admin.css">
+    <style>
+        /* Estilos específicos para a página de redação */
+        .redacao-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .redacao-header {
+            background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--branco);
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(7, 7, 56, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .redacao-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(254, 0, 0, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .redacao-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--branco);
+            position: relative;
+            z-index: 2;
+        }
+
+        .redacao-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .redacao-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .formulario-redacao {
+            background: var(--branco);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--cinza-medio);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--azul);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--cinza-medio);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: var(--cinza-escuro);
+            background: var(--cinza-claro);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--vermelho);
+            background: var(--branco);
+            box-shadow: 0 0 0 3px rgba(254, 0, 0, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 300px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .estilo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .estilo-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--cinza-claro);
+        }
+
+        .estilo-option:hover {
+            border-color: var(--azul);
+            background: var(--branco);
+        }
+
+        .estilo-option.selected {
+            border-color: var(--vermelho);
+            background: rgba(254, 0, 0, 0.1);
+        }
+
+        .estilo-radio {
+            display: none;
+        }
+
+        .estilo-icon {
+            color: var(--azul);
+            font-size: 1.1rem;
+        }
+
+        .estilo-label {
+            font-weight: 500;
+            color: var(--cinza-escuro);
+        }
+
+        .caracteres-contador {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--cinza-escuro);
+            margin-top: 0.5rem;
+        }
+
+        .caracteres-contador.alerta {
+            color: var(--vermelho);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--vermelho);
+            color: var(--branco);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background: #e60000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(254, 0, 0, 0.3);
+        }
+
+        .btn-submit:disabled {
+            background: var(--cinza-medio);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Sidebar de informações */
+        .info-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--branco);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--cinza-medio);
+        }
+
+        .info-header {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+            color: var(--branco);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-header i {
+            font-size: 1rem;
+        }
+
+        .info-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .info-content {
+            padding: 1.5rem;
+        }
+
+        .requisitos-list {
+            list-style: none;
+        }
+
+        .requisitos-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--cinza-medio);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .requisitos-list li:last-child {
+            border-bottom: none;
+        }
+
+        .requisitos-list i {
+            color: var(--verde);
+            font-size: 0.9rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--cinza-medio);
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        .status-value {
+            color: var(--azul);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .status-value.pendente {
+            color: var(--laranja);
+        }
+
+        .status-value.corrigido {
+            color: var(--verde);
+        }
+
+        /* Histórico de redações */
+        .redacoes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .redacao-item {
+            background: var(--cinza-claro);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid var(--cinza-medio);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .redacao-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-color: var(--vermelho);
+        }
+
+        .redacao-header-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .redacao-titulo {
+            font-weight: 600;
+            color: var(--azul);
+            font-size: 0.95rem;
+        }
+
+        .redacao-estilo {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            background: rgba(254, 0, 0, 0.1);
+            color: var(--vermelho);
+            font-weight: 500;
+        }
+
+        .redacao-meta {
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+            margin-bottom: 0.5rem;
+        }
+
+        .redacao-status {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pendente {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--laranja);
+        }
+
+        .status-corrigido {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--verde);
+        }
+
+        .redacao-nota {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--azul);
+            text-align: right;
+        }
+
+        /* Modal de confirmação */
+        .modal-redacao {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-redacao-content {
+            background: var(--branco);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-redacao-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+            color: var(--branco);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            text-align: center;
+        }
+
+        .modal-redacao-body {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-redacao-body i {
+            font-size: 3rem;
+            color: var(--verde);
+            margin-bottom: 1rem;
+        }
+
+        .modal-redacao-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--cinza-medio);
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .redacao-container {
+                grid-template-columns: 1fr;
+            }
+
+            .info-sidebar {
+                order: -1;
+            }
+
+            .estilo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .redacao-main {
+                padding: 1rem;
+            }
+
+            .redacao-header {
+                padding: 1.5rem;
+            }
+
+            .redacao-title {
+                font-size: 1.8rem;
+            }
+
+            .formulario-redacao {
+                padding: 1.5rem;
+            }
+
+            .estilo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Redação</span></span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="nav-label">Cursos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="redacao.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <span class="nav-label">Redação</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/12225/12225881.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Carregando...</span>
+            </div>
+
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="redacao-main">
+        <header class="redacao-header">
+            <h1 class="redacao-title">Sistema de Redação</h1>
+            <p class="redacao-subtitle">
+                Envie suas redações para correção detalhada pelos nossos professores especializados
+            </p>
+        </header>
+
+        <div class="redacao-container">
+            <!-- Formulário de Envio -->
+            <div class="formulario-redacao">
+                <h2 style="color: var(--azul); margin-bottom: 1.5rem; font-size: 1.3rem;">
+                    <i class="fas fa-plus-circle" style="color: var(--vermelho); margin-right: 10px;"></i>
+                    Nova Redação
+                </h2>
+
+                <form id="redacaoForm">
+                    <div class="form-group">
+                        <label class="form-label">Título da Redação</label>
+                        <input type="text" class="form-input" id="tituloRedacao" 
+                               placeholder="Digite um título para sua redação..." 
+                               maxlength="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Estilo de Redação</label>
+                        <div class="estilo-grid">
+                            <label class="estilo-option" for="estilo-enem">
+                                <input type="radio" name="estilo" id="estilo-enem" value="enem" class="estilo-radio" checked>
+                                <i class="fas fa-graduation-cap estilo-icon"></i>
+                                <span class="estilo-label">ENEM</span>
+                            </label>
+                            <label class="estilo-option" for="estilo-psc">
+                                <input type="radio" name="estilo" id="estilo-psc" value="psc" class="estilo-radio">
+                                <i class="fas fa-university estilo-icon"></i>
+                                <span class="estilo-label">PSC</span>
+                            </label>
+                            <label class="estilo-option" for="estilo-sis">
+                                <input type="radio" name="estilo" id="estilo-sis" value="sis" class="estilo-radio">
+                                <i class="fas fa-school estilo-icon"></i>
+                                <span class="estilo-label">SIS</span>
+                            </label>
+                            <label class="estilo-option" for="estilo-macro">
+                                <input type="radio" name="estilo" id="estilo-macro" value="macro" class="estilo-radio">
+                                <i class="fas fa-chart-line estilo-icon"></i>
+                                <span class="estilo-label">MACRO</span>
+                            </label>
+                            <label class="estilo-option" for="estilo-outro">
+                                <input type="radio" name="estilo" id="estilo-outro" value="outro" class="estilo-radio">
+                                <i class="fas fa-ellipsis-h estilo-icon"></i>
+                                <span class="estilo-label">OUTRO</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Texto da Redação</label>
+                        <textarea class="form-textarea" id="textoRedacao" 
+                                  placeholder="Digite sua redação aqui... 
+                                  
+Dica: Use parágrafos bem estruturados e atenção à norma culta." 
+                                  rows="15" required></textarea>
+                        <div class="caracteres-contador" id="contadorCaracteres">
+                            <span id="caracteresAtuais">0</span> / <span id="caracteresMaximos">4000</span> caracteres
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Observações (opcional)</label>
+                        <textarea class="form-input" id="observacoesRedacao" 
+                                  placeholder="Alguma observação específica para o professor? 
+Ex: 'Tive dificuldade com a argumentação' ou 'Preciso de feedback sobre a introdução'"
+                                  rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitRedacao" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar para Correção
+                    </button>
+                </form>
+            </div>
+
+            <!-- Sidebar de Informações -->
+            <div class="info-sidebar">
+                <!-- Informações do Usuário -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <i class="fas fa-user-check"></i>
+                        <h3>Seu Progresso</h3>
+                    </div>
+                    <div class="info-content">
+                        <div class="status-item">
+                            <span class="status-label">Redações enviadas:</span>
+                            <span class="status-value" id="redacoesEnviadas">0</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Média de nota:</span>
+                            <span class="status-value" id="mediaNota">0.0</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Correções restantes:</span>
+                            <span class="status-value" id="correcoesRestantes">4</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Última correção:</span>
+                            <span class="status-value pendente" id="ultimaCorrecao">Nenhuma</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requisitos da Redação -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3>Requisitos Importantes</h3>
+                    </div>
+                    <div class="info-content">
+                        <ul class="requisitos-list">
+                            <li><i class="fas fa-check"></i> Mínimo de 20 linhas</li>
+                            <li><i class="fas fa-check"></i> Máximo de 30 linhas</li>
+                            <li><i class="fas fa-check"></i> Respeitar o tema proposto</li>
+                            <li><i class="fas fa-check"></i> Usar norma culta da língua</li>
+                            <li><i class="fas fa-check"></i> Estrutura dissertativa-argumentativa</li>
+                            <li><i class="fas fa-check"></i> Proposta de intervenção (ENEM)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Histórico Recente -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <i class="fas fa-history"></i>
+                        <h3>Redações Recentes</h3>
+                    </div>
+                    <div class="info-content">
+                        <div class="redacoes-list" id="redacoesRecentes">
+                            <!-- Redações serão carregadas via JS -->
+                            <div class="redacao-item vazia">
+                                <div style="text-align: center; color: var(--cinza-escuro); opacity: 0.7; padding: 2rem;">
+                                    <i class="fas fa-file-alt" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                    <p>Nenhuma redação enviada ainda</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal-redacao" id="confirmaModal">
+        <div class="modal-redacao-content">
+            <div class="modal-redacao-header">
+                <h3>Redação Enviada!</h3>
+            </div>
+            <div class="modal-redacao-body">
+                <i class="fas fa-check-circle"></i>
+                <h4 style="color: var(--azul); margin-bottom: 0.5rem;">Sua redação foi enviada com sucesso!</h4>
+                <p style="color: var(--cinza-escuro); font-size: 0.9rem;">
+                    Nossos professores irão corrigir e fornecer feedback detalhado em até 48 horas.
+                </p>
+                <p id="modalInfo" style="color: var(--vermelho); font-size: 0.85rem; margin-top: 1rem;"></p>
+            </div>
+            <div class="modal-redacao-footer">
+                <button class="btn btn-secondary" id="btnFecharModal">Fechar</button>
+                <button class="btn btn-primary" id="btnNovaRedacao">Nova Redação</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">Meus Cursos</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                        <li><a href="simulados.html">Simulados</a></li>
+                        <li><a href="duvidas.html">Dúvidas</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#modelos">Modelos de Redação</a></li>
+                        <li><a href="#dicas">Dicas de Escrita</a></li>
+                        <li><a href="#temas">Temas Anteriores</a></li>
+                        <li><a href="#correcoes">Correções Explicadas</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                        <li><a href="tel:+55929486365">Telefone</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="redacao.js"></script>
+</body>
+
+</html>

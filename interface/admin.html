@@ -1,79 +1,576 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Método Pré-Vestibular - Administração</title>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
-		<link rel="stylesheet" href="admin.css">
-		<link rel="icon" type="image/png" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Administração</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
-	<nav class="navbar">
-		<div class="container">
-			<div class="logo-container">
-				<img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método" class="logo-img">
-				<h1 class="logo">Método Pré-Vestibular</h1>
-			</div>
-			<button class="hamburger" id="hamburger" aria-label="Abrir menu">
-				<span class="hamburger-line"></span>
-				<span class="hamburger-line"></span>
-				<span class="hamburger-line"></span>
-			</button>
-			<ul class="nav-links" id="nav-links">
-				<li><a href="/">Início</a></li>
-				<li><a href="/sobre">Sobre</a></li>
-				<li><a href="/simulados">Simulados</a></li>
-				<li id="login"><a href="/login" class="btn-login">Login</a></li>
-				<li><a href="/profile"><img id="profile" src="https://cdn-icons-png.flaticon.com/512/12225/12225881.png" alt="Foto de Perfil" class="profile-picture"></a></li>
-			</ul>
-		</div>
-	</nav>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
 
-		<div class="main-content">
-				<div class="container2">
-						<div class="profile-panel" id="info">
-								<h2>Administração</h2>
-								<img id="profile2" src="https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png" alt="Foto de Perfil" class="profile-picture">
-								<div id="infodetails">
-										<div class="info-row">
-												<strong>Administrador(a):</strong> <p id="admin">Não identificado</p>
-										</div>
-										<div class="info-row">
-												<strong>Nível de permissões:</strong> <p id="level">Não identificado</p>
-										</div>
-								</div>
-						</div>
-						<div class="profile-panel" id="simulados">
-								<h2>Ações</h2>
-								<div class="buttons">
-										<a href="/cadastroadmin"><button>Cadastrar aluno</button></a>
-										<a href="/gerar"><button>Gerar</button></a>
-										<a href="/pagamentos"><button>Pagamentos</button></a>
-								</div>
-						</div>
-						<div class="profile-panel" id="pgtos">
-								<h2>Pagamentos de hoje</h2>
-								<p id="date"></p>
-								<div id="tablediv">
-										<table>
-												<thead>
-														<tr>
-																<th>Nº</th>
-																<th>Nome</th>
-																<th>Turma</th>
-																<th>Enviar</th>
-														</tr>
-												</thead>
-												<tbody id="table-body">
-												</tbody>
-										</table>
-								</div>
-						</div>
-				</div>
-				<div class="footer-text"><p>Sistema criado e desenvolvido por Isaías Nascimento © 2025 - Contato: 92984507170</p></div>
-		</div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Admin</span></span>
+            </div>
 
-		<script src="admin.js"></script>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin.html" class="nav-link active">
+                        <div class="nav-icon">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <span class="nav-label">Administração</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cadadmin.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <span class="nav-label">Novo Aluno</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admincourse.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <span class="nav-label">Gerenciar</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/12225/12225881.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Administrador</span>
+            </div>
+
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+        <!-- Cabeçalho da Administração -->
+        <header class="admin-header">
+            <div class="admin-info">
+                <div class="admin-badge">
+                    <span>Painel Administrativo</span>
+                </div>
+                <h1 class="admin-title" id="adminTitle">Gerenciamento de Alunos</h1>
+                <div class="admin-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span id="adminName">Administrador</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentDate">Carregando...</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="currentTime">--:--</span>
+                    </div>
+                </div>
+                <p class="admin-description">
+                    Gerencie alunos, pagamentos e informações do curso Pré-Vestibular Método.
+                </p>
+            </div>
+            <div class="admin-stats">
+                <h3 style="color: var(--branco); margin-bottom: 1rem; font-size: 1.1rem;">Estatísticas</h3>
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Estatísticas serão carregadas via JS -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Layout Principal -->
+        <div class="admin-layout">
+            <!-- Conteúdo Principal -->
+            <div class="admin-content">
+                <!-- Seção de Pagamentos de Hoje -->
+                <section class="pagamentos-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-calendar-day"></i> Pagamentos de Hoje</h3>
+                    </div>
+
+                    <div class="hoje-list" id="hojeList">
+                        <!-- Pagamentos de hoje serão carregados via JS -->
+                    </div>
+                </section>
+
+                <!-- Seção de Alunos -->
+                <section class="alunos-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-users"></i> Todos os Alunos</h3>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchAluno" placeholder="Buscar aluno...">
+                            </div>
+                            <select class="filter-select" id="filterTurma">
+                                <option value="">Todas as Turmas</option>
+                                <option value="1">1º Turma</option>
+                                <option value="2">2º Turma</option>
+                                <option value="3">3º Turma</option>
+                                <option value="4">4º Turma</option>
+                            </select>
+                            <select class="filter-select" id="filterStatus">
+                                <option value="">Todos os Status</option>
+                                <option value="pago">Pagamento em dia</option>
+                                <option value="pendente">Pagamento pendente</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="alunos-table" id="alunosTable">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Turma</th>
+                                    <th>Contato</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="alunosTableBody">
+                                <!-- Alunos serão carregados via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                
+            </div>
+
+            <!-- Sidebar de Informações -->
+            <aside class="admin-sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Informações do Sistema</h3>
+                    </div>
+                    <div class="sidebar-content">
+                        <div class="user-stats">
+                            <div class="user-stat">
+                                <span>Usuário:</span>
+                                <strong id="sidebarAdmin">Carregando...</strong>
+                            </div>
+                            <div class="user-stat">
+                                <span>Permissões:</span>
+                                <strong id="sidebarLevel">Administrador</strong>
+                            </div>
+                            <div class="user-stat">
+                                <span>Último acesso:</span>
+                                <strong id="sidebarLastAccess">Hoje</strong>
+                            </div>
+                            <div class="user-stat">
+                                <span>Sessão expira em:</span>
+                                <strong id="sidebarExpires">24h</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Estatísticas Mensais</h3>
+                    </div>
+                    <div class="sidebar-content">
+                        <div class="user-stat">
+                            <span>Alunos ativos:</span>
+                            <strong id="activeStudents">0</strong>
+                        </div>
+                        <div class="user-stat">
+                            <span>Pagamentos este mês:</span>
+                            <strong id="monthPayments">0</strong>
+                        </div>
+                        <div class="user-stat">
+                            <span>Taxa de inadimplência:</span>
+                            <strong id="defaultRate">0%</strong>
+                        </div>
+                        <div class="user-stat">
+                            <span>Média por turma:</span>
+                            <strong id="avgPerClass">0</strong>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <!-- Modal de Detalhes do Aluno -->
+    <div class="modal" id="alunoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Detalhes do Aluno</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" class="form-input" id="modalNome" readonly>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Data de Nascimento</label>
+                        <input type="text" class="form-input" id="modalNascimento" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Turma</label>
+                        <input type="text" class="form-input" id="modalTurma" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Responsável</label>
+                    <input type="text" class="form-input" id="modalResponsavel" readonly>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Telefone do Responsável</label>
+                        <input type="text" class="form-input" id="modalTelResp" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telefone do Aluno</label>
+                        <input type="text" class="form-input" id="modalTelAl" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="modalEmail" readonly>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Endereço</label>
+                        <input type="text" class="form-input" id="modalEndereco" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bairro</label>
+                        <input type="text" class="form-input" id="modalBairro" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ID do Usuário (Site)</label>
+                    <input type="text" class="form-input" id="modalUserId" placeholder="Não associado">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Histórico de Pagamentos</label>
+                    <div class="meses-grid" id="modalMonthsGrid">
+                        <!-- Meses do aluno serão carregados via JS -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCloseModal">Fechar</button>
+                <button class="btn btn-primary" id="btnSaveAluno">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Pagamento -->
+    <div class="modal" id="pagamentoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="pagamentoModalTitle">Registrar Pagamento</h3>
+                <button class="modal-close" id="closePagamentoModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Aluno</label>
+                    <input type="text" class="form-input" id="pagamentoAluno" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mês</label>
+                    <select class="form-input" id="pagamentoMes">
+                        <option value="01">Janeiro</option>
+                        <option value="02">Fevereiro</option>
+                        <option value="03">Março</option>
+                        <option value="04">Abril</option>
+                        <option value="05">Maio</option>
+                        <option value="06">Junho</option>
+                        <option value="07">Julho</option>
+                        <option value="08">Agosto</option>
+                        <option value="09">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-input" id="pagamentoStatus">
+                        <option value="true">Pago</option>
+                        <option value="false">Pendente</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Data do Pagamento</label>
+                    <input type="date" class="form-input" id="pagamentoData" value="">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Valor (R$)</label>
+                    <input type="number" class="form-input" id="pagamentoValor" placeholder="0.00" step="0.01">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Observações</label>
+                    <textarea class="form-input" id="pagamentoObs" rows="3"
+                        placeholder="Observações sobre o pagamento..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelPagamento">Cancelar</button>
+                <button class="btn btn-primary" id="btnSavePagamento">Salvar Pagamento</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Gerenciamento de Pagamentos -->
+<div class="modal" id="gestaoPagamentosModal">
+    <div class="modal-content" style="max-width: 900px; max-height: 90vh;">
+        <div class="modal-header">
+            <h3 id="gestaoPagamentosTitle">Gerenciar Pagamentos</h3>
+            <button class="modal-close" id="closeGestaoPagamentos">&times;</button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;">
+            <div class="aluno-info-header" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--cinza-medio);">
+                <h4 id="alunoPagamentoNome" style="color: var(--azul); margin-bottom: 0.5rem;"></h4>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <span class="info-badge" id="alunoPagamentoTurma"></span>
+                    <span class="info-badge" id="alunoPagamentoResponsavel"></span>
+                    <span class="info-badge" id="alunoPagamentoStatus"></span>
+                </div>
+            </div>
+            
+            <!-- Tabela de Meses -->
+            <div class="tabela-pagamentos-container" style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h4 style="color: var(--azul);">Pagamentos Mensais</h4>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-sm btn-success" id="btnMarcarTodosPagos">
+                            <i class="fas fa-check-circle"></i> Marcar Todos Pagos
+                        </button>
+                        <button class="btn btn-sm btn-warning" id="btnMarcarTodosPendentes">
+                            <i class="fas fa-times-circle"></i> Marcar Todos Pendentes
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="meses-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: linear-gradient(135deg, var(--azul), var(--azul-claro)); color: white;">
+                                <th style="padding: 0.8rem; text-align: left;">Mês</th>
+                                <th style="padding: 0.8rem; text-align: center;">Status</th>
+                                <th style="padding: 0.8rem; text-align: center;">Valor (R$)</th>
+                                <th style="padding: 0.8rem; text-align: center;">Data Pagamento</th>
+                                <th style="padding: 0.8rem; text-align: center;">Forma</th>
+                                <th style="padding: 0.8rem; text-align: center;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaMesesBody">
+                            <!-- Meses serão preenchidos via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Resumo e Ações -->
+            <div class="resumo-acoes-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <!-- Resumo -->
+                <div class="resumo-card" style="background: var(--cinza-claro); padding: 1.5rem; border-radius: 10px;">
+                    <h5 style="color: var(--azul); margin-bottom: 1rem;">Resumo do Ano</h5>
+                    <div id="resumoAnual" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <!-- Resumo será preenchido via JS -->
+                    </div>
+                </div>
+                
+                <!-- Ações -->
+                <div class="acoes-card" style="background: var(--cinza-claro); padding: 1.5rem; border-radius: 10px;">
+                    <h5 style="color: var(--azul); margin-bottom: 1rem;">Ações</h5>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <button class="btn btn-primary" id="btnGerarReciboMensal">
+                            <i class="fas fa-receipt"></i> Gerar Recibo Mensal
+                        </button>
+                        <button class="btn btn-info" id="btnGerarRelatorioAnual">
+                            <i class="fas fa-file-alt"></i> Relatório Anual do Aluno
+                        </button>
+                        <button class="btn btn-success" id="btnSalvarPagamentos">
+                            <i class="fas fa-save"></i> Salvar Alterações
+                        </button>
+                        <button class="btn btn-secondary" id="btnFecharGestao">
+                            <i class="fas fa-times"></i> Fechar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Gerar Recibo -->
+<div class="modal" id="reciboModal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3>Gerar Recibo</h3>
+            <button class="modal-close" id="closeReciboModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Selecione o Mês</label>
+                <select class="form-input" id="mesRecibo">
+                    <option value="01">Janeiro</option>
+                    <option value="02">Fevereiro</option>
+                    <option value="03">Março</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Maio</option>
+                    <option value="06">Junho</option>
+                    <option value="07">Julho</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Valor (R$)</label>
+                <input type="number" class="form-input" id="valorRecibo" value="300.00" step="0.01" min="0">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Forma de Pagamento</label>
+                <select class="form-input" id="formaRecibo">
+                    <option value="PIX">PIX</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Cartão">Cartão de Crédito/Débito</option>
+                    <option value="Transferência">Transferência Bancária</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Data do Pagamento</label>
+                <input type="date" class="form-input" id="dataRecibo" value="">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Observações</label>
+                <textarea class="form-input" id="obsRecibo" rows="2" placeholder="Observações adicionais..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="btnCancelarRecibo">Cancelar</button>
+            <button class="btn btn-primary" id="btnGerarReciboConfirmar">
+                <i class="fas fa-print"></i> Gerar e Imprimir
+            </button>
+        </div>
+    </div>
+</div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">Meus Cursos</a></li>
+                        <li><a href="admin.html">Administração</a></li>
+                        <li><a href="pagamentos.html">Pagamentos</a></li>
+                        <li><a href="cadastro.html">Cadastro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Administração</h4>
+                    <ul>
+                        <li><a href="#relatorios">Relatórios</a></li>
+                        <li><a href="#financeiro">Financeiro</a></li>
+                        <li><a href="#config">Configurações</a></li>
+                        <li><a href="#backup">Backup</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                        <li><a href="tel:+55929486365">Telefone</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="admin.js"></script>
 </body>
+
 </html>

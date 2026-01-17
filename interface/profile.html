@@ -1,62 +1,383 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Método Pré-Vestibular - Perfil</title>
-		<link rel="stylesheet" href="profile.css">
-		<link rel="icon" type="image/png" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método | Meu Perfil</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
 </head>
+
 <body>
-	<nav class="navbar">
-		<div class="container">
-			<div class="logo-container">
-				<img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Foto de Perfil" class="metodo">
-				<h1 class="logo">Método Pré-Vestibular</h1>
-			</div>
-			<ul class="nav-links">
-				<li><a href="/">Início</a></li>
-				<li><a href="/sobre">Sobre</a></li>
-				<li><a href="/simulados">Simulados</a></li>
-				<li id="login"><a href="/login">Login</a></li>
-				<li>
-					<li id="pphoto"><a href="profile.html"><img id="profile" src="https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png" alt="Foto de Perfil" class="profile-picture"></a></li>
-				</li>
-			</ul>
-		</div>
-	</nav>
+    <div class="background-animation">
+        <div class="particles-container"></div>
+        <div class="gradient-overlay"></div>
+    </div>
 
-	<div class="container2">
-		<div class="profile-panel" id="info">
-			<h2 id="name">Carregando...</h2>
-			<img id="profile2" src="https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png" alt="Foto de Perfil" class="profile-picture">
-			<div id="infodetails">
-					<div class="info-row">
-							<strong>Turma:</strong> <p id="turma">Não identificado</p>
-					</div>
-					<div class="info-row">
-							<strong>Nascimento:</strong> <p id="nasc">Não identificado</p>
-					</div>
-					<div class="info-row">
-							<strong>Responsável:</strong> <p id="resp">Não identificado</p>
-					</div>
-					<div class="info-row">
-							<strong>Tel. Responsável:</strong> <p id="telresp">Não identificado</p>
-					</div>
-					<div class="info-row">
-							<strong>Dia de pagamento:</strong> <p id="diapgto">Não identificado</p>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <span class="logo-text">Método<span class="logo-highlight">Dashboard</span></span>
+            </div>
 
-				</div>
-				<div class="info-row2">
-					<a href="https://api.whatsapp.com/send?phone=5592994860362&text=Ol%C3%A1!%20Gostaria%20de%20atualizar%20meus%20dados%20no%20sistema%20do%20M%C3%A9todo%20Pr%C3%A9-Vestibular."><button id="atualizar">Atualizar</button></a>
-				</div>
-			</div>
-		</div>
-		<div class="profile-panel" id="simulados">
-			<h2>Histórico de Simulados</h2>
-			<p id="loading1">Carregando...</p>
-		</div>
-	</div>
-	<script src="profile.js"></script>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="nav-label">Dashboard</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="nav-label">Meus Cursos</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="question.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <span class="nav-label">Questões</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="redacao.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <span class="nav-label">Redação</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ranking.html" class="nav-link">
+                        <div class="nav-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <span class="nav-label">Ranking</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <div class="nav-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="nav-label">Sair</span>
+                        <div class="nav-glow"></div>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://i.ibb.co/placeholder/user.png" alt="Usuário" id="userAvatar">
+                </div>
+                <span class="user-name" id="userName">Carregando...</span>
+            </div>
+
+            <div class="mobile-menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="profile-main">
+        <!-- Profile Header -->
+        <section class="profile-header">
+            <div class="profile-cover">
+                <div class="cover-overlay"></div>
+                <div class="profile-avatar-large">
+                    <div class="avatar-container">
+                        <img src="https://i.ibb.co/placeholder/user.png" alt="Foto do Usuário" id="profileAvatar">
+                        <div class="avatar-glow"></div>
+                    </div>
+                    <div class="avatar-status">
+                        <div class="status-indicator online"></div>
+                        <span>Online</span>
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <h1 id="profileName">Carregando...</h1>
+                    <p class="profile-email" id="profileEmail">carregando@email.com</p>
+                    <div class="profile-badges">
+                        <span class="badge estudante">
+                            <i class="fas fa-user-graduate"></i> Estudante
+                        </span>
+                        <span class="badge turma" id="profileTurma">Turma: -</span>
+                        <span class="badge member-since" id="memberSince">Membro desde -</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="profile-content">
+            <!-- Left Column - Personal Info -->
+            <div class="profile-left">
+                <!-- Personal Information Card -->
+                <section class="profile-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-id-card"></i> Informações Pessoais</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i class="fas fa-user"></i>
+                                    <span>Nome Completo</span>
+                                </div>
+                                <div class="info-value" id="infoFullName">-</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>E-mail</span>
+                                </div>
+                                <div class="info-value" id="infoEmail">-</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i class="fas fa-id-badge"></i>
+                                    <span>CPF</span>
+                                </div>
+                                <div class="info-value" id="infoCPF">-</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i class="fas fa-users"></i>
+                                    <span>Turma</span>
+                                </div>
+                                <div class="info-value" id="infoTurma">-</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Data de Cadastro</span>
+                                </div>
+                                <div class="info-value" id="infoRegistered">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Progress Stats -->
+                <section class="profile-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-line"></i> Progresso Geral</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress-stats">
+                            <div class="progress-item">
+                                <div class="progress-circle" id="accuracyCircle">
+                                    <svg width="60" height="60" viewBox="0 0 60 60">
+                                        <circle cx="30" cy="30" r="27" stroke="#E9ECEF" stroke-width="6" fill="none"/>
+                                        <circle cx="30" cy="30" r="27" stroke="#4CAF50" stroke-width="6" fill="none" 
+                                                stroke-dasharray="169.56" stroke-dashoffset="169.56" 
+                                                style="stroke-dashoffset: 0; transition: stroke-dashoffset 1s ease;">
+                                        </circle>
+                                    </svg>
+                                    <span class="progress-percent" id="accuracyPercent">0%</span>
+                                </div>
+                                <div class="progress-info">
+                                    <h4>Taxa de Acerto</h4>
+                                    <p>Questões respondidas</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-item">
+                                <div class="progress-circle" id="completionCircle">
+                                    <svg width="60" height="60" viewBox="0 0 60 60">
+                                        <circle cx="30" cy="30" r="27" stroke="#E9ECEF" stroke-width="6" fill="none"/>
+                                        <circle cx="30" cy="30" r="27" stroke="#FE0000" stroke-width="6" fill="none" 
+                                                stroke-dasharray="169.56" stroke-dashoffset="169.56" 
+                                                style="stroke-dashoffset: 169.56; transition: stroke-dashoffset 1s ease;">
+                                        </circle>
+                                    </svg>
+                                    <span class="progress-percent" id="completionPercent">0%</span>
+                                </div>
+                                <div class="progress-info">
+                                    <h4>Conclusão de Cursos</h4>
+                                    <p>Aulas assistidas</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-summary">
+                            <div class="stat-summary-item">
+                                <i class="fas fa-check-circle" style="color: #4CAF50;"></i>
+                                <div>
+                                    <h3 id="totalCorrect">0</h3>
+                                    <p>Questões Corretas</p>
+                                </div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <i class="fas fa-question-circle" style="color: #2196F3;"></i>
+                                <div>
+                                    <h3 id="totalQuestions">0</h3>
+                                    <p>Total de Questões</p>
+                                </div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <i class="fas fa-play-circle" style="color: #9C27B0;"></i>
+                                <div>
+                                    <h3 id="totalClasses">0</h3>
+                                    <p>Aulas Assistidas</p>
+                                </div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <i class="fas fa-file-alt" style="color: #FF9800;"></i>
+                                <div>
+                                    <h3 id="totalRedacoes">0</h3>
+                                    <p>Redações Enviadas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column - Additional Info -->
+            <div class="profile-right">
+                <!-- My Courses -->
+                <section class="profile-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-graduation-cap"></i> Meus Cursos</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="courses-list" id="profileCoursesList">
+                            <!-- Cursos serão carregados via JS -->
+                        </div>
+                        <div class="empty-state" id="noProfileCourses">
+                            <i class="fas fa-book"></i>
+                            <p>Você ainda não tem cursos ativos</p>
+                            <a href="courses.html" class="btn-primary">
+                                <i class="fas fa-plus"></i> Explorar Cursos
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="profile-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-history"></i> Atividade Recente</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline" id="activityTimeline">
+                            <!-- Atividade será carregada via JS -->
+                        </div>
+                        <div class="empty-state" id="noActivity">
+                            <i class="fas fa-clock"></i>
+                            <p>Nenhuma atividade recente</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- System Info -->
+                <section class="profile-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-info-circle"></i> Informações do Sistema</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="system-info">
+                            <div class="system-item">
+                                <i class="fas fa-shield-alt" style="color: #FE0000;"></i>
+                                <div>
+                                    <h4>Status da Conta</h4>
+                                    <p id="accountStatus">Ativa</p>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <i class="fas fa-user-cog" style="color: #070738;"></i>
+                                <div>
+                                    <h4>Permissões</h4>
+                                    <p id="permissionsLevel">Estudante</p>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <i class="fas fa-calendar-check" style="color: #4CAF50;"></i>
+                                <div>
+                                    <h4>Último Acesso</h4>
+                                    <p id="lastAccess">Hoje</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-glow">
+                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
+                </div>
+                <div class="footer-brand">
+                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
+                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
+                </div>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">Meus Cursos</a></li>
+                        <li><a href="question.html">Questões</a></li>
+                        <li><a href="redacao.html">Redação</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="#">PSC I, II, III</a></li>
+                        <li><a href="#">SIS I, II, III</a></li>
+                        <li><a href="#">ENEM/Macro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
+                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
+                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="profile.js"></script>
 </body>
 </html>
