@@ -1289,3 +1289,23 @@ h1, h2, h3, h4, h5, h6 {
         grid-template-columns: 1fr;
     }
 }
+
+#v {
+  color:#e57f26;
+}
+
+#c {
+  color:#38fb31;
+}
+
+#d {
+  color:#a51afb;
+}
+
+#a {
+  color:#e6148b;
+}
+
+#g {
+  color:#fbcd34;
+}

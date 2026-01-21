@@ -7,12 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar
     async function init() {
         try {
-            // Verificar autenticação
-            currentUser = JSON.parse(localStorage.getItem('user'));
-            if (!currentUser) {
-                window.location.href = '/login.html';
-                return;
-            }
             
             // Configurar eventos
             setupEventListeners();
