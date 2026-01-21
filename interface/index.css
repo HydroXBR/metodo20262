@@ -7,6 +7,8 @@
   padding: 0;
 }
 
+
+
 :root {
   --primary: #070738;
   --secondary: #1A1A5E;
@@ -1404,4 +1406,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease forwards;
+}
+
+#v {
+  color:#e57f26;
+}
+
+#c {
+  color:#38fb31;
+}
+
+#d {
+  color:#a51afb;
+}
+
+#a {
+  color:#e6148b;
 }
