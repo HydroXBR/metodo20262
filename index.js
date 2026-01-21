@@ -3196,3 +3196,430 @@ app.get('/api/simulado/:id', async (req, res) => {
         });
     }
 });
+
+import { Calculadora } from './database/calc.js';
+
+// GET /api/calculator/courses - Obter todos os cursos
+app.get('/api/calculator/courses', async (req, res) => {
+    try {
+        const { vestibular, ano, cota, universidade, curso, limit } = req.query;
+        
+        let filter = { ativo: true };
+        
+        if (vestibular) filter.vestibular = vestibular;
+        if (ano) filter.ano = ano;
+        if (cota) filter['cota.tipo'] = cota;
+        if (universidade) filter.universidade = universidade;
+        if (curso) filter.curso = { $regex: curso, $options: 'i' };
+        
+        const query = Calculadora.find(filter).sort({ 'notas.total': 1 });
+        
+        if (limit) {
+            query.limit(parseInt(limit));
+        }
+        
+        const courses = await query;
+        
+        res.json({
+            success: true,
+            courses: courses,
+            count: courses.length
+        });
+    } catch (error) {
+        console.error('Erro ao buscar cursos:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao buscar cursos'
+        });
+    }
+});
+
+// GET /api/calculator/courses/:id - Obter curso específico
+app.get('/api/calculator/courses/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const course = await Calculadora.findById(id);
+
+        if (!course) {
+            return res.json({ success: false, message: 'Curso não encontrado' });
+        }
+
+        res.json({ success: true, course });
+    } catch (error) {
+        console.error('Erro ao buscar curso:', error);
+        res.json({ success: false, message: 'Erro ao buscar curso' });
+    }
+});
+
+// GET /api/calculator/universidades - Listar universidades
+app.get('/api/calculator/universidades', async (req, res) => {
+    try {
+        const universidades = await Calculadora.distinct('universidade', { ativo: true });
+        
+        res.json({
+            success: true,
+            universidades: universidades.sort()
+        });
+    } catch (error) {
+        console.error('Erro ao buscar universidades:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao buscar universidades'
+        });
+    }
+});
+
+// GET /api/calculator/cursos - Listar cursos
+app.get('/api/calculator/cursos', async (req, res) => {
+    try {
+        const { universidade } = req.query;
+        
+        let filter = { ativo: true };
+        if (universidade) filter.universidade = universidade;
+        
+        const cursos = await Calculadora.distinct('curso', filter);
+        
+        res.json({
+            success: true,
+            cursos: cursos.sort()
+        });
+    } catch (error) {
+        console.error('Erro ao buscar cursos:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao buscar cursos'
+        });
+    }
+});
+
+// GET /api/calculator/vestibulares - Listar vestibulares disponíveis
+app.get('/api/calculator/vestibulares', async (req, res) => {
+    try {
+        const vestibulares = await Calculadora.distinct('vestibular', { ativo: true });
+        
+        res.json({
+            success: true,
+            vestibulares: vestibulares
+        });
+    } catch (error) {
+        console.error('Erro ao buscar vestibulares:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao buscar vestibulares'
+        });
+    }
+});
+
+// GET /api/calculator/anios - Listar anos disponíveis
+app.get('/api/calculator/anios', async (req, res) => {
+    try {
+        const anos = await Calculadora.distinct('ano', { ativo: true }).sort({ ano: -1 });
+        
+        res.json({
+            success: true,
+            anos: anos
+        });
+    } catch (error) {
+        console.error('Erro ao buscar anos:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao buscar anos'
+        });
+    }
+});
+
+// POST /api/calculator/courses - Adicionar novo curso (admin)
+app.post('/api/calculator/courses', async (req, res) => {
+    try {
+        const {
+            universidade,
+            curso,
+            campus,
+            vestibular,
+            ano,
+            edicao,
+            cota,
+            notas,
+            vagas,
+            periodo,
+            colocacao
+        } = req.body;
+
+        // Validar dados obrigatórios
+        if (!universidade || !curso || !vestibular || !ano) {
+            return res.json({
+                success: false,
+                message: 'Dados obrigatórios faltando: universidade, curso, vestibular e ano'
+            });
+        }
+
+        if (!notas || !notas.total) {
+            return res.json({
+                success: false,
+                message: 'Nota total é obrigatória'
+            });
+        }
+
+        // Preparar dados da cota
+        const cotaData = {
+            tipo: cota?.tipo || 'AMPLA',
+            descricao: cota?.descricao || ''
+        };
+
+        // Criar novo curso
+        const novoCurso = new Calculadora({
+            universidade,
+            curso,
+            campus: campus || '',
+            vestibular,
+            ano: parseInt(ano),
+            edicao: edicao || `${vestibular} ${ano}`,
+            cota: cotaData,
+            notas: {
+                ...notas,
+                total: parseFloat(notas.total)
+            },
+            vagas: vagas ? parseInt(vagas) : undefined,
+            periodo: periodo || '',
+            colocacao: colocacao ? parseInt(colocacao) : undefined,
+            ativo: true,
+            criadoEm: new Date(),
+            atualizadoEm: new Date()
+        });
+
+        await novoCurso.save();
+
+        res.json({
+            success: true,
+            message: 'Curso adicionado com sucesso',
+            course: novoCurso
+        });
+    } catch (error) {
+        console.error('Erro ao adicionar curso:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao adicionar curso'
+        });
+    }
+});
+
+// PUT /api/calculator/courses/:id - Atualizar curso
+app.put('/api/calculator/courses/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+
+        // Atualizar data de atualização
+        updateData.atualizadoEm = new Date();
+
+        if (updateData.notas && updateData.notas.total) {
+            updateData.notas.total = parseFloat(updateData.notas.total);
+        }
+
+        const updatedCourse = await Calculadora.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true }
+        );
+
+        if (!updatedCourse) {
+            return res.json({
+                success: false,
+                message: 'Curso não encontrado'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Curso atualizado com sucesso',
+            course: updatedCourse
+        });
+    } catch (error) {
+        console.error('Erro ao atualizar curso:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao atualizar curso'
+        });
+    }
+});
+
+// DELETE /api/calculator/courses/:id - Desativar curso
+app.delete('/api/calculator/courses/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const updatedCourse = await Calculadora.findByIdAndUpdate(
+            id,
+            { ativo: false, atualizadoEm: new Date() },
+            { new: true }
+        );
+
+        if (!updatedCourse) {
+            return res.json({
+                success: false,
+                message: 'Curso não encontrado'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Curso desativado com sucesso'
+        });
+    } catch (error) {
+        console.error('Erro ao desativar curso:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao desativar curso'
+        });
+    }
+});
+
+// GET /api/calculator/calculate/psc - Calcular nota PSC
+app.get('/api/calculator/calculate/psc', async (req, res) => {
+    try {
+        const { psc1, psc2, psc3, redacao } = req.query;
+        
+        const nota1 = parseFloat(psc1) || 0;
+        const nota2 = parseFloat(psc2) || 0;
+        const nota3 = parseFloat(psc3) || 0;
+        const red = parseFloat(redacao) || 0;
+        
+        // Validar limites
+        if (nota1 < 0 || nota1 > 54) {
+            return res.json({
+                success: false,
+                message: 'Nota PSC 1 deve estar entre 0 e 54'
+            });
+        }
+        
+        if (nota2 < 0 || nota2 > 54) {
+            return res.json({
+                success: false,
+                message: 'Nota PSC 2 deve estar entre 0 e 54'
+            });
+        }
+        
+        if (nota3 < 0 || nota3 > 54) {
+            return res.json({
+                success: false,
+                message: 'Nota PSC 3 deve estar entre 0 e 54'
+            });
+        }
+        
+        if (red < 0 || red > 9) {
+            return res.json({
+                success: false,
+                message: 'Nota de redação deve estar entre 0 e 9'
+            });
+        }
+        
+        // Cálculo PSC: cada questão vale 3, redação vale 6
+        const psc1Peso = nota1 * 3;
+        const psc2Peso = nota2 * 3;
+        const psc3Peso = nota3 * 3;
+        const redacaoPeso = red * 6;
+        const total = psc1Peso + psc2Peso + psc3Peso + redacaoPeso;
+        
+        res.json({
+            success: true,
+            result: {
+                psc1: {
+                    nota: nota1,
+                    peso: 3,
+                    total: psc1Peso
+                },
+                psc2: {
+                    nota: nota2,
+                    peso: 3,
+                    total: psc2Peso
+                },
+                psc3: {
+                    nota: nota3,
+                    peso: 3,
+                    total: psc3Peso
+                },
+                redacao: {
+                    nota: red,
+                    peso: 6,
+                    total: redacaoPeso
+                },
+                total: total,
+                maximo: 477
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao calcular nota PSC:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao calcular nota'
+        });
+    }
+});
+
+// GET /api/calculator/compare/:userId - Comparar notas do usuário com cursos
+app.get('/api/calculator/compare/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { vestibular, ano, cota } = req.query;
+        
+        // Aqui você buscaria as notas do usuário do banco de dados
+        // Por enquanto, vamos usar um exemplo
+        const userNotes = {
+            psc1: 42.5,
+            psc2: 38.75,
+            psc3: 45.25,
+            redacao: 7.5
+        };
+        
+        // Calcular nota total do usuário
+        const userTotal = (userNotes.psc1 * 3) + (userNotes.psc2 * 3) + 
+                         (userNotes.psc3 * 3) + (userNotes.redacao * 6);
+        
+        // Buscar cursos para comparação
+        let filter = { ativo: true, vestibular: vestibular || 'PSC' };
+        if (ano) filter.ano = ano;
+        if (cota) filter['cota.tipo'] = cota;
+        
+        const courses = await Calculadora.find(filter)
+            .sort({ 'notas.total': 1 })
+            .limit(50);
+        
+        // Adicionar comparação
+        const comparedCourses = courses.map(course => {
+            const diff = userTotal - course.notas.total;
+            const diffPercent = (diff / course.notas.total) * 100;
+            
+            let status = 'fail';
+            if (diff >= 0) {
+                status = 'pass';
+            } else if (diffPercent >= -5) {
+                status = 'close';
+            }
+            
+            return {
+                ...course.toObject(),
+                comparison: {
+                    userTotal: userTotal,
+                    courseTotal: course.notas.total,
+                    difference: diff,
+                    differencePercent: diffPercent,
+                    status: status
+                }
+            };
+        });
+        
+        res.json({
+            success: true,
+            userNotes: userNotes,
+            userTotal: userTotal,
+            courses: comparedCourses
+        });
+    } catch (error) {
+        console.error('Erro ao comparar notas:', error);
+        res.json({
+            success: false,
+            message: 'Erro ao comparar notas'
+        });
+    }
+});

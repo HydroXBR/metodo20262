@@ -571,7 +571,4 @@ document.addEventListener('DOMContentLoaded', function () {
             navMobile.classList.toggle('active');
         });
     }
-
-    // Inicializar
-    checkAuth();
 });
