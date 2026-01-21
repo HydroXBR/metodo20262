@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }));
                     
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = 'dashboard.html';
                     }, 2000);
                 } else {
                     showNotification(result.reason || 'Erro ao fazer login', 'error');
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     cadastroForm.reset();
                     
                     setTimeout(() => {
-                        window.location.href = 'login.html';
+                        window.location.href = 'dashboard.html';
                     }, 3000);
                 } else {
                     showNotification(result.reason || 'Erro ao cadastrar', 'error');

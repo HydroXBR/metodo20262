@@ -3,373 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking de Simulados | Método</title>
-    <link rel="stylesheet" href="ranking.css">
+    <title>Ranking | Banco de Questões</title>
+    
+    <!-- Mesmas fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Mesmo Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS do ranking -->
+    <link rel="stylesheet" href="ranking.css">
+    
+    <!-- Mesmo favicon -->
     <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="background-animation">
-        <div class="particles-container"></div>
-        <div class="gradient-overlay"></div>
-    </div>
-
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <div class="logo-glow">
-                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
-                </div>
-                <span class="logo-text">Método<span class="logo-highlight">Ranking</span></span>
-            </div>
-
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-home"></i>
-                        </div>
-                        <span class="nav-label">Dashboard</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="courses.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-book-open"></i>
-                        </div>
-                        <span class="nav-label">Meus Cursos</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="question.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-question-circle"></i>
-                        </div>
-                        <span class="nav-label">Questões</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="redacao.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <span class="nav-label">Redação</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="ranking.html" class="nav-link active">
-                        <div class="nav-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <span class="nav-label">Ranking</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" id="logoutBtn">
-                        <div class="nav-icon">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </div>
-                        <span class="nav-label">Sair</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-            </ul>
-
-            <a href="/profile.html">
-                <div class="user-profile">
-                    <div class="user-avatar">
-                        <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="Usuário" id="userAvatar">
-                    </div>
-                    <span class="user-name" id="userName">Carregando...</span>
+    <!-- Header IDÊNTICO ao index.html -->
+    <header class="header" id="header">
+        <div class="container header-content">
+            <a href="/index.html" class="logo">
+                <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
+                <div class="logo-text">
+                    <span class="logo-name">Método</span>
+                    <span class="logo-subtitle">Pré-Vestibular</span>
                 </div>
             </a>
-
-            <div class="mobile-menu-btn">
-                <div class="menu-line"></div>
-                <div class="menu-line"></div>
-                <div class="menu-line"></div>
-            </div>
+            <nav class="nav-desktop">
+                <a href="/sobre.html">Sobre</a>
+                <a href="/pricing.html">Matricule-se</a>
+                <a href="/ranking.html" class="active">Ranking</a>
+                <a href="/dashboard.html">Dashboard</a>
+            </nav>
+            <a href="" class="btn btn-accent" id="logoutBtn">Sair</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-    </nav>
+        <nav class="nav-mobile" id="navMobile">
+            <a href="/sobre.html">Sobre</a>
+            <a href="/pricing.html">Matricule-se</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/login" class="btn btn-accent">Login</a>
+        </nav>
+    </header>
 
-    <main class="ranking-main">
-        <!-- Hero Section -->
-        <section class="ranking-hero">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1><i class="fas fa-trophy"></i> Ranking de Simulados</h1>
-                    <p class="hero-subtitle">Compare seu desempenho com outros estudantes</p>
-                    <div class="hero-stats">
-                        <div class="hero-stat">
-                            <i class="fas fa-users"></i>
-                            <div>
-                                <span class="stat-value" id="totalStudents">0</span>
-                                <span class="stat-label">Participantes</span>
-                            </div>
+    <!-- Hero Section -->
+    <section class="ranking-hero">
+        <div class="container">
+            <div class="ranking-hero-content">
+                <div class="ranking-hero-info">
+                    <span class="ranking-badge">Classificação Geral</span>
+                    <h1 class="ranking-title">Veja sua posição no <span class="text-accent">ranking</span></h1>
+                    <p class="ranking-description">
+                        Compare seu desempenho com outros estudantes e acompanhe sua evolução.
+                    </p>
+                    <div class="ranking-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="totalStudents">0</span>
+                            <span class="stat-label">Participantes</span>
                         </div>
-                        <div class="hero-stat">
-                            <i class="fas fa-chart-line"></i>
-                            <div>
-                                <span class="stat-value" id="averageScore">0%</span>
-                                <span class="stat-label">Média Geral</span>
-                            </div>
+                        <div class="stat">
+                            <span class="stat-number" id="totalQuestions">0</span>
+                            <span class="stat-label">Questões</span>
                         </div>
-                        <div class="hero-stat">
-                            <i class="fas fa-question-circle"></i>
-                            <div>
-                                <span class="stat-value" id="totalQuestions">0</span>
-                                <span class="stat-label">Questões</span>
-                            </div>
+                        <div class="stat">
+                            <span class="stat-number" id="averageScore">0%</span>
+                            <span class="stat-label">Média Geral</span>
                         </div>
                     </div>
                 </div>
-                <div class="hero-image">
+                <div class="ranking-hero-image">
                     <div class="trophy-container">
                         <i class="fas fa-trophy"></i>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Filtros -->
-        <section class="filters-section">
-            <div class="filters-container">
-                <div class="filter-card">
-                    <div class="filter-icon">
-                        <i class="fas fa-file-alt"></i>
+    <!-- Main Content -->
+    <main class="ranking-main">
+        <div class="container">
+            <!-- Filtros -->
+            <section class="filters-section">
+                <div class="filters-grid">
+                    <!-- Filtro por Simulado -->
+                    <div class="filter-group">
+                        <label for="simuladoFilter">
+                            <i class="fas fa-file-alt"></i> Simulado
+                        </label>
+                        <select id="simuladoFilter" class="filter-select">
+                            <option value="">Selecione um simulado...</option>
+                            <!-- Simulados serão carregados via JS -->
+                        </select>
                     </div>
-                    <div class="filter-content">
-                        <label for="simuladoSelect">Selecione o Simulado</label>
-                        <select id="simuladoSelect" class="modern-select">
-                            <option value="">Escolha um simulado...</option>
-                            <!-- Opções serão carregadas via JS -->
+
+                    <!-- Filtro por Turma -->
+                    <div class="filter-group">
+                        <label for="turmaFilter">
+                            <i class="fas fa-graduation-cap"></i> Turma
+                        </label>
+                        <select id="turmaFilter" class="filter-select">
+                            <option value="">Todas as turmas</option>
+                            <option value="1">1° ano</option>
+                            <option value="2">2° ano</option>
+                            <option value="3">3° ano</option>
+                            <option value="4">1° ano (F)</option>
+                            <option value="5">2° ano (F)</option>
+                            <option value="6">3° ano (F)</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro por Matéria -->
+                    <div class="filter-group">
+                        <label for="subjectFilter">
+                            <i class="fas fa-book"></i> Matéria
+                        </label>
+                        <select id="subjectFilter" class="filter-select">
+                            <option value="">Todas as matérias</option>
+                            <option value="MATEMATICA">Matemática</option>
+                            <option value="PORTUGUES">Português</option>
+                            <option value="FISICA">Física</option>
+                            <option value="QUIMICA">Química</option>
+                            <option value="BIOLOGIA">Biologia</option>
+                            <option value="HISTORIA">História</option>
+                            <option value="GEOGRAFIA">Geografia</option>
+                            <option value="FILOSOFIA">Filosofia</option>
+                            <option value="SOCIOLOGIA">Sociologia</option>
+                            <option value="INGLES">Inglês</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="filter-card">
-                    <div class="filter-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="filter-content">
-                        <label for="turmaSelect">Selecione a Turma</label>
-                        <select id="turmaSelect" class="modern-select">
-                            <option value="">Escolha uma turma...</option>
-                            <!-- Turmas serão carregadas via JS -->
-                        </select>
-                    </div>
-                </div>
-
-                <button class="filter-btn" id="applyFilters">
-                    <i class="fas fa-search"></i>
-                    <span>Buscar Ranking</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- Informações do Simulado -->
-        <section class="simulado-info-section" id="simuladoInfoSection">
-            <div class="simulado-card">
-                <div class="simulado-header">
-                    <h3 id="simuladoName">Selecione um simulado</h3>
-                    <div class="simulado-badges">
-                        <span class="badge date-badge" id="simuladoDate">
-                            <i class="fas fa-calendar"></i> -
-                        </span>
-                        <span class="badge model-badge" id="simuladoModel">
-                            <i class="fas fa-university"></i> -
-                        </span>
-                        <span class="badge questions-badge" id="simuladoQuestions">
-                            <i class="fas fa-question-circle"></i> 0 questões
-                        </span>
-                    </div>
-                </div>
-                <p class="simulado-description" id="simuladoDescription">-</p>
-                
-                <div class="turmas-info">
-                    <h4><i class="fas fa-users-class"></i> Turmas Disponíveis</h4>
-                    <div class="turmas-list" id="turmasList">
-                        <!-- Turmas serão carregadas via JS -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Ranking Section -->
-        <section class="ranking-section">
-            <div class="section-header">
-                <h2><i class="fas fa-ranking-star"></i> Classificação</h2>
-                <div class="header-actions">
-                    <button class="action-btn export-btn" id="exportBtn">
-                        <i class="fas fa-file-export"></i> Exportar
+                <!-- Ações dos Filtros -->
+                <div class="filter-actions">
+                    <button id="applyFilters" class="btn btn-accent">
+                        <i class="fas fa-filter"></i> Aplicar Filtros
                     </button>
-                    <button class="action-btn refresh-btn" id="refreshBtn">
-                        <i class="fas fa-redo"></i> Atualizar
+                    <button id="clearFilters" class="btn btn-outline">
+                        <i class="fas fa-times"></i> Limpar Filtros
                     </button>
                 </div>
-            </div>
+            </section>
 
-            <!-- Medalhas -->
-            <div class="podium-container">
-                <div class="podium silver">
-                    <div class="podium-place">2º</div>
-                    <div class="podium-icon">
-                        <i class="fas fa-medal"></i>
+            <!-- Informações do Simulado -->
+            <section class="simulado-info" id="simuladoInfo">
+                <div class="simulado-card">
+                    <div class="simulado-header">
+                        <h3 id="simuladoName">Selecione um simulado</h3>
+                        <div class="simulado-meta">
+                            <span class="simulado-date" id="simuladoDate">
+                                <i class="fas fa-calendar"></i> -
+                            </span>
+                            <span class="simulado-model" id="simuladoModel">
+                                <i class="fas fa-university"></i> -
+                            </span>
+                            <span class="simulado-questions" id="simuladoQuestionsCount">
+                                <i class="fas fa-question-circle"></i> 0 questões
+                            </span>
+                        </div>
                     </div>
-                    <div class="podium-info">
-                        <span class="podium-name" id="silverName">-</span>
-                        <span class="podium-score" id="silverScore">0 acertos</span>
-                    </div>
+                    <p class="simulado-description" id="simuladoDescription">-</p>
+                </div>
+            </section>
+
+            <!-- Layout Principal -->
+            <div class="ranking-layout">
+                <!-- Conteúdo Principal -->
+                <div class="ranking-content">
+                    <!-- Top 3 Pódio -->
+                    <section class="podium-section">
+                        <h2><i class="fas fa-medal"></i> Top 3</h2>
+                        <div class="podium-container">
+                            <div class="podium-item silver">
+                                <div class="podium-place">2º</div>
+                                <div class="podium-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="podium-info">
+                                    <span class="podium-name" id="silverName">-</span>
+                                    <span class="podium-score" id="silverScore">0 acertos</span>
+                                </div>
+                            </div>
+
+                            <div class="podium-item gold">
+                                <div class="podium-place">1º</div>
+                                <div class="podium-avatar">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                                <div class="podium-info">
+                                    <span class="podium-name" id="goldName">-</span>
+                                    <span class="podium-score" id="goldScore">0 acertos</span>
+                                </div>
+                            </div>
+
+                            <div class="podium-item bronze">
+                                <div class="podium-place">3º</div>
+                                <div class="podium-avatar">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                                <div class="podium-info">
+                                    <span class="podium-name" id="bronzeName">-</span>
+                                    <span class="podium-score" id="bronzeScore">0 acertos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tabela de Ranking -->
+                    <section class="ranking-table-section">
+                        <div class="section-header">
+                            <h2><i class="fas fa-list-ol"></i> Classificação Completa</h2>
+                            <button class="btn btn-outline btn-sm" id="exportRanking">
+                                <i class="fas fa-download"></i> Exportar
+                            </button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th class="position-col">Posição</th>
+                                        <th class="student-col">Estudante</th>
+                                        <th class="turma-col">Turma</th>
+                                        <th class="score-col">Acertos</th>
+                                        <th class="percent-col">Percentual</th>
+                                        <th class="details-col">Detalhes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rankingBody">
+                                    <!-- Dados do ranking serão carregados via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Paginação -->
+                        <div class="pagination" id="rankingPagination">
+                            <!-- Paginação será gerada via JS -->
+                        </div>
+                    </section>
                 </div>
 
-                <div class="podium gold">
-                    <div class="podium-place">1º</div>
-                    <div class="podium-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <div class="podium-info">
-                        <span class="podium-name" id="goldName">-</span>
-                        <span class="podium-score" id="goldScore">0 acertos</span>
-                    </div>
-                </div>
+                <!-- Sidebar -->
+                <aside class="ranking-sidebar">
+                    <!-- Seu Desempenho -->
+                    
 
-                <div class="podium bronze">
-                    <div class="podium-place">3º</div>
-                    <div class="podium-icon">
-                        <i class="fas fa-award"></i>
+                    <!-- Estatísticas do Simulado -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <h3>Estatísticas</h3>
+                        </div>
+                        <div class="sidebar-content">
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <i class="fas fa-users"></i>
+                                    <div>
+                                        <span>Participantes</span>
+                                        <strong id="sidebarTotalStudents">0</strong>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-question-circle"></i>
+                                    <div>
+                                        <span>Questões</span>
+                                        <strong id="sidebarQuestions">0</strong>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-chart-line"></i>
+                                    <div>
+                                        <span>Média Geral</span>
+                                        <strong id="sidebarAverage">0%</strong>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-target"></i>
+                                    <div>
+                                        <span>Maior Nota</span>
+                                        <strong id="sidebarTopScore">0</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="podium-info">
-                        <span class="podium-name" id="bronzeName">-</span>
-                        <span class="podium-score" id="bronzeScore">0 acertos</span>
-                    </div>
-                </div>
+                </aside>
             </div>
-
-            <!-- Tabela de Ranking -->
-            <div class="table-container">
-                <div class="table-wrapper">
-                    <table class="modern-table" id="rankingTable">
-                        <thead>
-                            <tr>
-                                <th class="position-col">Posição</th>
-                                <th class="student-col">Estudante</th>
-                                <th class="class-col">Turma</th>
-                                <th class="score-col">Acertos</th>
-                                <th class="percent-col">Percentual</th>
-                                <th class="actions-col">Detalhes</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rankingBody">
-                            <!-- Dados do ranking serão carregados via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Paginação -->
-            <div class="pagination-container">
-                <div class="pagination-info">
-                    <span id="resultsCount">0 resultados</span>
-                    <span id="pageInfo">Página 1 de 1</span>
-                </div>
-                <div class="pagination-controls">
-                    <button class="pagination-btn" id="prevPage" disabled>
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <div class="page-numbers" id="pageNumbers">
-                        <button class="page-btn active">1</button>
-                    </div>
-                    <button class="pagination-btn" id="nextPage" disabled>
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seu Desempenho -->
-        <section class="my-performance-section" id="myPerformanceSection">
-            <div class="performance-header">
-                <h3><i class="fas fa-user-check"></i> Seu Desempenho</h3>
-                <div class="performance-stats">
-                    <div class="performance-stat">
-                        <span class="stat-label">Sua Posição</span>
-                        <span class="stat-value" id="myRank">-</span>
-                    </div>
-                    <div class="performance-stat">
-                        <span class="stat-label">Seus Acertos</span>
-                        <span class="stat-value" id="myScore">0</span>
-                    </div>
-                    <div class="performance-stat">
-                        <span class="stat-label">Percentual</span>
-                        <span class="stat-value percent" id="myPercent">0%</span>
-                    </div>
-                </div>
-            </div>
-            <div class="performance-actions">
-                <button class="btn-view-details" id="viewDetailsBtn">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Ver Meu Desempenho Detalhado</span>
-                </button>
-            </div>
-        </section>
+        </div>
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <div class="logo-glow">
-                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Método">
-                </div>
-                <div class="footer-brand">
-                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
-                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
-                </div>
-            </div>
-
+    <!-- Footer IDÊNTICO ao index.html -->
+    <footer class="footer">
+        <div class="container">
             <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>Plataforma</h4>
+                <div class="footer-brand">
+                    <a href="/index.html" class="logo light">
+                        <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
+                        <div class="logo-text">
+                            <span class="logo-name">Método</span>
+                            <span class="logo-subtitle">Pré-Vestibular</span>
+                        </div>
+                    </a>
+                    <p>Transformando sonhos em aprovações. O cursinho que mais entende o vestibulando amazonense.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/metodo.prevest" aria-label="Instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.facebook.com/metodo.prevest/" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.youtube.com/metodoprevestibular" aria-label="YouTube">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+                            </svg>
+                        </a>
+                        <a href="https://wa.me/559294860365" aria-label="WhatsApp">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
                     <ul>
-                        <li><a href="dashboard.html">Dashboard</a></li>
-                        <li><a href="cursos.html">Meus Cursos</a></li>
-                        <li><a href="questoes.html">Questões</a></li>
-                        <li><a href="redacao.html">Redação</a></li>
-                        <li><a href="ranking.html">Ranking</a></li>
+                        <li><a href="/sobre.html">Sobre Nós</a></li>
+                        <li><a href="/pricing.html">Matricule-se</a></li>
+                        <li><a href="/ranking.html">Ranking</a></li>
+                        <li><a href="/dashboard.html">Dashboard</a></li>
                     </ul>
                 </div>
-
-                <div class="footer-section">
+                <div class="footer-links">
                     <h4>Cursos</h4>
                     <ul>
-                        <li><a href="#">PSC I, II, III</a></li>
-                        <li><a href="#">SIS I, II, III</a></li>
-                        <li><a href="#">ENEM/Macro</a></li>
+                        <li><a href="/pricing.html">Turmas PSC</a></li>
+                        <li><a href="/pricing.html">Turmas SIS</a></li>
+                        <li><a href="/pricing.html">Turmas Macro</a></li>
+                        <li><a href="/pricing.html">Turmas ENEM</a></li>
+                        <li><a href="/pricing.html">Turmas PSI</a></li>
                     </ul>
                 </div>
-
-                <div class="footer-section">
+                <div class="footer-contact">
                     <h4>Contato</h4>
                     <ul>
-                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
-                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
-                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <span>R. Elisa Lispector, 213, bairro Tarumã<br>Manaus - AM</span>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            <span>(92) 99486-0365</span>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <span>metodoprevest@gmail.com</span>
+                        </li>
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
-                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
-                <div class="footer-social">
-                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
-                </div>
+                <p>&copy; 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>

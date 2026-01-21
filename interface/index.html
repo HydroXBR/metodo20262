@@ -2,1889 +2,579 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Método Pré-Vestibular</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método Pré-Vestibular - Sua aprovação começa aqui</title>
+    <meta name="description"
+        content="Cursinho pré-vestibular focado em vestibulares regionais: PSC (UFAM), SIS (UEA), PSI (UFAM Interior), ENEM e Macro (UEA).">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap"
         rel="stylesheet">
-    <style>
-        /* ====== BASE ====== */
-        :root {
-            --azul: #070738;
-            --azul-claro: #1A1A5E;
-            --vermelho: #FE0000;
-            --branco: #FFFFFF;
-
-            --bg: #0B0B20;
-            --text: #0F172A;
-            --muted: rgba(15, 23, 42, 0.75);
-
-            --card: rgba(255, 255, 255, 0.92);
-            --stroke: rgba(7, 7, 56, 0.12);
-            --shadow: 0 18px 55px rgba(7, 7, 56, 0.10);
-
-            --radius: 18px;
-            --radius-lg: 26px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-        }
-
-        body {
-            background: #ffffff;
-            color: var(--text);
-            line-height: 1.55;
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        .background-animation {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .particles-container {
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(900px 500px at 12% 12%, rgba(254, 0, 0, 0.10), transparent 60%),
-                radial-gradient(760px 460px at 88% 26%, rgba(7, 7, 56, 0.08), transparent 62%),
-                radial-gradient(720px 520px at 65% 88%, rgba(26, 26, 94, 0.07), transparent 60%),
-                radial-gradient(520px 420px at 40% 50%, rgba(254, 0, 0, 0.06), transparent 55%);
-            filter: saturate(1.05);
-            animation: floatBlobs 14s ease-in-out infinite alternate;
-        }
-
-        .gradient-overlay {
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.98) 45%, rgba(255, 255, 255, 0.98) 100%),
-                radial-gradient(1200px 800px at 50% 0%, rgba(7, 7, 56, 0.04), transparent 55%);
-        }
-
-        .gradient-overlay::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            opacity: 0.06;
-            background-image:
-                repeating-linear-gradient(0deg, rgba(7, 7, 56, 0.10) 0 1px, transparent 1px 6px),
-                repeating-linear-gradient(90deg, rgba(254, 0, 0, 0.08) 0 1px, transparent 1px 7px);
-            mix-blend-mode: multiply;
-            pointer-events: none;
-        }
-
-        @keyframes floatBlobs {
-            from {
-                transform: translate3d(0, 0, 0) scale(1);
-                opacity: 0.75;
-            }
-
-            to {
-                transform: translate3d(0, -12px, 0) scale(1.06);
-                opacity: 0.95;
-            }
-        }
-
-        .container {
-            width: min(1200px, calc(100% - 48px));
-            margin: 0 auto;
-        }
-
-        /* ====== NAVBAR ====== */
-        .navbar {
-            background-color: var(--azul);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(254, 0, 0, 0.2);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-glow {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--azul), var(--azul-claro));
-            box-shadow: 0 0 20px rgba(254, 0, 0, 0.2);
-            transition: all .3s ease;
-        }
-
-        .logo-glow:hover {
-            transform: rotate(5deg) scale(1.08);
-            box-shadow: 0 0 30px rgba(254, 0, 0, 0.3);
-        }
-
-        .logo-glow img {
-            height: 30px;
-            width: auto;
-            filter: brightness(1.15);
-        }
-
-        .logo-text {
-            font-weight: 800;
-            font-size: 1.7rem;
-            background: linear-gradient(45deg, var(--branco), #E0E0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: .5px;
-        }
-
-        .logo-highlight {
-            color: var(--vermelho);
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .nav-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--branco);
-            padding: .7rem .85rem;
-            border-radius: 10px;
-            transition: all .25s ease;
-            position: relative;
-            min-width: 104px;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.10);
-            transform: translateY(-2px);
-        }
-
-        .nav-icon {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-            transition: all .25s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.10);
-            color: var(--branco);
-        }
-
-        .nav-link:hover .nav-icon {
-            transform: scale(1.12);
-            color: var(--vermelho);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 8px;
-            background: transparent;
-            border: none;
-        }
-
-        .menu-line {
-            width: 26px;
-            height: 2px;
-            background: var(--branco);
-            transition: all .25s ease;
-        }
-
-        /* ====== HERO PREMIUM ====== */
-        .hero-premium {
-            padding: 56px 0 36px;
-            position: relative;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-            min-height: 600px;
-        }
-
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 999px;
-            background: rgba(254, 0, 0, 0.08);
-            border: 1px solid rgba(254, 0, 0, 0.22);
-            color: var(--azul);
-            font-weight: 700;
-            width: fit-content;
-        }
-
-        .pill i {
-            color: var(--vermelho);
-        }
-
-        .pill-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(7, 7, 56, 0.35);
-        }
-
-        .pill-muted {
-            font-weight: 600;
-            color: rgba(7, 7, 56, 0.70);
-        }
-
-        .hero-title {
-            margin-top: 16px;
-            font-size: clamp(2.15rem, 2.6vw + 1.2rem, 3.25rem);
-            line-height: 1.08;
-            letter-spacing: -0.03em;
-            color: var(--azul);
-        }
-
-        .hero-title-highlight {
-            display: block;
-            margin-top: 8px;
-            background: linear-gradient(90deg, var(--azul) 0%, var(--vermelho) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 900;
-        }
-
-        .hero-lead {
-            margin-top: 14px;
-            font-size: 1.06rem;
-            color: rgba(7, 7, 56, 0.82);
-            max-width: 56ch;
-        }
-
-        .hero-ctas {
-            margin-top: 22px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 18px;
-            border-radius: 14px;
-            text-decoration: none;
-            font-weight: 800;
-            border: 1px solid transparent;
-            transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
-            user-select: none;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--vermelho), #ff3b3b);
-            color: #fff;
-            box-shadow: 0 14px 35px rgba(254, 0, 0, 0.28);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 18px 45px rgba(254, 0, 0, 0.34);
-        }
-
-        .btn-ghost {
-            background: rgba(7, 7, 56, 0.06);
-            border-color: rgba(7, 7, 56, 0.14);
-            color: var(--azul);
-        }
-
-        .btn-ghost:hover {
-            transform: translateY(-2px);
-            background: rgba(7, 7, 56, 0.08);
-            border-color: rgba(254, 0, 0, 0.25);
-            color: var(--vermelho);
-        }
-
-        .trust-row {
-            margin-top: 18px;
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            color: rgba(7, 7, 56, 0.78);
-            font-weight: 700;
-        }
-
-        .trust-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .trust-item i {
-            color: var(--vermelho);
-        }
-
-        .metrics {
-            margin-top: 18px;
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .metric-card {
-            background: rgba(255, 255, 255, 0.88);
-            border: 1px solid rgba(7, 7, 56, 0.12);
-            border-radius: 16px;
-            padding: 14px 14px;
-            box-shadow: 0 14px 35px rgba(7, 7, 56, 0.08);
-        }
-
-        .metric-value {
-            font-size: 1.9rem;
-            font-weight: 900;
-            color: var(--azul);
-            letter-spacing: -0.03em;
-        }
-
-        .metric-label {
-            color: rgba(7, 7, 56, 0.70);
-            font-weight: 700;
-            margin-top: 3px;
-        }
-
-        /* ====== CARROSSEL GRANDE COM TRANSIÇÃO SUAVE ====== */
-        .hero-visual-new {
-            position: relative;
-            height: 600px;
-            width: 100%;
-            overflow: hidden;
-            /* SEM fundo, SEM borda */
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-
-        .aprovados-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Cada slide */
-        .aprovado-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: translateX(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-        }
-
-        /* Slide ativo */
-        .aprovado-slide.active {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-        }
-
-        /* Slide saindo */
-        .aprovado-slide.leaving {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-
-        /* Imagem PNG sem fundo - SEM bordas, SEM card */
-        .aprovado-img {
-            max-width: 90%;
-            max-height: 90%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            /* SEM sombras, SEM bordas, SEM filtros */
-            filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-
-        /* Indicadores (bolinhas) */
-        .aprovados-indicators {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            z-index: 10;
-        }
-
-        .aprovados-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(7, 7, 56, 0.3);
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 0;
-        }
-
-        .aprovados-indicator.active {
-            background: var(--vermelho);
-            transform: scale(1.3);
-        }
-
-        .aprovados-indicator:hover {
-            background: var(--vermelho);
-            transform: scale(1.2);
-        }
-
-        /* Botões de navegação (opcional, se quiser) */
-        .carrossel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(7, 7, 56, 0.1);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--azul);
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(4px);
-        }
-
-        .carrossel-btn:hover {
-            background: rgba(254, 0, 0, 0.2);
-            color: var(--vermelho);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .carrossel-btn.prev {
-            left: 10px;
-        }
-
-        .carrossel-btn.next {
-            right: 10px;
-        }
-
-        /* Responsividade */
-        @media (max-width: 980px) {
-            .hero-visual-new {
-                height: 500px;
-            }
-
-            .carrossel-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-visual-new {
-                height: 400px;
-            }
-
-            .aprovados-indicators {
-                bottom: 15px;
-            }
-
-            .carrossel-btn {
-                display: none;
-                /* Esconde botões em mobile */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-visual-new {
-                height: 300px;
-            }
-
-            .aprovados-indicator {
-                width: 6px;
-                height: 6px;
-            }
-        }
-
-
-        /* Animação do carrossel */
-        @keyframes aprovadosMarquee {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        /* ====== SEÇÕES ====== */
-        .section {
-            padding: 54px 0;
-        }
-
-        .section-head {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 18px;
-        }
-
-        .section-head h2 {
-            font-size: clamp(1.55rem, 1.3vw + 1.2rem, 2.15rem);
-            color: var(--azul);
-            letter-spacing: -0.02em;
-            font-weight: 900;
-        }
-
-        .section-head p {
-            color: rgba(7, 7, 56, 0.74);
-            font-weight: 650;
-            max-width: 70ch;
-        }
-
-        .section-steps .steps-grid {
-            margin-top: 18px;
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .step-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(7, 7, 56, 0.12);
-            border-radius: 18px;
-            padding: 16px;
-            box-shadow: 0 12px 32px rgba(7, 7, 56, 0.08);
-            transition: transform .2s ease, border-color .2s ease;
-        }
-
-        .step-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(254, 0, 0, 0.22);
-        }
-
-        .step-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: rgba(254, 0, 0, 0.10);
-            border: 1px solid rgba(254, 0, 0, 0.18);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--vermelho);
-            margin-bottom: 10px;
-        }
-
-        .step-card h3 {
-            color: var(--azul);
-            font-weight: 900;
-            letter-spacing: -0.01em;
-            font-size: 1.05rem;
-        }
-
-        .step-card p {
-            margin-top: 6px;
-            color: rgba(7, 7, 56, 0.76);
-            font-weight: 650;
-            font-size: .95rem;
-        }
-
-        .section-courses {
-            background: linear-gradient(180deg, rgba(7, 7, 56, 0.03), transparent);
-        }
-
-        .courses-grid {
-            margin-top: 18px;
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .course-card {
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid rgba(7, 7, 56, 0.12);
-            border-radius: 20px;
-            padding: 18px;
-            box-shadow: 0 14px 40px rgba(7, 7, 56, 0.09);
-            transition: transform .2s ease, border-color .2s ease;
-        }
-
-        .course-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(254, 0, 0, 0.22);
-        }
-
-        .course-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .course-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(7, 7, 56, 0.06);
-            border: 1px solid rgba(7, 7, 56, 0.12);
-            color: var(--azul);
-        }
-
-        .course-tags {
-            display: flex;
-            gap: 8px;
-        }
-
-        .tag {
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-weight: 900;
-            font-size: .78rem;
-            letter-spacing: .04em;
-            text-transform: uppercase;
-            background: rgba(254, 0, 0, 0.10);
-            border: 1px solid rgba(254, 0, 0, 0.18);
-            color: var(--azul);
-        }
-
-        .tag-muted {
-            background: rgba(7, 7, 56, 0.06);
-            border-color: rgba(7, 7, 56, 0.12);
-            color: rgba(7, 7, 56, 0.75);
-        }
-
-        .course-card h3 {
-            margin-top: 12px;
-            color: var(--azul);
-            font-weight: 950;
-            letter-spacing: -0.02em;
-        }
-
-        .course-card p {
-            margin-top: 8px;
-            color: rgba(7, 7, 56, 0.76);
-            font-weight: 650;
-        }
-
-        .course-list {
-            list-style: none;
-            margin-top: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-        }
-
-        .course-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: rgba(7, 7, 56, 0.82);
-            font-weight: 750;
-        }
-
-        .course-list i {
-            color: var(--vermelho);
-        }
-
-        .course-cta {
-            margin-top: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            font-weight: 900;
-            color: var(--vermelho);
-            padding: 10px 12px;
-            border-radius: 14px;
-            background: rgba(254, 0, 0, 0.08);
-            border: 1px solid rgba(254, 0, 0, 0.16);
-            transition: transform .2s ease, background .2s ease;
-        }
-
-        .course-cta:hover {
-            transform: translateY(-2px);
-            background: rgba(254, 0, 0, 0.12);
-        }
-
-        .section-testimonials .testimonials-grid {
-            margin-top: 18px;
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .quote-card {
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid rgba(7, 7, 56, 0.12);
-            border-radius: 20px;
-            padding: 18px;
-            box-shadow: 0 14px 40px rgba(7, 7, 56, 0.08);
-        }
-
-        .quote-stars {
-            color: rgba(254, 0, 0, 0.9);
-            display: flex;
-            gap: 6px;
-        }
-
-        .quote-card blockquote {
-            margin-top: 12px;
-            color: rgba(7, 7, 56, 0.82);
-            font-weight: 650;
-            font-size: 1.01rem;
-        }
-
-        .quote-card figcaption {
-            margin-top: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .quote-card figcaption strong {
-            color: var(--azul);
-            font-weight: 950;
-        }
-
-        .quote-card figcaption span {
-            color: rgba(7, 7, 56, 0.65);
-            font-weight: 750;
-            font-size: .9rem;
-        }
-
-        .section-cta {
-            padding-bottom: 68px;
-        }
-
-        .cta-box {
-            display: grid;
-            grid-template-columns: 1.2fr .8fr;
-            gap: 14px;
-            padding: 18px;
-            border-radius: 26px;
-            border: 1px solid rgba(254, 0, 0, 0.16);
-            background: linear-gradient(135deg, rgba(7, 7, 56, 0.96), rgba(26, 26, 94, 0.96));
-            color: #fff;
-            box-shadow: 0 22px 70px rgba(7, 7, 56, 0.26);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-box::before {
-            content: "";
-            position: absolute;
-            inset: -30%;
-            background: radial-gradient(circle at 20% 30%, rgba(254, 0, 0, 0.22), transparent 60%);
-            transform: rotate(14deg);
-        }
-
-        .cta-copy {
-            position: relative;
-            padding: 10px;
-        }
-
-        .cta-copy h2 {
-            font-size: clamp(1.65rem, 1.2vw + 1.35rem, 2.2rem);
-            line-height: 1.12;
-            font-weight: 950;
-            letter-spacing: -0.02em;
-        }
-
-        .cta-copy p {
-            margin-top: 10px;
-            color: rgba(255, 255, 255, 0.88);
-            font-weight: 650;
-            max-width: 62ch;
-        }
-
-        .cta-actions {
-            margin-top: 14px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .cta-notes {
-            margin-top: 14px;
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            color: rgba(255, 255, 255, 0.88);
-            font-weight: 750;
-        }
-
-        .cta-notes i {
-            color: rgba(255, 255, 255, 0.95);
-        }
-
-        .cta-side {
-            position: relative;
-            border-radius: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            background: rgba(255, 255, 255, 0.06);
-            overflow: hidden;
-            padding: 14px;
-        }
-
-        .cta-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-        }
-
-        .cta-badge i {
-            width: 42px;
-            height: 42px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(254, 0, 0, 0.22);
-            color: #fff;
-        }
-
-        .cta-badge strong {
-            display: block;
-            font-weight: 950;
-        }
-
-        .cta-badge span {
-            display: block;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.85);
-            font-size: .92rem;
-            margin-top: 2px;
-        }
-
-        .cta-kpis {
-            margin-top: 14px;
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-        }
-
-        .kpi {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 18px;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .kpi-num {
-            display: block;
-            font-weight: 950;
-            font-size: 1.25rem;
-        }
-
-        .kpi-lab {
-            display: block;
-            margin-top: 2px;
-            font-weight: 750;
-            color: rgba(255, 255, 255, 0.86);
-            font-size: .9rem;
-        }
-
-        .cta-glass {
-            position: absolute;
-            inset: -30%;
-            background: radial-gradient(circle at 75% 25%, rgba(255, 255, 255, 0.12), transparent 55%);
-            transform: rotate(-10deg);
-        }
-
-        /* ====== FOOTER ====== */
-        footer {
-            background: linear-gradient(135deg, var(--azul), var(--azul-claro));
-            color: var(--branco);
-            padding: 4rem 0 2rem;
-            margin-top: 3.5rem;
-            border-top: 1px solid rgba(254, 0, 0, 0.2);
-            width: 100%;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 2rem;
-        }
-
-        .footer-brand {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .footer-title {
-            font-weight: 700;
-            font-size: 1.8rem;
-            background: linear-gradient(45deg, var(--branco), #E0E0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .footer-tagline {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: .9rem;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-section h4 {
-            color: var(--vermelho);
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section li {
-            margin-bottom: 1rem;
-        }
-
-        .footer-section a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all .3s ease;
-            display: inline-block;
-        }
-
-        .footer-section a:hover {
-            color: var(--branco);
-            transform: translateX(5px);
-        }
-
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        .footer-bottom p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: .9rem;
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .footer-social a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--branco);
-            text-decoration: none;
-            transition: all .3s ease;
-        }
-
-        .footer-social a:hover {
-            background: var(--vermelho);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(254, 0, 0, 0.3);
-        }
-
-        /* ====== ANIMAÇÕES ====== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(14px);
-            transition: opacity .5s ease, transform .5s ease;
-        }
-
-        .reveal.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ====== RESPONSIVO ====== */
-        @media (max-width: 980px) {
-            .hero-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .hero-visual-new {
-                height: 500px;
-                order: -1;
-            }
-
-            .aprovado-img {
-                height: 400px;
-            }
-
-            .metrics {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-
-            .section-steps .steps-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .courses-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-box {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 820px) {
-            .nav-container {
-                padding: 0 1rem;
-            }
-
-            .mobile-menu-btn {
-                display: flex;
-            }
-
-            .nav-menu {
-                position: absolute;
-                top: 76px;
-                right: 16px;
-                width: min(320px, calc(100% - 32px));
-                background: rgba(7, 7, 56, 0.98);
-                border: 1px solid rgba(254, 0, 0, 0.18);
-                border-radius: 16px;
-                padding: 10px;
-                display: none;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 6px;
-                box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-            }
-
-            .nav-menu.open {
-                display: flex;
-            }
-
-            .nav-link {
-                flex-direction: row;
-                justify-content: flex-start;
-                gap: 10px;
-                min-width: unset;
-            }
-
-            .nav-icon {
-                margin-bottom: 0;
-            }
-
-            .hero-visual-new {
-                height: 400px;
-            }
-
-            .aprovado-img {
-                height: 320px;
-            }
-        }
-
-        @media (max-width: 560px) {
-            .container {
-                width: min(1200px, calc(100% - 28px));
-            }
-
-            .metrics {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-visual-new {
-                height: 300px;
-            }
-
-            .aprovado-img {
-                height: 250px;
-            }
-
-            .aprovados-track {
-                gap: 20px;
-            }
-
-            .aprovados-marquee::before,
-            .aprovados-marquee::after {
-                width: 60px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .hero-visual-new {
-                height: 250px;
-            }
-
-            .aprovado-img {
-                height: 200px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
 </head>
 
 <body>
-    <div class="background-animation" aria-hidden="true">
-        <div class="particles-container"></div>
-        <div class="gradient-overlay"></div>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <div class="logo-glow">
-                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Minerva">
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container header-content">
+            <a href="/index.html" class="logo">
+                <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg"></img>
+                <div class="logo-text">
+                    <span class="logo-name">Método</span>
+                    <span class="logo-subtitle">Pré-Vestibular</span>
                 </div>
-                <span class="logo-text">Método<span class="logo-highlight">Pré-Vestibular</span></span>
-            </div>
-
-            <ul class="nav-menu" id="navMenu">
-                <li class="nav-item">
-                    <a href="/pricing.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-book-open"></i>
-                        </div>
-                        <span class="nav-label">Planos</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="ranking.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <span class="nav-label">Ranking</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item profile-item">
-                    <a href="/dashboard.html" class="nav-link">
-                        <div class="nav-icon profile-circle">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <span class="nav-label">Área do aluno</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-            </ul>
-
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menu" aria-controls="navMenu"
-                aria-expanded="false">
-                <div class="menu-line"></div>
-                <div class="menu-line"></div>
-                <div class="menu-line"></div>
+            </a>
+            <nav class="nav-desktop">
+                <a href="/sobre.html">Sobre</a>
+                <a href="/pricing.html">Matricule-se</a>
+                <a href="/ranking.html">Ranking</a>
+            </nav>
+            <a href="/login" class="btn btn-accent">Login</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
         </div>
-    </nav>
+        <nav class="nav-mobile" id="navMobile">
+            <a href="#sobre">Sobre</a>
+            <a href="#vestibulares">Vestibulares</a>
+            <a href="#professores">Professores</a>
+            <a href="#depoimentos">Aprovados</a>
+            <a href="#diferenciais">Diferenciais</a>
+            <a href="#matricula" class="btn btn-accent">Matricule-se</a>
+        </nav>
+    </header>
 
-    <main>
-        <!-- HERO PREMIUM -->
-        <section class="hero-premium">
-            <div class="container">
-                <div class="hero-grid">
-                    <div class="hero-copy">
-                        <div class="pill">
-                            <i class="fa-solid fa-bolt"></i>
-                            <span>Preparação de alto nível</span>
-                            <span class="pill-dot" aria-hidden="true"></span>
-                            <span class="pill-muted">PSC • SIS • ENEM</span>
-                        </div>
-
-                        <h1 class="hero-title">
-                            Estudo com método.
-                            <span class="hero-title-highlight">Resultado com consistência.</span>
-                        </h1>
-
-                        <p class="hero-lead">
-                            Um cursinho com rotina, trilhas por etapa, simulados e acompanhamento de desempenho
-                            — pra você estudar do jeito certo e evoluir semana após semana.
-                        </p>
-
-                        <div class="hero-ctas">
-                            <a href="/pricing.html" class="btn btn-primary">
-                                Ver planos
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                            <a href="/dashboard.html" class="btn btn-ghost">
-                                Entrar na área do aluno
-                            </a>
-                        </div>
-
-                        <div class="trust-row">
-                            <div class="trust-item">
-                                <i class="fa-solid fa-circle-check"></i>
-                                <span>Simulados com correção</span>
-                            </div>
-                            <div class="trust-item">
-                                <i class="fa-solid fa-circle-check"></i>
-                                <span>Banco de questões</span>
-                            </div>
-                            <div class="trust-item">
-                                <i class="fa-solid fa-circle-check"></i>
-                                <span>Plantões e revisão</span>
-                            </div>
-                        </div>
-
-                        <div class="metrics">
-                            <div class="metric-card">
-                                <div class="metric-value" data-count="48">0</div>
-                                <div class="metric-label">aulas/mês</div>
-                            </div>
-                            <div class="metric-card">
-                                <div class="metric-value" data-count="12000">0</div>
-                                <div class="metric-label">questões</div>
-                            </div>
-                            <div class="metric-card">
-                                <div class="metric-value" data-count="24">0</div>
-                                <div class="metric-label">plantões/semana</div>
-                            </div>
-                        </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-left">
+                <span class="hero-badge">Referência em aprovações no Amazonas</span>
+                <h1 class="hero-title">
+                    Sua <span class="text-accent">aprovação</span> começa aqui
+                </h1>
+                <p class="hero-description">
+                    Preparação completa e focada nos vestibulares regionais PSC, SIS, PSI, ENEM e Macro.
+                    O método que mais aprova no Amazonas.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Aprovações</span>
                     </div>
-
-                    <!-- CARROSSEL GRANDE -->
-                    <div class="hero-visual-new">
-                        <div class="aprovados-container" id="aprovadosContainer">
-                            <!-- Slides serão inseridos via JavaScript -->
-                        </div>
-
-                        <!-- Botões de navegação -->
-                        <button class="carrossel-btn prev" id="prevBtn" aria-label="Foto anterior">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>
-                        <button class="carrossel-btn next" id="nextBtn" aria-label="Próxima foto">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
-
-                        <!-- Indicadores (bolinhas) -->
-                        <div class="aprovados-indicators" id="aprovadosIndicators">
-                            <!-- Indicadores serão inseridos via JavaScript -->
-                        </div>
+                    <div class="stat">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Anos de história</span>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Resto do seu HTML mantido igual... -->
-        <!-- SEÇÃO: COMO FUNCIONA -->
-        <section class="section section-steps">
-            <div class="container">
-                <header class="section-head">
-                    <h2>Um método simples (e forte) de execução</h2>
-                    <p>Você sabe o que estudar, quando revisar e como medir evolução — sem adivinhação.</p>
-                </header>
-
-                <div class="steps-grid">
-                    <article class="step-card reveal">
-                        <div class="step-icon"><i class="fa-solid fa-route"></i></div>
-                        <h3>Trilha por etapa</h3>
-                        <p>Conteúdo organizado por PSC, SIS e ENEM, com sequência lógica e metas semanais.</p>
-                    </article>
-
-                    <article class="step-card reveal">
-                        <div class="step-icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                        <h3>Prática guiada</h3>
-                        <p>Listas, questões e simulados com foco no padrão da prova e nos temas que mais caem.</p>
-                    </article>
-
-                    <article class="step-card reveal">
-                        <div class="step-icon"><i class="fa-solid fa-chart-line"></i></div>
-                        <h3>Desempenho na mão</h3>
-                        <p>Acompanhe acertos, evolução por matéria e pontos de atenção com clareza.</p>
-                    </article>
-
-                    <article class="step-card reveal">
-                        <div class="step-icon"><i class="fa-solid fa-life-ring"></i></div>
-                        <h3>Plantões e revisão</h3>
-                        <p>Revisões estratégicas + tira-dúvidas pra não deixar lacunas acumularem.</p>
-                    </article>
+                <div class="hero-buttons">
+                    <a href="#matricula" class="btn btn-accent btn-lg">Quero me matricular</a>
+                    <a href="#sobre" class="btn btn-outline btn-lg">Conhecer mais</a>
                 </div>
             </div>
-        </section>
-
-        <!-- SEÇÃO: CURSOS -->
-        <section class="section section-courses">
-            <div class="container">
-                <header class="section-head">
-                    <h2>Escolha sua jornada</h2>
-                    <p>Planos pensados para cada fase — com foco real no que move a nota.</p>
-                </header>
-
-                <div class="courses-grid">
-                    <article class="course-card reveal">
-                        <div class="course-top">
-                            <div class="course-icon"><i class="fa-solid fa-building-columns"></i></div>
-                            <div class="course-tags">
-                                <span class="tag">PSC</span>
-                                <span class="tag tag-muted">seriado</span>
-                            </div>
-                        </div>
-                        <h3>PSC Completo</h3>
-                        <p>Trilha por série + simulados + banco de questões e revisão.</p>
-                        <ul class="course-list">
-                            <li><i class="fa-solid fa-check"></i> Conteúdo por etapa</li>
-                            <li><i class="fa-solid fa-check"></i> Simulados frequentes</li>
-                            <li><i class="fa-solid fa-check"></i> Acompanhamento</li>
-                        </ul>
-                        <a class="course-cta" href="/pricing.html">
-                            Ver planos <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </article>
-
-                    <article class="course-card reveal">
-                        <div class="course-top">
-                            <div class="course-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                            <div class="course-tags">
-                                <span class="tag">SIS</span>
-                                <span class="tag tag-muted">seriado</span>
-                            </div>
-                        </div>
-                        <h3>SIS Estratégico</h3>
-                        <p>Foco no padrão da banca com prática e revisão orientada.</p>
-                        <ul class="course-list">
-                            <li><i class="fa-solid fa-check"></i> Questões por tema</li>
-                            <li><i class="fa-solid fa-check"></i> Simulados direcionados</li>
-                            <li><i class="fa-solid fa-check"></i> Plantões</li>
-                        </ul>
-                        <a class="course-cta" href="/pricing.html">
-                            Ver planos <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </article>
-
-                    <article class="course-card reveal">
-                        <div class="course-top">
-                            <div class="course-icon"><i class="fa-solid fa-rocket"></i></div>
-                            <div class="course-tags">
-                                <span class="tag">ENEM</span>
-                                <span class="tag tag-muted">nacional</span>
-                            </div>
-                        </div>
-                        <h3>ENEM Pro</h3>
-                        <p>Estratégia + prática + simulados e rotina forte até a prova.</p>
-                        <ul class="course-list">
-                            <li><i class="fa-solid fa-check"></i> TRI + simulados</li>
-                            <li><i class="fa-solid fa-check"></i> Redação com correção</li>
-                            <li><i class="fa-solid fa-check"></i> Plano de revisão</li>
-                        </ul>
-                        <a class="course-cta" href="/pricing.html">
-                            Ver planos <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </article>
+            <div class="hero-right">
+                <!-- CARROSSEL VAZIO - AS IMAGENS SERÃO ADICIONADAS PELO JS -->
+                <div class="carousel-container">
+                    <div class="carousel" id="heroCarousel"></div>
+                    <div class="carousel-dots" id="heroDots"></div>
+                    <button class="carousel-btn prev" id="heroPrev">‹</button>
+                    <button class="carousel-btn next" id="heroNext">›</button>
                 </div>
             </div>
-        </section>
+        </div>
+        </div>
+    </section>
 
-        <!-- SEÇÃO: DEPOIMENTOS -->
-        <section class="section section-testimonials">
-            <div class="container">
-                <header class="section-head">
-                    <h2>Quem estuda com o Método sente a diferença</h2>
-                    <p>Depoimentos curtos, diretos e com o que importa: execução.</p>
-                </header>
-
-                <div class="testimonials-grid">
-                    <figure class="quote-card reveal">
-                        <div class="quote-stars" aria-hidden="true">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i>
-                        </div>
-                        <blockquote>
-                            "Eu parei de estudar no escuro. Com metas semanais e simulados, eu finalmente consegui
-                            manter ritmo."
-                        </blockquote>
-                        <figcaption>
-                            <strong>Aluno(a)</strong>
-                            <span>Turma 2025</span>
-                        </figcaption>
-                    </figure>
-
-                    <figure class="quote-card reveal">
-                        <div class="quote-stars" aria-hidden="true">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i>
-                        </div>
-                        <blockquote>
-                            "As revisões e os plantões me salvaram. O conteúdo vem organizado e o estudo flui."
-                        </blockquote>
-                        <figcaption>
-                            <strong>Aluno(a)</strong>
-                            <span>Turma 2025</span>
-                        </figcaption>
-                    </figure>
-
-                    <figure class="quote-card reveal">
-                        <div class="quote-stars" aria-hidden="true">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i>
-                        </div>
-                        <blockquote>
-                            "O que mais mudou foi a consistência. Eu sabia exatamente o que fazer todo dia."
-                        </blockquote>
-                        <figcaption>
-                            <strong>Aluno(a)</strong>
-                            <span>Turma 2025</span>
-                        </figcaption>
-                    </figure>
+    <!-- Sobre Section -->
+    <section class="sobre" id="sobre">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Quem Somos</span>
+                <h2 class="section-title">O Método que <span class="text-accent">transforma</span> sonhos em aprovações
+                </h2>
+                <p class="section-description">
+                    Há mais de 15 anos preparando os melhores alunos do Amazonas para conquistar
+                    suas vagas nas melhores universidades da região.
+                </p>
+            </div>
+            <div class="sobre-grid">
+                <div class="sobre-card">
+                    <div class="sobre-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                        </svg>
+                    </div>
+                    <h3>Material Próprio</h3>
+                    <p>Apostilas desenvolvidas especificamente para os vestibulares regionais</p>
+                </div>
+                <div class="sobre-card">
+                    <div class="sobre-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <h3>Turmas Reduzidas</h3>
+                    <p>Acompanhamento individualizado com no máximo 35 alunos por sala</p>
+                </div>
+                <div class="sobre-card">
+                    <div class="sobre-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                    <h3>Simulados Semanais</h3>
+                    <p>Provas no formato dos vestibulares para você chegar preparado</p>
+                </div>
+                <div class="sobre-card">
+                    <div class="sobre-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                        </svg>
+                    </div>
+                    <h3>Plantão de Dúvidas</h3>
+                    <p>Professores disponíveis para tirar suas dúvidas todos os dias</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- CTA FINAL -->
-        <section class="section section-cta">
-            <div class="container">
-                <div class="cta-box reveal">
-                    <div class="cta-copy">
-                        <h2>Pronto pra estudar com padrão de cursinho grande?</h2>
-                        <p>Comece com o plano ideal e ajuste conforme sua etapa. Sem enrolação — só execução.</p>
+    <!-- Vestibulares Section -->
+    <section class="vestibulares" id="vestibulares">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Vestibulares</span>
+                <h2 class="section-title">Preparação <span class="text-accent">focada</span> para cada vestibular</h2>
+                <p class="section-description">
+                    Conteúdo direcionado para os principais vestibulares da região amazônica
+                </p>
+            </div>
+            <div class="vestibulares-grid">
+                <div class="vestibular-card">
+                    <div class="vestibular-header">
+                        <span class="vestibular-icon">PSC</span>
+                        <h3>PSC - UFAM</h3>
+                    </div>
+                    <p>Processo Seletivo Contínuo da Universidade Federal do Amazonas. Prova realizada ao longo dos 3
+                        anos do Ensino Médio.</p>
+                    <ul class="vestibular-features">
+                        <li>Conteúdo progressivo por série</li>
+                        <li>Simulados específicos PSC</li>
+                        <li>Análise de questões anteriores</li>
+                    </ul>
+                </div>
+                <div class="vestibular-card">
+                    <div class="vestibular-header">
+                        <span class="vestibular-icon">SIS</span>
+                        <h3>SIS - UEA</h3>
+                    </div>
+                    <p>Sistema de Ingresso Seriado da Universidade do Estado do Amazonas. Avaliação em três etapas
+                        durante o Ensino Médio.</p>
+                    <ul class="vestibular-features">
+                        <li>Foco em questões regionais</li>
+                        <li>Material exclusivo UEA</li>
+                        <li>Professores especialistas</li>
+                    </ul>
+                </div>
+                <div class="vestibular-card">
+                    <div class="vestibular-header">
+                        <span class="vestibular-icon">PSI</span>
+                        <h3>PSI - UFAM Interior</h3>
+                    </div>
+                    <p>Processo Seletivo para ingresso nos campi do interior da UFAM. Oportunidade para estudantes de
+                        todo o Amazonas.</p>
+                    <ul class="vestibular-features">
+                        <li>Preparação completa</li>
+                        <li>Foco regional</li>
+                        <li>Acompanhamento especial</li>
+                    </ul>
+                </div>
+                <div class="vestibular-card featured">
+                    <div class="vestibular-header">
+                        <span class="vestibular-icon">ENEM</span>
+                        <h3>ENEM</h3>
+                    </div>
+                    <p>Exame Nacional do Ensino Médio. Porta de entrada para universidades de todo o Brasil através do
+                        SISU, PROUNI e FIES.</p>
+                    <ul class="vestibular-features">
+                        <li>Redação nota 1000</li>
+                        <li>TRI explicado</li>
+                        <li>Todas as competências</li>
+                    </ul>
+                </div>
+                <div class="vestibular-card">
+                    <div class="vestibular-header">
+                        <span class="vestibular-icon">MACRO</span>
+                        <h3>Macro - UEA</h3>
+                    </div>
+                    <p>Vestibular Macro da UEA para ingresso direto. Prova única e decisiva para conquistar sua vaga na
+                        estadual.</p>
+                    <ul class="vestibular-features">
+                        <li>Revisão intensiva</li>
+                        <li>Questões comentadas</li>
+                        <li>Estratégias de prova</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        <div class="cta-actions">
-                            <a href="/pricing.html" class="btn btn-primary">
-                                Quero ver os planos <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                            <a href="https://wa.me/55929486365" class="btn btn-ghost">
-                                Falar no WhatsApp
-                            </a>
-                        </div>
-
-                        <div class="cta-notes">
-                            <span><i class="fa-solid fa-circle-check"></i> Acesso imediato</span>
-                            <span><i class="fa-solid fa-circle-check"></i> Conteúdo organizado</span>
-                            <span><i class="fa-solid fa-circle-check"></i> Simulados + revisão</span>
+    <!-- Professores Section -->
+    <section class="professores" id="professores">
+        <div class="container">
+            <div class="professores-content">
+                <h2 class="professores-title">A Melhor Equipe</h2>
+                <p class="professores-subtitle">Professores experientes, apaixonados pelo ensino e comprometidos com a
+                    sua aprovação</p>
+            </div>
+            <div class="professores-image-container">
+                <div class="professores-image-wrapper">
+                    <div class="professores-placeholder">
+                        <div class="professores-overlay">
+                            <img src="https://i.ibb.co/7djPWQf6/profess.png"></img>
                         </div>
                     </div>
-
-                    <div class="cta-side" aria-hidden="true">
-                        <div class="cta-badge">
-                            <i class="fa-solid fa-medal"></i>
-                            <div>
-                                <strong>Rotina + prática</strong>
-                                <span>o que mais aprova</span>
-                            </div>
-                        </div>
-
-                        <div class="cta-kpis">
-                            <div class="kpi">
-                                <span class="kpi-num">4.9</span>
-                                <span class="kpi-lab">avaliação</span>
-                            </div>
-                            <div class="kpi">
-                                <span class="kpi-num">12k</span>
-                                <span class="kpi-lab">questões</span>
-                            </div>
-                            <div class="kpi">
-                                <span class="kpi-num">+2.8k</span>
-                                <span class="kpi-lab">aprovações</span>
-                            </div>
-                        </div>
-
-                        <div class="cta-glass"></div>
+                </div>
+                <div class="professores-stats">
+                    <div class="prof-stat">
+                        <span class="prof-stat-number">10+</span>
+                        <span class="prof-stat-label">Professores</span>
+                    </div>
+                    <div class="prof-stat">
+                        <span class="prof-stat-number">10+</span>
+                        <span class="prof-stat-label">Anos de experiência média</span>
+                    </div>
+                    <div class="prof-stat">
+                        <span class="prof-stat-number">100%</span>
+                        <span class="prof-stat-label">Dedicação exclusiva</span>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <!-- Depoimentos Section -->
+    <section class="depoimentos" id="depoimentos">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Aprovados</span>
+                <h2 class="section-title">Quem passou, <span class="text-accent">recomenda</span></h2>
+                <p class="section-description">
+                    Conheça as histórias de quem conquistou a aprovação com o Método
+                </p>
+            </div>
+            <div class="depoimentos-carousel">
+                <button class="carousel-btn prev" id="depoPrev" aria-label="Anterior">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                </button>
+                <div class="depoimentos-track" id="depoTrack">
+                    <div class="depoimento-card">
+                        <div class="quote-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
+                            </svg>
+                        </div>
+                        <p class="depoimento-text">"O Método foi fundamental para minha aprovação em Medicina na UFAM.
+                            Os professores são incríveis e o material é muito focado nos vestibulares daqui."</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">MA</div>
+                            <div class="author-info">
+                                <strong>Maria Almeida</strong>
+                                <span>Medicina - UFAM (1º lugar PSC)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="depoimento-card">
+                        <div class="quote-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
+                            </svg>
+                        </div>
+                        <p class="depoimento-text">"Estudei 2 anos no Método e consegui minha vaga em Direito na UEA. O
+                            diferencial são os simulados semanais que nos deixam preparados para qualquer prova."</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">JS</div>
+                            <div class="author-info">
+                                <strong>João Santos</strong>
+                                <span>Direito - UEA (SIS)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="depoimento-card">
+                        <div class="quote-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
+                            </svg>
+                        </div>
+                        <p class="depoimento-text">"Graças ao Método consegui uma ótima nota no ENEM e entrei em
+                            Engenharia Civil. O plantão de dúvidas fez toda a diferença na minha preparação."</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">AC</div>
+                            <div class="author-info">
+                                <strong>Ana Costa</strong>
+                                <span>Engenharia Civil - UFAM (ENEM)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="depoimento-card">
+                        <div class="quote-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
+                            </svg>
+                        </div>
+                        <p class="depoimento-text">"O material focado no PSI foi essencial. Consegui minha vaga no
+                            campus de Parintins e hoje curso Pedagogia. Recomendo demais!"</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">PO</div>
+                            <div class="author-info">
+                                <strong>Pedro Oliveira</strong>
+                                <span>Pedagogia - UFAM Parintins (PSI)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="depoimento-card">
+                        <div class="quote-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
+                            </svg>
+                        </div>
+                        <p class="depoimento-text">"Passei no Macro para Odontologia! Os professores conhecem a prova
+                            como ninguém e sabem exatamente o que a UEA cobra."</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">LS</div>
+                            <div class="author-info">
+                                <strong>Larissa Souza</strong>
+                                <span>Odontologia - UEA (Macro)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="depoimento-card">
+                        <div class="quote-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
+                            </svg>
+                        </div>
+                        <p class="depoimento-text">"Fiz o intensivo de 6 meses e consegui passar em Enfermagem. A
+                            dedicação dos professores é impressionante, estão sempre disponíveis."</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">RF</div>
+                            <div class="author-info">
+                                <strong>Rafael Ferreira</strong>
+                                <span>Enfermagem - UEA (SIS)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn next" id="depoNext" aria-label="Próximo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </button>
+            </div>
+            <div class="depoimentos-dots" id="depoDots"></div>
+        </div>
+    </section>
+
+    <!-- Diferenciais Section -->
+    <section class="diferenciais" id="diferenciais">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge light">Diferenciais</span>
+                <h2 class="section-title light">Por que escolher o <span class="text-accent">Método</span>?</h2>
+            </div>
+            <div class="diferenciais-grid">
+                <div class="diferencial-card">
+                    <div class="diferencial-number">01</div>
+                    <h3>Foco Regional</h3>
+                    <p>Conteúdo desenvolvido especificamente para os vestibulares do Amazonas, com questões de provas
+                        anteriores.</p>
+                </div>
+                <div class="diferencial-card">
+                    <div class="diferencial-number">02</div>
+                    <h3>Professores Especialistas</h3>
+                    <p>Equipe formada por professores especialistas em ENEM e vestibulares!</p>
+                </div>
+                <div class="diferencial-card">
+                    <div class="diferencial-number">03</div>
+                    <h3>Plataforma Online</h3>
+                    <p>Acesso a videoaulas, exercícios e simulados online para estudar onde e quando quiser.</p>
+                </div>
+                <div class="diferencial-card">
+                    <div class="diferencial-number">04</div>
+                    <h3>Acompanhamento Individual</h3>
+                    <p>Monitoramento do desempenho de cada aluno com relatórios, simulados e orientação personalizada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="matricula">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Pronto para conquistar sua vaga?</h2>
+                <p class="cta-description">Matrículas abertas para 2025. Garanta já a sua vaga e comece sua jornada rumo
+                    à aprovação.</p>
+                <div class="cta-buttons">
+                    <a href="/pricing.html" class="btn btn-white btn-lg">Quero me matricular</a>
+                    <a href="https://wa.me/9294860365" class="btn btn-outline-white btn-lg">Falar no WhatsApp</a>
+                </div>
+                <div class="cta-info">
+                    <div class="cta-info-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
+                        <span>(92) 99486-0365</span>
+                    </div>
+                    <div class="cta-info-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <span>R. Elisa Lispector, 213 - Tarumã (Manaus - AM)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <div class="logo-glow">
-                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Minerva">
-                </div>
-                <div class="footer-brand">
-                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
-                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
-                </div>
-            </div>
-
+    <footer class="footer">
+        <div class="container">
             <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>Plataforma</h4>
+                <div class="footer-brand">
+                    <a href="/index.html" class="logo light">
+                        <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg"></img>
+                        <div class="logo-text">
+                            <span class="logo-name">Método</span>
+                            <span class="logo-subtitle">Pré-Vestibular</span>
+                        </div>
+                    </a>
+                    <p>Transformando sonhos em aprovações. O cursinho que mais entende o vestibulando
+                        amazonense.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/metodo.prevest" aria-label="Instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                            </svg>
+                        </a>
+                        <a href="https://www.facebook.com/metodo.prevest/" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.youtube.com/metodoprevestibular" aria-label="YouTube">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+                            </svg>
+                        </a>
+                        <a href="https://wa.me/559294860365" aria-label="WhatsApp">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
                     <ul>
-                        <li><a href="#">Meus Cursos</a></li>
-                        <li><a href="#">Questões & Simulados</a></li>
-                        <li><a href="#">Redação</a></li>
-                        <li><a href="#">Meu Desempenho</a></li>
+                        <li><a href="/sobre.html">Sobre Nós</a></li>
                     </ul>
                 </div>
-
-                <div class="footer-section">
+                <div class="footer-links">
                     <h4>Cursos</h4>
                     <ul>
-                        <li><a href="#">PSC I, II, III</a></li>
-                        <li><a href="#">SIS I, II, III</a></li>
-                        <li><a href="#">ENEM/Macro</a></li>
+                        <li><a href="/pricing.html">Turmas PSC</a></li>
+                        <li><a href="/pricing.html">Turmas SIS</a></li>
+                        <li><a href="/pricing.html">Turmas Macro</a></li>
+                        <li><a href="/pricing.html">Turmas ENEM</a></li>
+                        <li><a href="/pricing.html">Turmas PSI</a></li>
                     </ul>
                 </div>
-
-                <div class="footer-section">
+                <div class="footer-contact">
                     <h4>Contato</h4>
                     <ul>
-                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
-                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
-                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <span>R. Elisa Lispector, 213, bairro Tarumã<br>Manaus - AM</span>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                            <span>(92) 99486-0365</span>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                            <span>metodoprevest@gmail.com</span>
+                        </li>
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
-                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
-                <div class="footer-social">
-                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
-                </div>
+                <p>&copy; 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        function initCarrosselAprovados() {
-  const container = document.getElementById("aprovadosContainer");
-  const indicatorsContainer = document.getElementById("aprovadosIndicators");
-  const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  
-  if (!container) return;
-  
-  // Lista das imagens
-  const alunosAprovados = [
-    "https://i.ibb.co/xS7Kttrh/lucasgab.png",
-    "https://i.ibb.co/5gvYVhNy/everthania.png"
-  ];
-  
-  let currentIndex = 0;
-  let autoSlideInterval;
-  const slideDuration = 4000; // 4 segundos por foto
-  
-  // Criar slides
-  alunosAprovados.forEach((src, index) => {
-    // Criar slide
-    const slide = document.createElement("div");
-    slide.className = `aprovado-slide ${index === 0 ? 'active' : ''}`;
-    slide.dataset.index = index;
-    
-    // Criar imagem
-    const img = document.createElement("img");
-    img.className = "aprovado-img";
-    img.src = src;
-    img.alt = `Aluno aprovado ${index + 1}`;
-    img.loading = "lazy";
-    
-    slide.appendChild(img);
-    container.appendChild(slide);
-    
-    // Criar indicador
-    if (indicatorsContainer) {
-      const indicator = document.createElement("button");
-      indicator.className = `aprovados-indicator ${index === 0 ? 'active' : ''}`;
-      indicator.dataset.index = index;
-      indicator.setAttribute("aria-label", `Ir para foto ${index + 1}`);
-      indicator.addEventListener("click", () => goToSlide(index));
-      indicatorsContainer.appendChild(indicator);
-    }
-  });
-  
-  // Função para ir para um slide específico
-  function goToSlide(index) {
-    const slides = document.querySelectorAll(".aprovado-slide");
-    const indicators = document.querySelectorAll(".aprovados-indicator");
-    
-    // Sair do slide atual
-    slides[currentIndex].classList.remove("active");
-    slides[currentIndex].classList.add("leaving");
-    
-    // Remover classe leaving após animação
-    setTimeout(() => {
-      slides[currentIndex].classList.remove("leaving");
-    }, 800);
-    
-    // Atualizar indicador atual
-    if (indicators[currentIndex]) {
-      indicators[currentIndex].classList.remove("active");
-    }
-    
-    // Atualizar índice
-    currentIndex = index;
-    
-    // Entrar no novo slide
-    setTimeout(() => {
-      slides[currentIndex].classList.add("active");
-      if (indicators[currentIndex]) {
-        indicators[currentIndex].classList.add("active");
-      }
-    }, 50);
-    
-    // Reiniciar auto-slide
-    resetAutoSlide();
-  }
-  
-  // Próximo slide
-  function nextSlide() {
-    const nextIndex = (currentIndex + 1) % alunosAprovados.length;
-    goToSlide(nextIndex);
-  }
-  
-  // Slide anterior
-  function prevSlide() {
-    const prevIndex = (currentIndex - 1 + alunosAprovados.length) % alunosAprovados.length;
-    goToSlide(prevIndex);
-  }
-  
-  // Auto-slide automático
-  function startAutoSlide() {
-    autoSlideInterval = setInterval(nextSlide, slideDuration);
-  }
-  
-  function resetAutoSlide() {
-    clearInterval(autoSlideInterval);
-    startAutoSlide();
-  }
-  
-  // Event listeners para botões
-  if (prevBtn) {
-    prevBtn.addEventListener("click", () => {
-      prevSlide();
-      resetAutoSlide();
-    });
-  }
-  
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      nextSlide();
-      resetAutoSlide();
-    });
-  }
-  
-  // Pausar auto-slide no hover
-  container.addEventListener("mouseenter", () => {
-    clearInterval(autoSlideInterval);
-  });
-  
-  container.addEventListener("mouseleave", () => {
-    startAutoSlide();
-  });
-  
-  // Iniciar auto-slide
-  startAutoSlide();
-}
-
-        document.addEventListener("DOMContentLoaded", () => {
-            // ===== Mobile menu =====
-            const btn = document.getElementById("mobileMenuBtn");
-            const menu = document.getElementById("navMenu");
-
-            if (btn && menu) {
-                btn.addEventListener("click", () => {
-                    const isOpen = menu.classList.toggle("open");
-                    btn.setAttribute("aria-expanded", String(isOpen));
-                });
-
-                document.addEventListener("click", (e) => {
-                    const target = e.target;
-                    if (!menu.contains(target) && !btn.contains(target)) {
-                        menu.classList.remove("open");
-                        btn.setAttribute("aria-expanded", "false");
-                    }
-                });
-            }
-
-            // ===== Contadores do hero =====
-            const counters = document.querySelectorAll("[data-count]");
-            const runCount = (el) => {
-                const target = Number(el.dataset.count || 0);
-                const duration = 1100;
-                const start = performance.now();
-
-                const step = (t) => {
-                    const p = Math.min((t - start) / duration, 1);
-                    const value = Math.floor(target * (0.12 + 0.88 * p));
-                    el.textContent = target >= 1000 ? value.toLocaleString("pt-BR") : String(value);
-                    if (p < 1) requestAnimationFrame(step);
-                    else el.textContent = target >= 1000 ? target.toLocaleString("pt-BR") : String(target);
-                };
-
-                requestAnimationFrame(step);
-            };
-
-            const counterObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        runCount(entry.target);
-                        counterObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.35 });
-
-            counters.forEach((c) => counterObserver.observe(c));
-
-            // ===== Reveal (animações de entrada) =====
-            const revealEls = document.querySelectorAll(".reveal");
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) entry.target.classList.add("is-visible");
-                });
-            }, { threshold: 0.12 });
-
-            revealEls.forEach((el) => revealObserver.observe(el));
-
-            // ===== CARROSSEL DE APROVADOS GRANDE =====
-            const aprovadosTrack = document.getElementById("aprovadosTrack");
-
-            if (aprovadosTrack) {
-                // Lista completa das imagens dos aprovados
-                const alunosAprovados = [
-                    "https://i.ibb.co/xS7Kttrh/lucasgab.png",
-                    "https://i.ibb.co/5gvYVhNy/everthania.png"
-                ];
-
-                // Criar elementos de imagem - duplicar para efeito contínuo
-                const allImages = [...alunosAprovados, ...alunosAprovados];
-
-                allImages.forEach((src, index) => {
-                    const img = document.createElement("img");
-                    img.className = "aprovado-img";
-                    img.src = src;
-                    img.alt = `Aluno aprovado ${index + 1}`;
-                    img.loading = "lazy";
-                    img.setAttribute("data-index", index);
-                    aprovadosTrack.appendChild(img);
-                });
-
-                // Ajustar velocidade da animação
-                const totalImages = allImages.length;
-                const animationDuration = totalImages * 3; // 3 segundos por imagem
-                aprovadosTrack.style.animationDuration = `${animationDuration}s`;
-
-                // Pausar animação ao passar o mouse
-                const marquee = document.querySelector(".aprovados-marquee");
-                if (marquee) {
-                    marquee.addEventListener("mouseenter", () => {
-                        aprovadosTrack.style.animationPlayState = "paused";
-                    });
-
-                    marquee.addEventListener("mouseleave", () => {
-                        aprovadosTrack.style.animationPlayState = "running";
-                    });
-                }
-
-                // Ajustar tamanho das imagens baseado na tela
-                const adjustImageSize = () => {
-                    const isMobile = window.innerWidth <= 980;
-                    const images = document.querySelectorAll(".aprovado-img");
-
-                    if (isMobile) {
-                        images.forEach(img => {
-                            img.style.height = window.innerWidth <= 560 ? "250px" :
-                                window.innerWidth <= 820 ? "320px" : "400px";
-                        });
-                    } else {
-                        images.forEach(img => {
-                            img.style.height = "500px";
-                        });
-                    }
-                };
-
-                // Ajustar inicialmente e ao redimensionar
-                adjustImageSize();
-                window.addEventListener("resize", adjustImageSize);
-
-                // Adicionar classe para ativar animação
-                setTimeout(() => {
-                    aprovadosTrack.style.animation = `aprovadosMarquee ${animationDuration}s linear infinite`;
-                }, 100);
-            }
-            initCarrosselAprovados();
-        });
-    </script>
+    <script src="index.js"></script>
 </body>
 
 </html>

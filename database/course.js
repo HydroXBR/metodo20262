@@ -24,7 +24,7 @@ const lessonSchema = Schema({
     order: { type: Number, required: true },
     professor: String,
     resources: [{
-        type: { type: String, enum: ['pdf', 'ppt', 'doc', 'link', 'quiz'] },
+        type: { type: String, enum: ['pdf', 'ppt', 'doc', 'link', 'quiz', 'video'] },
         title: String,
         url: String,
         description: String

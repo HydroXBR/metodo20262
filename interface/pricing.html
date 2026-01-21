@@ -1,374 +1,487 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Método | Planos</title>
-    <link rel="stylesheet" href="pricing.css">
+
+    <!-- Mesmas fontes da index.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Mesmo Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS dos planos -->
+    <link rel="stylesheet" href="pricing.css">
+
+    <!-- Mesmo favicon -->
     <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
 </head>
+
 <body>
-    <div class="background-animation">
-        <div class="particles-container"></div>
-        <div class="gradient-overlay"></div>
-    </div>
-
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <div class="logo-glow">
-                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Minerva">
+    <!-- Header IDÊNTICO ao index.html -->
+    <header class="header" id="header">
+        <div class="container header-content">
+            <a href="/index.html" class="logo">
+                <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
+                <div class="logo-text">
+                    <span class="logo-name">Método</span>
+                    <span class="logo-subtitle">Pré-Vestibular</span>
                 </div>
-                <span class="logo-text">Método<span class="logo-highlight">Pré-Vestibular</span></span>
-            </div>
-            
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-home"></i>
-                        </div>
-                        <span class="nav-label">Home</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="login.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-sign-in-alt"></i>
-                        </div>
-                        <span class="nav-label">Login</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="cadastro.html" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-user-plus"></i>
-                        </div>
-                        <span class="nav-label">Cadastro</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="ranking.html" class="nav-link active">
-                        <div class="nav-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <span class="nav-label">Ranking</span>
-                        <div class="nav-glow"></div>
-                    </a>
-                </li>
-            </ul>
-            
-            <div class="mobile-menu-btn">
-                <div class="menu-line"></div>
-                <div class="menu-line"></div>
-                <div class="menu-line"></div>
-            </div>
+            </a>
+            <nav class="nav-desktop">
+                <a href="/index.html">Home</a>
+                <a href="/sobre.html">Sobre</a>
+                <a href="/pricing.html" class="active">Planos</a>
+                <a href="/ranking.html">Ranking</a>
+                <a href="/login.html" class="btn btn-accent">Entrar</a>
+            </nav>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-    </nav>
+        <nav class="nav-mobile" id="navMobile">
+            <a href="/index.html">Home</a>
+            <a href="/sobre.html">Sobre</a>
+            <a href="/courses.html">Cursos</a>
+            <a href="/pricing.html" class="active">Planos</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/login.html" class="btn btn-accent">Entrar</a>
+        </nav>
+    </header>
 
-    <main class="pricing-main">
-        <section class="pricing-hero">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span>Escolha seu Plano</span>
-                    <div class="badge-glow"></div>
+    <!-- Hero Section -->
+    <section class="pricing-hero">
+        <div class="container">
+            <div class="pricing-hero-content">
+                <div class="pricing-badge">
+                    <span>Planos & Preços</span>
                 </div>
-                <h1 class="hero-title">
-                    <span class="title-line">Invista no seu <span class="highlight-text" data-text="futuro">futuro</span></span>
-                </h1>
-                <p class="hero-subtitle">Planos desenhados para cada etapa da sua preparação</p>
+                <h1 class="pricing-title">Invista no seu <span class="text-accent">futuro</span></h1>
+                <p class="pricing-subtitle">
+                    Escolha o plano ideal para sua preparação. Qualidade Méthodo a preços acessíveis.
+                </p>
                 
                 <div class="period-toggle">
                     <button class="toggle-btn active" data-period="mensal">Mensal</button>
-                    <button class="toggle-btn" data-period="anual">Anual (15% OFF)</button>
-                    <div class="toggle-slider"></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="pricing-section">
-            <div class="pricing-container">
-                <div class="pricing-cards">
-                    <!-- Plano Free -->
-                    <div class="pricing-card">
-                        <div class="card-header">
-                            <div class="plan-icon">
-                                <i class="fas fa-seedling"></i>
-                            </div>
-                            <h3 class="plan-name">Free</h3>
-                            <p class="plan-desc">Comece sua jornada</p>
-                            
-                            <div class="plan-price">
-                                <span class="price-amount">R$ 0</span>
-                                <span class="price-period">/ sempre</span>
-                            </div>
-                            
-                            <a href="cadastro.html" class="plan-btn">
-                                <span>Começar Grátis</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="card-features">
-                            <h4>O que inclui:</h4>
-                            <ul class="features-list">
-                                <li><i class="fas fa-check"></i> Acesso a 15 questões por dia</li>
-                                <li><i class="fas fa-check"></i> Desempenho nas questões</li>
-                                <li><i class="fas fa-check"></i> Dashboard básico</li>
-                                <li><i class="fas fa-times"></i> Aulas em vídeo</li>
-                                <li><i class="fas fa-times"></i> Simulados</li>
-                                <li><i class="fas fa-times"></i> Correção de redação</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="card-popular">
-                            <span>Perfeito para começar</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Plano SIS/PSC -->
-                    <div class="pricing-card popular">
-                        <div class="card-badge">Mais Popular</div>
-                        <div class="card-header">
-                            <div class="plan-icon">
-                                <i class="fas fa-rocket"></i>
-                            </div>
-                            <h3 class="plan-name">SIS/PSC</h3>
-                            <p class="plan-desc">Foco nos vestibulares locais</p>
-                            
-                            <div class="plan-price">
-                                <span class="price-amount mensal-price">R$ 350</span>
-                                <span class="price-amount anual-price hidden">R$ 4.000</span>
-                                <span class="price-period">/ mês</span>
-                                <div class="price-save">
-                                    <span class="save-amount">Economize R$ 200/ano</span>
-                                </div>
-                            </div>
-                            
-                            <a href="cadastro.html" class="plan-btn primary">
-                                <span>Escolher Plano</span>
-                                <i class="fas fa-bolt"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="card-features">
-                            <h4>Tudo do Free, mais:</h4>
-                            <ul class="features-list">
-                                <li><i class="fas fa-check"></i> Questões ilimitadas PSC/SIS</li>
-                                <li><i class="fas fa-check"></i> Aulas completas PSC e SIS</li>
-                                <li><i class="fas fa-check"></i> Simulados semanais</li>
-                                <li><i class="fas fa-check"></i> Ranking de desempenho</li>
-                                <li><i class="fas fa-check"></i> 4 correções de redação/mês</li>
-                                <li><i class="fas fa-check"></i> Suporte prioritário</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="card-popular">
-                            <span>Ideal para PSC/SIS</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Plano Total -->
-                    <div class="pricing-card">
-                        <div class="card-header">
-                            <div class="plan-icon">
-                                <i class="fas fa-crown"></i>
-                            </div>
-                            <h3 class="plan-name">Total</h3>
-                            <p class="plan-desc">Preparação completa</p>
-                            
-                            <div class="plan-price">
-                                <span class="price-amount mensal-price">R$ 400</span>
-                                <span class="price-amount anual-price hidden">R$ 4.500</span>
-                                <span class="price-period">/ mês</span>
-                                <div class="price-save">
-                                    <span class="save-amount">Economize R$ 300/ano</span>
-                                </div>
-                            </div>
-                            
-                            <a href="cadastro.html" class="plan-btn">
-                                <span>Escolher Plano</span>
-                                <i class="fas fa-gem"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="card-features">
-                            <h4>Tudo do SIS/PSC, mais:</h4>
-                            <ul class="features-list">
-                                <li><i class="fas fa-check"></i> Questões ilimitadas ENEM/Macro</li>
-                                <li><i class="fas fa-check"></i> Aulas completas ENEM</li>
-                                <li><i class="fas fa-check"></i> Banco nacional de questões</li>
-                                <li><i class="fas fa-check"></i> 8 correções de redação/mês</li>
-                                <li><i class="fas fa-check"></i> Mentorias individuais</li>
-                                <li><i class="fas fa-check"></i> Certificado de conclusão</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="card-popular">
-                            <span>Preparação nacional</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="pricing-comparison">
-                    <h3>Comparação Completa</h3>
-                    <div class="comparison-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Recurso</th>
-                                    <th>Free</th>
-                                    <th>SIS/PSC</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Questões por dia</td>
-                                    <td>15</td>
-                                    <td><i class="fas fa-infinity"></i></td>
-                                    <td><i class="fas fa-infinity"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Aulas em vídeo</td>
-                                    <td><i class="fas fa-times"></i></td>
-                                    <td>PSC e SIS</td>
-                                    <td>Todas</td>
-                                </tr>
-                                <tr>
-                                    <td>Simulados</td>
-                                    <td><i class="fas fa-times"></i></td>
-                                    <td><i class="fas fa-check"></i></td>
-                                    <td><i class="fas fa-check"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Correções de redação/mês</td>
-                                    <td>0</td>
-                                    <td>4</td>
-                                    <td>8</td>
-                                </tr>
-                                <tr>
-                                    <td>Suporte</td>
-                                    <td>Básico</td>
-                                    <td>Prioritário</td>
-                                    <td>VIP</td>
-                                </tr>
-                                <tr>
-                                    <td>Acesso ENEM/Macro</td>
-                                    <td><i class="fas fa-times"></i></td>
-                                    <td><i class="fas fa-times"></i></td>
-                                    <td><i class="fas fa-check"></i></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <div class="pricing-faq">
-                    <h3>Perguntas Frequentes</h3>
-                    <div class="faq-grid">
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <h4>Posso mudar de plano depois?</h4>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>Sim! Você pode fazer upgrade ou downgrade a qualquer momento. A diferença será calculada proporcionalmente.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <h4>O plano anual tem renovação automática?</h4>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>Sim, mas você pode cancelar a qualquer momento antes da renovação. Enviaremos um lembrete 15 dias antes.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <h4>Como funcionam as correções de redação?</h4>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>Nossos corretores especializados avaliam sua redação com base nos critérios oficiais e fornecem feedback detalhado.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <h4>Posso testar antes de assinar?</h4>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>Sim! O plano Free oferece acesso limitado para você conhecer a plataforma. Para mais recursos, assine um plano pago.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <div class="logo-glow">
-                    <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" alt="Logo Minerva">
-                </div>
-                <div class="footer-brand">
-                    <span class="footer-title">Método<span class="logo-highlight">Pré-Vestibular</span></span>
-                    <p class="footer-tagline">Mudando vidas, escrevendo histórias.</p>
-                </div>
-            </div>
-            
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>Plataforma</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="pricing.html">Planos</a></li>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="cadastro.html">Cadastro</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Cursos</h4>
-                    <ul>
-                        <li><a href="#">PSC I, II, III</a></li>
-                        <li><a href="#">SIS I, II, III</a></li>
-                        <li><a href="#">ENEM/Macro</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Contato</h4>
-                    <ul>
-                        <li><a href="https://wa.me/55929486365">WhatsApp</a></li>
-                        <li><a href="https://instagram.com/metodo.prevest">Instagram</a></li>
-                        <li><a href="mailto:metodoprevest@gmail.com">Email</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>© 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
-                <div class="footer-social">
-                    <a href="https://wa.me/55929486365"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://instagram.com/metodo.prevest"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/metodo.prevest/"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.youtube.com/@metodoprevestibular"><i class="fab fa-youtube"></i></a>
+                    <button class="toggle-btn" data-period="anual">Anual <span class="badge-save">15% OFF</span></button>
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Seção de Planos -->
+    <section class="pricing-plans">
+        <div class="container">
+            <div class="plans-grid">
+                <!-- Plano Free -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <div class="plan-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3 class="plan-name">Free</h3>
+                        <p class="plan-desc">Para começar sua jornada</p>
+                        
+                        <div class="plan-price">
+                            <span class="price-amount">R$ 0</span>
+                            <span class="price-period">/ sempre</span>
+                        </div>
+                        
+                        <a href="/cadastro.html" class="btn btn-outline btn-block">
+                            Começar Grátis
+                        </a>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <h4>Inclui:</h4>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check text-success"></i> 15 questões por dia</li>
+                            <li><i class="fas fa-check text-success"></i> Dashboard básico</li>
+                            <li><i class="fas fa-check text-success"></i> Ranking comunitário</li>
+                            <li><i class="fas fa-times text-muted"></i> Aulas em vídeo</li>
+                            <li><i class="fas fa-times text-muted"></i> Simulados</li>
+                            <li><i class="fas fa-times text-muted"></i> Correção de redação</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-tag">
+                        <span>Perfeito para testar</span>
+                    </div>
+                </div>
+                
+                <!-- Plano SIS/PSC -->
+                <div class="plan-card popular">
+                    <div class="plan-badge">Mais Popular</div>
+                    <div class="plan-header">
+                        <div class="plan-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="plan-name">SIS/PSC</h3>
+                        <p class="plan-desc">Foco nos vestibulares locais</p>
+                        
+                        <div class="plan-price">
+                            <span class="price-amount mensal-price">R$ 350</span>
+                            <span class="price-amount anual-price hidden">R$ 4.000</span>
+                            <span class="price-period">/ mês</span>
+                            <div class="price-save">
+                                <span class="save-amount">Economize R$ 200/ano</span>
+                            </div>
+                        </div>
+                        
+                        <a href="/cadastro.html" class="btn btn-accent btn-block">
+                            <i class="fas fa-bolt"></i>
+                            Escolher Plano
+                        </a>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <h4>Tudo do Free, mais:</h4>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check text-success"></i> Questões ilimitadas PSC/SIS</li>
+                            <li><i class="fas fa-check text-success"></i> Aulas completas PSC e SIS</li>
+                            <li><i class="fas fa-check text-success"></i> Simulados semanais</li>
+                            <li><i class="fas fa-check text-success"></i> Ranking de desempenho</li>
+                            <li><i class="fas fa-check text-success"></i> 4 correções de redação/mês</li>
+                            <li><i class="fas fa-check text-success"></i> Suporte prioritário</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-tag">
+                        <span>Ideal para PSC/SIS</span>
+                    </div>
+                </div>
+                
+                <!-- Plano Total -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <div class="plan-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h3 class="plan-name">Total</h3>
+                        <p class="plan-desc">Preparação completa</p>
+                        
+                        <div class="plan-price">
+                            <span class="price-amount mensal-price">R$ 400</span>
+                            <span class="price-amount anual-price hidden">R$ 4.500</span>
+                            <span class="price-period">/ mês</span>
+                            <div class="price-save">
+                                <span class="save-amount">Economize R$ 300/ano</span>
+                            </div>
+                        </div>
+                        
+                        <a href="/cadastro.html" class="btn btn-outline btn-block">
+                            <i class="fas fa-gem"></i>
+                            Escolher Plano
+                        </a>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <h4>Tudo do SIS/PSC, mais:</h4>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check text-success"></i> Questões ilimitadas ENEM/Macro</li>
+                            <li><i class="fas fa-check text-success"></i> Aulas completas ENEM</li>
+                            <li><i class="fas fa-check text-success"></i> Banco nacional de questões</li>
+                            <li><i class="fas fa-check text-success"></i> 8 correções de redação/mês</li>
+                            <li><i class="fas fa-check text-success"></i> Mentorias individuais</li>
+                            <li><i class="fas fa-check text-success"></i> Certificado de conclusão</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-tag">
+                        <span>Preparação nacional</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparação de Planos -->
+    <section class="comparison-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Comparação Completa</h2>
+                <p>Veja todos os recursos lado a lado</p>
+            </div>
+            
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Recurso</th>
+                            <th>Free</th>
+                            <th>SIS/PSC</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Questões por dia</td>
+                            <td>15</td>
+                            <td><i class="fas fa-infinity text-accent"></i></td>
+                            <td><i class="fas fa-infinity text-accent"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Aulas em vídeo</td>
+                            <td><i class="fas fa-times text-muted"></i></td>
+                            <td>PSC e SIS</td>
+                            <td>Todas</td>
+                        </tr>
+                        <tr>
+                            <td>Simulados</td>
+                            <td><i class="fas fa-times text-muted"></i></td>
+                            <td><i class="fas fa-check text-success"></i></td>
+                            <td><i class="fas fa-check text-success"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Correções de redação/mês</td>
+                            <td>0</td>
+                            <td>4</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>Suporte</td>
+                            <td>Básico</td>
+                            <td>Prioritário</td>
+                            <td>VIP</td>
+                        </tr>
+                        <tr>
+                            <td>Acesso ENEM/Macro</td>
+                            <td><i class="fas fa-times text-muted"></i></td>
+                            <td><i class="fas fa-times text-muted"></i></td>
+                            <td><i class="fas fa-check text-success"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Mentorias</td>
+                            <td><i class="fas fa-times text-muted"></i></td>
+                            <td><i class="fas fa-times text-muted"></i></td>
+                            <td><i class="fas fa-check text-success"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Certificado</td>
+                            <td><i class="fas fa-times text-muted"></i></td>
+                            <td><i class="fas fa-times text-muted"></i></td>
+                            <td><i class="fas fa-check text-success"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Perguntas Frequentes</h2>
+                <p>Tire suas dúvidas sobre nossos planos</p>
+            </div>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Posso mudar de plano depois?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim! Você pode fazer upgrade ou downgrade a qualquer momento. A diferença será calculada proporcionalmente ao tempo restante da sua assinatura.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>O plano anual tem renovação automática?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim, mas você pode cancelar a renovação automática a qualquer momento antes do vencimento. Enviaremos um lembrete 15 dias antes da renovação.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Como funcionam as correções de redação?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nossos corretores especializados avaliam sua redação com base nos critérios oficiais dos vestibulares e fornecem feedback detalhado em até 48 horas.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Posso testar antes de assinar?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim! O plano Free oferece acesso limitado para você conhecer a plataforma. Para recursos completos, recomendamos assinar um plano pago por 7 dias com garantia de reembolso.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Há limite de acesso às aulas?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Não! Nos planos SIS/PSC e Total, você tem acesso ilimitado a todas as aulas disponíveis durante o período da sua assinatura.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Como funciona o suporte?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oferecemos suporte por WhatsApp e email. No plano Free: resposta em até 72h. SIS/PSC: 24h. Total: 12h e mentorias individuais.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-cta">
+                <p>Ainda tem dúvidas?</p>
+                <a href="https://wa.me/559294860365" class="btn btn-accent" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    Fale conosco no WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Pronto para transformar sua preparação?</h2>
+                <p>Junte-se a milhares de estudantes que já alcançaram suas aprovações com o Método.</p>
+                <div class="cta-buttons">
+                    <a href="/cadastro.html" class="btn btn-accent btn-lg">
+                        <i class="fas fa-rocket"></i>
+                        Começar Agora
+                    </a>
+                    <a href="/courses.html" class="btn btn-outline-white btn-lg">
+                        <i class="fas fa-eye"></i>
+                        Ver Cursos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer IDÊNTICO ao index.html -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/index.html" class="logo light">
+                        <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
+                        <div class="logo-text">
+                            <span class="logo-name">Método</span>
+                            <span class="logo-subtitle">Pré-Vestibular</span>
+                        </div>
+                    </a>
+                    <p>Transformando sonhos em aprovações. O cursinho que mais entende o vestibulando amazonense.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/metodo.prevest" aria-label="Instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                            </svg>
+                        </a>
+                        <a href="https://www.facebook.com/metodo.prevest/" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.youtube.com/metodoprevestibular" aria-label="YouTube">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+                            </svg>
+                        </a>
+                        <a href="https://wa.me/559294860365" aria-label="WhatsApp">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="/sobre.html">Sobre Nós</a></li>
+                        <li><a href="/pricing.html">Planos</a></li>
+                        <li><a href="/ranking.html">Ranking</a></li>
+                        <li><a href="/dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="/pricing.html">Turmas PSC</a></li>
+                        <li><a href="/pricing.html">Turmas SIS</a></li>
+                        <li><a href="/pricing.html">Turmas Macro</a></li>
+                        <li><a href="/pricing.html">Turmas ENEM</a></li>
+                        <li><a href="/pricing.html">Turmas PSI</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <span>R. Elisa Lispector, 213, bairro Tarumã<br>Manaus - AM</span>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                            <span>(92) 99486-0365</span>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                            <span>metodoprevest@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+            </div>
+        </div>
     </footer>
+
     <script src="pricing.js"></script>
 </body>
 </html>

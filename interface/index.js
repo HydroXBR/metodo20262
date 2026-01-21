@@ -1,150 +1,418 @@
-// index.js
+// ===== HEADER SCROLL EFFECT =====
+const header = document.getElementById('header');
+if (header) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-  // ===== Mobile menu =====
-  const btn = document.getElementById("mobileMenuBtn");
-  const menu = document.getElementById("navMenu");
+// ===== MOBILE MENU TOGGLE =====
+const menuToggle = document.getElementById('menuToggle');
+const navMobile = document.getElementById('navMobile');
 
-  if (btn && menu) {
-    btn.addEventListener("click", () => {
-      const isOpen = menu.classList.toggle("open");
-      btn.setAttribute("aria-expanded", String(isOpen));
+if (menuToggle && navMobile) {
+  menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navMobile.classList.toggle('active');
+  });
+
+  // Close mobile menu when clicking on a link
+  navMobile.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      navMobile.classList.remove('active');
     });
+  });
+}
 
-    // fecha ao clicar fora
-    document.addEventListener("click", (e) => {
-      const target = e.target;
-      if (!menu.contains(target) && !btn.contains(target)) {
-        menu.classList.remove("open");
-        btn.setAttribute("aria-expanded", "false");
-      }
+// ===== CARROSSEL DE IMAGENS (15+ ALUNOS) =====
+function initCarousel() {
+  const carousel = document.getElementById('heroCarousel');
+  const dotsContainer = document.getElementById('heroDots');
+  const prevBtn = document.getElementById('heroPrev');
+  const nextBtn = document.getElementById('heroNext');
+  
+  if (!carousel) return;
+  
+  // ===== LISTA DE IMAGENS - COLOQUE AQUI SUAS 15+ IMAGENS =====
+  const imagensAlunos = [
+    // SUAS IMAGENS PNG (substitua pelos seus links)
+    { src: 'https://i.ibb.co/HD8cdZ1t/5.png', alt: 'Aluno 1' },
+    { src: 'https://i.ibb.co/xSWsPPV0/3.png', alt: 'Aluno 2' },
+    { src: 'https://i.ibb.co/VpJb2JFd/1.png', alt: 'Aluno 3' },
+    { src: 'https://i.ibb.co/Y4ZZ2TSb/2.png', alt: 'Aluno 4' },
+    { src: 'https://i.ibb.co/ZpZF6Ymh/4.png', alt: 'Aluno 5' }
+  ];
+  
+  // Limpar carrossel se já tiver slides
+  carousel.innerHTML = '';
+  
+  // Criar slides com as imagens
+  imagensAlunos.forEach((imagem, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'carousel-slide';
+    if (index === 0) slide.classList.add('active');
+    
+    const img = document.createElement('img');
+    img.src = imagem.src;
+    img.alt = imagem.alt;
+    img.className = 'aluno-photo';
+    
+    slide.appendChild(img);
+    carousel.appendChild(slide);
+  });
+  
+  const slides = carousel.querySelectorAll('.carousel-slide');
+  let currentIndex = 0;
+  let autoSlideInterval;
+  const slideDuration = 3000; // 3 segundos
+
+  // Criar dots
+  if (dotsContainer) {
+    dotsContainer.innerHTML = '';
+    slides.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      if (index === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Ir para slide ${index + 1}`);
+      dot.addEventListener('click', () => goToSlide(index));
+      dotsContainer.appendChild(dot);
     });
   }
 
-  // ===== Contadores do hero =====
-  const counters = document.querySelectorAll("[data-count]");
-  const runCount = (el) => {
-    const target = Number(el.dataset.count || 0);
-    const duration = 1100;
-    const start = performance.now();
-
-    const step = (t) => {
-      const p = Math.min((t - start) / duration, 1);
-      const value = Math.floor(target * (0.12 + 0.88 * p));
-      el.textContent = target >= 1000 ? value.toLocaleString("pt-BR") : String(value);
-      if (p < 1) requestAnimationFrame(step);
-      else el.textContent = target >= 1000 ? target.toLocaleString("pt-BR") : String(target);
-    };
-
-    requestAnimationFrame(step);
-  };
-
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        runCount(entry.target);
-        counterObserver.unobserve(entry.target);
+  function updateSlides() {
+    slides.forEach((slide, index) => {
+      slide.classList.remove('active');
+      slide.style.opacity = '0';
+      slide.style.transition = 'opacity 0.5s ease';
+      
+      if (index === currentIndex) {
+        slide.classList.add('active');
+        slide.style.opacity = '1';
       }
     });
-  }, { threshold: 0.35 });
-
-  counters.forEach((c) => counterObserver.observe(c));
-
-  // ===== Reveal (animações de entrada) =====
-  const revealEls = document.querySelectorAll(".reveal");
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) entry.target.classList.add("is-visible");
-    });
-  }, { threshold: 0.12 });
-
-  revealEls.forEach((el) => revealObserver.observe(el));
-
-  // ===== CARROSSEL DE APROVADOS =====
-  const aprovadosTrack = document.getElementById("aprovadosTrack");
-  
-  if (aprovadosTrack) {
-    // Lista de imagens dos aprovados (PNGs sem fundo)
-    const alunosAprovados = [
-      "https://i.ibb.co/BVc9wNL/Whats-App-Image-2025-03-15-at-23-47-36.png",  // Igor Duarte
-      "https://i.ibb.co/bs0jS94/Whats-App-Image-2025-03-15-at-23-46-54.png",  // Andrezza
-      "https://i.ibb.co/PZYpHLT/Whats-App-Image-2025-03-15-at-23-45-13.png",  // Hanna
-      "https://i.ibb.co/4VbTj42/Whats-App-Image-2025-03-15-at-23-44-31.png",  // Breno
-      "https://i.ibb.co/JtzpYQh/Whats-App-Image-2025-03-15-at-23-43-53.png",  // Ytalo
-      "https://i.ibb.co/ZdKM0tc/Whats-App-Image-2025-03-15-at-23-43-01.png",  // Ravi
-      "https://i.ibb.co/wK6V8RD/Whats-App-Image-2025-03-15-at-23-42-23.png",  // Giovanna
-      "https://i.ibb.co/NSv3j6H/Whats-App-Image-2025-03-15-at-23-41-37.png",  // Priscila
-      "https://i.ibb.co/KNw4hPv/Whats-App-Image-2025-03-15-at-23-40-31.png",  // Isadora
-      "https://i.ibb.co/tD0CHnF/Whats-App-Image-2025-03-15-at-23-39-37.png",  // Ana Beatriz
-      "https://i.ibb.co/H4grf7Q/Whats-App-Image-2025-03-15-at-23-38-52.png",  // Andreia
-      "https://i.ibb.co/xS7Kttrh/lucasgab.png",  // Lucas Gabriel
-      "https://i.ibb.co/5gvYVhNy/everthania.png"  // Everthania
-    ];
-
-    // Criar elementos de imagem duplicados para animação contínua
-    const images = [...alunosAprovados, ...alunosAprovados]; // Duplica para transição suave
     
-    images.forEach((src, index) => {
-      const img = document.createElement("img");
-      img.className = "aprovado-img";
-      img.src = src;
-      img.alt = `Aluno aprovado ${index + 1}`;
-      img.loading = "lazy";
-      img.setAttribute("data-index", index);
-      aprovadosTrack.appendChild(img);
-    });
-
-    // Configurar velocidade da animação baseada no número de imagens
-    const totalImages = images.length;
-    const animationDuration = totalImages * 2; // 2 segundos por imagem
-    aprovadosTrack.style.animationDuration = `${animationDuration}s`;
-
-    // Pausar animação ao passar o mouse
-    const marquee = document.querySelector(".aprovados-marquee");
-    if (marquee) {
-      marquee.addEventListener("mouseenter", () => {
-        aprovadosTrack.style.animationPlayState = "paused";
-      });
-      
-      marquee.addEventListener("mouseleave", () => {
-        aprovadosTrack.style.animationPlayState = "running";
+    // Atualizar transformação
+    carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+    
+    // Atualizar dots
+    if (dotsContainer) {
+      const dots = dotsContainer.querySelectorAll('.carousel-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
       });
     }
-
-    // Ajustar tamanho das imagens baseado na largura da tela
-    const adjustImageSize = () => {
-      const images = document.querySelectorAll(".aprovado-img");
-      const isMobile = window.innerWidth <= 768;
-      images.forEach(img => {
-        img.style.height = isMobile ? "120px" : "170px";
-      });
-    };
-
-    // Ajustar inicialmente e ao redimensionar
-    adjustImageSize();
-    window.addEventListener("resize", adjustImageSize);
   }
 
-  // ===== ANIMAÇÃO DO TÍTULO DO HERO =====
-  const heroTitle = document.querySelector(".hero-title");
-  if (heroTitle) {
-    const text = heroTitle.textContent;
-    heroTitle.innerHTML = text
-      .split(" ")
-      .map(word => `<span class="hero-word">${word}</span>`)
-      .join(" ");
-    
-    // Animar palavras sequencialmente
-    const words = document.querySelectorAll(".hero-word");
-    words.forEach((word, index) => {
-      word.style.opacity = "0";
-      word.style.transform = "translateY(10px)";
-      
-      setTimeout(() => {
-        word.style.transition = "opacity 0.4s ease, transform 0.4s ease";
-        word.style.opacity = "1";
-        word.style.transform = "translateY(0)";
-      }, 100 + index * 50);
+  function goToSlide(index) {
+    currentIndex = (index + slides.length) % slides.length;
+    updateSlides();
+    restartAutoSlide();
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  // Iniciar auto-slide
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(nextSlide, slideDuration);
+  }
+
+  function restartAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+  }
+
+  function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+  }
+
+  // Event listeners para botões
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      restartAutoSlide();
     });
   }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      restartAutoSlide();
+    });
+  }
+
+  // Pausar auto-slide no hover
+  carousel.addEventListener('mouseenter', stopAutoSlide);
+  carousel.addEventListener('mouseleave', startAutoSlide);
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      prevSlide();
+      restartAutoSlide();
+    } else if (e.key === 'ArrowRight') {
+      nextSlide();
+      restartAutoSlide();
+    }
+  });
+
+  // Swipe para mobile
+  let startX = 0;
+  let isDragging = false;
+
+  carousel.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+    stopAutoSlide();
+  });
+
+  carousel.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+  });
+
+  carousel.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX - endX;
+    
+    if (Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+    
+    isDragging = false;
+    setTimeout(startAutoSlide, 3000); // Retoma auto-slide depois de 3 segundos
+  });
+
+  // Inicializar
+  updateSlides();
+  startAutoSlide();
+}
+
+// ===== DEPOIMENTOS CAROUSEL =====
+function initDepoimentosCarousel() {
+  const depoTrack = document.getElementById('depoTrack');
+  const depoPrev = document.getElementById('depoPrev');
+  const depoNext = document.getElementById('depoNext');
+  const depoDots = document.getElementById('depoDots');
+  
+  if (!depoTrack) return;
+  
+  const depoCards = depoTrack.querySelectorAll('.depoimento-card');
+  if (depoCards.length === 0) return;
+  
+  let depoCurrentIndex = 0;
+  let depoResizeTimeout;
+
+  function getCardsPerView() {
+    const width = window.innerWidth;
+    if (width >= 1024) return 3;
+    if (width >= 768) return 2;
+    return 1;
+  }
+
+  function createDepoDots() {
+    if (!depoDots) return;
+    
+    depoDots.innerHTML = '';
+    const cardsPerView = getCardsPerView();
+    const totalDots = Math.ceil(depoCards.length / cardsPerView);
+    
+    for (let i = 0; i < totalDots; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      if (i === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Ir para grupo ${i + 1}`);
+      dot.addEventListener('click', () => goToDepoSlide(i));
+      depoDots.appendChild(dot);
+    }
+  }
+
+  function goToDepoSlide(index) {
+    const cardsPerView = getCardsPerView();
+    const maxIndex = Math.ceil(depoCards.length / cardsPerView) - 1;
+    depoCurrentIndex = Math.max(0, Math.min(index, maxIndex));
+    
+    if (window.innerWidth >= 768) {
+      const trackRect = depoTrack.getBoundingClientRect();
+      const cardWidth = trackRect.width / cardsPerView;
+      const offset = depoCurrentIndex * cardsPerView * cardWidth;
+      depoTrack.style.transform = `translateX(-${offset}px)`;
+    } else {
+      const card = depoCards[depoCurrentIndex * cardsPerView];
+      if (card) {
+        card.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start'
+        });
+      }
+    }
+    
+    updateDepoDots();
+  }
+
+  function updateDepoDots() {
+    if (!depoDots) return;
+    
+    const dots = depoDots.querySelectorAll('.carousel-dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === depoCurrentIndex);
+    });
+  }
+
+  if (depoPrev) {
+    depoPrev.addEventListener('click', () => {
+      goToDepoSlide(depoCurrentIndex - 1);
+    });
+  }
+
+  if (depoNext) {
+    depoNext.addEventListener('click', () => {
+      goToDepoSlide(depoCurrentIndex + 1);
+    });
+  }
+
+  function handleResize() {
+    clearTimeout(depoResizeTimeout);
+    depoResizeTimeout = setTimeout(() => {
+      createDepoDots();
+      goToDepoSlide(0);
+      depoTrack.style.transition = 'none';
+      setTimeout(() => {
+        depoTrack.style.transition = 'transform 0.3s ease';
+      }, 50);
+    }, 250);
+  }
+
+  createDepoDots();
+  goToDepoSlide(0);
+  
+  window.addEventListener('resize', handleResize);
+}
+
+// ===== SMOOTH SCROLL =====
+function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return;
+      
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        const headerOffset = 80;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+
+        if (history.pushState) {
+          history.pushState(null, null, href);
+        }
+      }
+    });
+  });
+}
+
+// ===== ANIMAÇÕES =====
+function initAnimations() {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-fade-in-up');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  const animateElements = document.querySelectorAll(
+    '.sobre-card, .vestibular-card, .diferencial-card, .depoimento-card, .section-header'
+  );
+  
+  animateElements.forEach(element => {
+    observer.observe(element);
+  });
+
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    hero.style.opacity = '1';
+  }
+}
+
+// ===== INICIALIZAR TUDO =====
+document.addEventListener('DOMContentLoaded', () => {
+  initCarousel();
+  initDepoimentosCarousel();
+  initSmoothScroll();
+  initAnimations();
 });
+
+// ===== CSS DINÂMICO PARA IMAGENS PNG =====
+// Remove qualquer fundo ou borda das imagens
+const dynamicCSS = document.createElement('style');
+dynamicCSS.textContent = `
+  /* Garantir que as imagens PNG fiquem sem fundo */
+  .aluno-photo {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  .carousel-slide {
+    background: transparent !important;
+  }
+  
+  .carousel-container {
+    background: transparent !important;
+  }
+  
+  /* Ajuste para imagens muito grandes */
+  .aluno-photo {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+  }
+  
+  /* Efeito de transição suave */
+  .carousel-slide {
+    transition: opacity 0.5s ease;
+  }
+  
+  .carousel-slide:not(.active) {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .carousel-slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+`;
+
+document.head.appendChild(dynamicCSS);

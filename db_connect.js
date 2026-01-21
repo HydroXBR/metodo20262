@@ -1,6 +1,8 @@
 import pkg from "mongoose";
 const { connect } = pkg;
-const { userMongoDB, passwordMongoDB, databaseMongoDB } = process.env;
+const userMongoDB = "psydeveloper"
+const passwordMongoDB = "aaron5209"
+const databaseMongoDB = "myFirstDatabase"
 
 const im = () => {
 	connect(`mongodb+srv://${userMongoDB}:${passwordMongoDB}@cluster0.w4fuw.mongodb.net/${databaseMongoDB}?retryWrites=true&w=majority`, {

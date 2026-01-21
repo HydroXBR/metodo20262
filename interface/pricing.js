@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Toggle mensal/anual
     const toggleBtns = document.querySelectorAll('.toggle-btn');
-    const toggleSlider = document.querySelector('.toggle-slider');
     const mensalPrices = document.querySelectorAll('.mensal-price');
     const anualPrices = document.querySelectorAll('.anual-price');
     const pricePeriods = document.querySelectorAll('.price-period');
@@ -14,12 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             
-            // Mover slider
+            // Mostrar preços correspondentes
             if (period === 'anual') {
-                toggleSlider.style.transform = 'translateX(100%)';
                 showAnualPrices();
             } else {
-                toggleSlider.style.transform = 'translateX(0)';
                 showMensalPrices();
             }
             
@@ -73,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Animação de entrada dos cards
-    const pricingCards = document.querySelectorAll('.pricing-card');
+    const pricingCards = document.querySelectorAll('.plan-card');
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
@@ -93,8 +90,45 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(card);
     });
     
+    // Menu mobile
+    const menuToggle = document.getElementById('menuToggle');
+    const navMobile = document.getElementById('navMobile');
+    
+    if (menuToggle && navMobile) {
+        menuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navMobile.classList.toggle('active');
+            
+            if (navMobile.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+    
+    // Fechar menu ao clicar em um link
+    const navLinks = document.querySelectorAll('.nav-mobile a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navMobile.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+    
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+    
     // Botões de plano com efeito
-    const planBtns = document.querySelectorAll('.plan-btn');
+    const planBtns = document.querySelectorAll('.plan-card .btn');
     
     planBtns.forEach(btn => {
         btn.addEventListener('mouseenter', function() {
@@ -106,7 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         btn.addEventListener('click', function(e) {
-            const planName = this.closest('.pricing-card').querySelector('.plan-name').textContent;
+            const planCard = this.closest('.plan-card');
+            const planName = planCard.querySelector('.plan-name').textContent;
             
             // Efeito de clique
             this.style.transform = 'scale(0.95)';
@@ -116,24 +151,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Salvar plano selecionado no localStorage
             localStorage.setItem('selectedPlan', planName);
+            
+            // Feedback visual
+            planCard.style.boxShadow = '0 0 0 3px rgba(254, 0, 0, 0.2)';
+            setTimeout(() => {
+                planCard.style.boxShadow = '';
+            }, 500);
         });
     });
     
-    // Menu mobile
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navMenu = document.querySelector('.nav-menu');
-    
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function() {
-            this.classList.toggle('active');
-            navMenu.classList.toggle('active');
-            
-            if (navMenu.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = 'auto';
-            }
-        });
-    }
-
+    // Inicializar com preços mensais
+    showMensalPrices();
 });

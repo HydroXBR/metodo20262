@@ -1,108 +1,79 @@
+// ranking.js
 document.addEventListener('DOMContentLoaded', function () {
-    const API_BASE_URL = '/api';
-    let currentSimulado = null;
+    let currentUser = null;
+    let simulados = [];
     let currentRankingData = [];
-    let currentTurma = null;
+    let currentSimulado = null;
+    let currentTurma = '';
     let currentPage = 1;
     const itemsPerPage = 15;
     let totalPages = 1;
 
-    // Verificar autenticação
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user || !user.id) {
-        window.location.href = 'login.html';
-        return;
-    }
-
     // Elementos DOM
-    const userAvatarElement = document.getElementById('userAvatar');
-    const userNameElement = document.getElementById('userName');
-    const simuladoSelect = document.getElementById('simuladoSelect');
-    const turmaSelect = document.getElementById('turmaSelect');
-    const applyFiltersBtn = document.getElementById('applyFilters');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const exportBtn = document.getElementById('exportBtn');
-    const rankingBody = document.getElementById('rankingBody');
-    const prevPageBtn = document.getElementById('prevPage');
-    const nextPageBtn = document.getElementById('nextPage');
-    const pageInfo = document.getElementById('pageInfo');
-    const resultsCount = document.getElementById('resultsCount');
-    const pageNumbers = document.getElementById('pageNumbers');
-    const viewDetailsBtn = document.getElementById('viewDetailsBtn');
+    const elements = {
+        userName: document.getElementById('userName'),
+        userAvatar: document.getElementById('userAvatar'),
+        logoutBtn: document.getElementById('logoutBtn'),
+        totalStudents: document.getElementById('totalStudents'),
+        totalQuestions: document.getElementById('totalQuestions'),
+        averageScore: document.getElementById('averageScore'),
+        simuladoFilter: document.getElementById('simuladoFilter'),
+        turmaFilter: document.getElementById('turmaFilter'),
+        subjectFilter: document.getElementById('subjectFilter'),
+        applyFilters: document.getElementById('applyFilters'),
+        clearFilters: document.getElementById('clearFilters'),
+        exportRanking: document.getElementById('exportRanking'),
+        simuladoName: document.getElementById('simuladoName'),
+        simuladoDate: document.getElementById('simuladoDate'),
+        simuladoModel: document.getElementById('simuladoModel'),
+        simuladoQuestionsCount: document.getElementById('simuladoQuestionsCount'),
+        simuladoDescription: document.getElementById('simuladoDescription'),
+        goldName: document.getElementById('goldName'),
+        goldScore: document.getElementById('goldScore'),
+        silverName: document.getElementById('silverName'),
+        silverScore: document.getElementById('silverScore'),
+        bronzeName: document.getElementById('bronzeName'),
+        bronzeScore: document.getElementById('bronzeScore'),
+        rankingBody: document.getElementById('rankingBody'),
+        rankingPagination: document.getElementById('rankingPagination'),
+        sidebarTotalStudents: document.getElementById('sidebarTotalStudents'),
+        sidebarQuestions: document.getElementById('sidebarQuestions'),
+        sidebarAverage: document.getElementById('sidebarAverage'),
+        sidebarTopScore: document.getElementById('sidebarTopScore')
+    };
 
-    // Estatísticas
-    const totalStudentsElement = document.getElementById('totalStudents');
-    const averageScoreElement = document.getElementById('averageScore');
-    const totalQuestionsElement = document.getElementById('totalQuestions');
-
-    // Informações do simulado
-    const simuladoNameElement = document.getElementById('simuladoName');
-    const simuladoDateElement = document.getElementById('simuladoDate');
-    const simuladoQuestionsElement = document.getElementById('simuladoQuestions');
-    const simuladoModelElement = document.getElementById('simuladoModel');
-    const simuladoDescriptionElement = document.getElementById('simuladoDescription');
-    const turmasListElement = document.getElementById('turmasList');
-
-    // Medalhas
-    const goldNameElement = document.getElementById('goldName');
-    const goldScoreElement = document.getElementById('goldScore');
-    const silverNameElement = document.getElementById('silverName');
-    const silverScoreElement = document.getElementById('silverScore');
-    const bronzeNameElement = document.getElementById('bronzeName');
-    const bronzeScoreElement = document.getElementById('bronzeScore');
-
-    // Desempenho do usuário
-    const myPerformanceSection = document.getElementById('myPerformanceSection');
-    const myRankElement = document.getElementById('myRank');
-    const myScoreElement = document.getElementById('myScore');
-    const myPercentElement = document.getElementById('myPercent');
-
-    // Inicializar
-    async function init() {
-        updateUserInfo();
-        await loadSimulados();
-        setupEventListeners();
-        addAdminItemToNavbar();
-        
-        // Carregar último simulado visto
-        const lastSimuladoId = localStorage.getItem('lastViewedSimulado');
-        if (lastSimuladoId) {
-            simuladoSelect.value = lastSimuladoId;
-            await loadSimuladoInfo(lastSimuladoId);
-        }
-    }
-
-    // Atualizar informações do usuário
-    function updateUserInfo() {
-        if (userAvatarElement && user.profilePicture) {
-            userAvatarElement.src = user.profilePicture;
-        }
-        if (userNameElement) {
-            userNameElement.textContent = user.completename || 'Usuário';
-        }
-    }
 
     // Carregar lista de simulados
     async function loadSimulados() {
         try {
             const response = await fetch('/varsimulados');
-            const simulados = await response.json();
+            if (!response.ok) throw new Error('Erro na resposta da API');
             
-            if (Array.isArray(simulados)) {
-                populateSimuladoSelect(simulados);
+            const data = await response.json();
+            
+            if (Array.isArray(data)) {
+                simulados = data;
+                populateSimuladoFilter();
+                
+                // Carregar último simulado visto
+                const lastSimuladoId = localStorage.getItem('lastViewedSimulado');
+                if (lastSimuladoId) {
+                    elements.simuladoFilter.value = lastSimuladoId;
+                    await loadSimuladoInfo(lastSimuladoId);
+                }
             } else {
-                throw new Error('Formato de dados inválido');
+                console.warn('Formato de dados inválido, usando dados mockados');
+                useMockSimulados();
             }
         } catch (error) {
             console.error('Erro ao carregar simulados:', error);
-            showError('Erro ao carregar lista de simulados');
-            // Usar dados mockados como fallback
+            showToast('Erro ao carregar lista de simulados', 'error');
             useMockSimulados();
         }
     }
 
-    function populateSimuladoSelect(simulados) {
-        simuladoSelect.innerHTML = '<option value="">Escolha um simulado...</option>';
+    function populateSimuladoFilter() {
+        elements.simuladoFilter.innerHTML = '<option value="">Selecione um simulado...</option>';
         
         // Ordenar por data (mais recentes primeiro)
         const sortedSimulados = simulados.sort((a, b) => {
@@ -114,191 +85,171 @@ document.addEventListener('DOMContentLoaded', function () {
         sortedSimulados.forEach(simulado => {
             const option = document.createElement('option');
             option.value = simulado.id;
-            option.textContent = `${simulado.name} (${simulado.date.replace(/-/g, '/')})`;
-            simuladoSelect.appendChild(option);
+            option.textContent = `${simulado.name} (${formatDate(simulado.date)})`;
+            elements.simuladoFilter.appendChild(option);
         });
     }
 
     function parseDate(dateString) {
+        if (!dateString) return new Date();
         const [day, month, year] = dateString.split('-').map(Number);
         return new Date(year, month - 1, day);
     }
 
-    // Carregar informações do simulado selecionado
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        const [day, month, year] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+    }
+
+    // Carregar informações do simulado
     async function loadSimuladoInfo(simuladoId) {
         try {
-            // Buscar dados dos simulados
-            const response = await fetch('/varsimulados');
-            const simulados = await response.json();
-            
             currentSimulado = simulados.find(s => s.id === simuladoId);
             
             if (!currentSimulado) {
                 throw new Error('Simulado não encontrado');
             }
 
-            updateSimuladoInfo(currentSimulado);
-            updateTurmaSelect(currentSimulado.turmas);
+            updateSimuladoInfo();
             
-            // Selecionar primeira turma por padrão
-            if (currentSimulado.turmas && currentSimulado.turmas.length > 0) {
-                turmaSelect.value = currentSimulado.turmas[0];
-                currentTurma = currentSimulado.turmas[0];
-                await loadRanking();
-            }
-
+            // Limpar turma selecionada quando trocar de simulado
+            elements.turmaFilter.value = '';
+            currentTurma = '';
+            
         } catch (error) {
             console.error('Erro ao carregar informações do simulado:', error);
-            showError('Erro ao carregar informações do simulado');
+            showToast('Erro ao carregar informações do simulado', 'error');
         }
     }
 
-    function updateSimuladoInfo(simulado) {
-        simuladoNameElement.textContent = simulado.name;
-        simuladoDescriptionElement.textContent = simulado.description || '-';
+    function updateSimuladoInfo() {
+        elements.simuladoName.textContent = currentSimulado.name || 'Simulado';
+        elements.simuladoDescription.textContent = currentSimulado.description || 'Sem descrição disponível';
         
         // Formatar data
-        const dateParts = simulado.date.split('-');
-        simuladoDateElement.innerHTML = `<i class="fas fa-calendar"></i> ${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+        const dateStr = currentSimulado.date ? formatDate(currentSimulado.date) : '-';
+        elements.simuladoDate.innerHTML = `<i class="fas fa-calendar"></i> ${dateStr}`;
         
         // Modelo
-        simuladoModelElement.innerHTML = `<i class="fas fa-university"></i> ${simulado.model}`;
+        elements.simuladoModel.innerHTML = `<i class="fas fa-university"></i> ${currentSimulado.model || 'SIS'}`;
         
         // Questões
-        simuladoQuestionsElement.innerHTML = `<i class="fas fa-question-circle"></i> ${simulado.questions} questões`;
-        totalQuestionsElement.textContent = simulado.questions;
-        
-        // Turmas disponíveis
-        updateTurmasList(simulado.turmas);
+        const questions = currentSimulado.questions || 0;
+        elements.simuladoQuestionsCount.innerHTML = `<i class="fas fa-question-circle"></i> ${questions} questões`;
+        elements.totalQuestions.textContent = questions;
+        elements.sidebarQuestions.textContent = questions;
     }
 
-    function updateTurmaSelect(turmas) {
-        turmaSelect.innerHTML = '<option value="">Escolha uma turma...</option>';
-        
-        turmas.forEach(turma => {
-            const option = document.createElement('option');
-            option.value = turma;
-            option.textContent = turma > 3 ? `${turma - 3}° ano (Faltosos)` : `${turma}° ano`;
-            turmaSelect.appendChild(option);
-        });
-    }
-
-    function updateTurmasList(turmas) {
-        turmasListElement.innerHTML = '';
-        
-        turmas.forEach(turma => {
-            const turmaBadge = document.createElement('div');
-            turmaBadge.className = 'turma-badge';
-            if (turma === currentTurma) {
-                turmaBadge.classList.add('active');
-            }
-            turmaBadge.textContent = turma > 3 ? `${turma - 3}° (F)` : `${turma}°`;
-            turmasListElement.appendChild(turmaBadge);
-        });
-    }
-
-    // Carregar ranking
+    // Carregar ranking - USANDO A API CORRETA
     async function loadRanking() {
-        if (!currentSimulado || !currentTurma) {
-            showError('Selecione um simulado e uma turma');
+        if (!currentSimulado) {
+            showToast('Selecione um simulado primeiro', 'error');
             return;
         }
 
+        if (!currentTurma) {
+            showToast('Selecione uma turma primeiro', 'error');
+            return;
+        }
+
+        showLoading();
+
         try {
-            showLoading();
+            // Usar a API que você mostrou: /apiranking?id=ID&sel=TURMA
+            const params = new URLSearchParams({
+                id: currentSimulado.id,
+                sel: currentTurma
+            });
+
+            const response = await fetch(`/apiranking?${params}`);
+            if (!response.ok) throw new Error('Erro ao carregar ranking');
             
-            // Buscar ranking da API (usando o endpoint existente)
-            const response = await fetch(`/apiranking?id=${currentSimulado.id}&sel=${currentTurma}`);
             const rankingData = await response.json();
-
-            currentRankingData = rankingData;
-            currentPage = 1;
             
-            updateStatistics(rankingData);
-            updateMedals(rankingData);
-            updateUserPerformance(rankingData);
-            renderRankingTable();
-            updatePagination();
+            if (Array.isArray(rankingData)) {
+                currentRankingData = rankingData;
+                currentPage = 1;
+                
+                updateStatistics();
+                updateMedals();
+                renderRankingTable();
+                updatePagination();
+                
+                // Salvar último simulado visto
+                localStorage.setItem('lastViewedSimulado', currentSimulado.id);
+                localStorage.setItem('lastViewedTurma', currentTurma);
+                
+            } else {
+                throw new Error('Formato de dados inválido');
+            }
             
-            // Salvar último simulado visto
-            localStorage.setItem('lastViewedSimulado', currentSimulado.id);
-
         } catch (error) {
             console.error('Erro ao carregar ranking:', error);
-            showError('Erro ao carregar dados do ranking');
+            showToast('Erro ao carregar dados do ranking', 'error');
+            currentRankingData = [];
+            renderRankingTable();
         } finally {
             hideLoading();
         }
     }
 
-    function updateStatistics(rankingData) {
-        totalStudentsElement.textContent = rankingData.length;
+    function updateStatistics() {
+        const totalStudents = currentRankingData.length;
+        elements.totalStudents.textContent = totalStudents;
+        elements.sidebarTotalStudents.textContent = totalStudents;
         
-        if (rankingData.length > 0) {
-            const totalScore = rankingData.reduce((sum, student) => sum + student.pont, 0);
-            const totalPossible = rankingData.length * currentSimulado.questions;
-            const averagePercent = rankingData.length > 0 
-                ? Math.round((totalScore / (rankingData.length * currentSimulado.questions)) * 1000) / 10
-                : 0;
-            averageScoreElement.textContent = `${averagePercent}%`;
-        } else {
-            averageScoreElement.textContent = '0%';
-        }
-    }
-
-    function updateMedals(rankingData) {
-        if (rankingData.length >= 1) {
-            goldNameElement.textContent = rankingData[0].name;
-            goldScoreElement.textContent = `${rankingData[0].pont} acertos`;
-        } else {
-            goldNameElement.textContent = '-';
-            goldScoreElement.textContent = '0 acertos';
-        }
-
-        if (rankingData.length >= 2) {
-            silverNameElement.textContent = rankingData[1].name;
-            silverScoreElement.textContent = `${rankingData[1].pont} acertos`;
-        } else {
-            silverNameElement.textContent = '-';
-            silverScoreElement.textContent = '0 acertos';
-        }
-
-        if (rankingData.length >= 3) {
-            bronzeNameElement.textContent = rankingData[2].name;
-            bronzeScoreElement.textContent = `${rankingData[2].pont} acertos`;
-        } else {
-            bronzeNameElement.textContent = '-';
-            bronzeScoreElement.textContent = '0 acertos';
-        }
-    }
-
-    function updateUserPerformance(rankingData) {
-        const userRank = rankingData.findIndex(student => 
-            student.id === user.id || 
-            student.completename === user.completename
-        );
-
-        if (userRank !== -1) {
-            const userData = rankingData[userRank];
-            myPerformanceSection.style.display = 'block';
-            myRankElement.textContent = `#${userRank + 1}`;
-            myScoreElement.textContent = userData.pont;
-            myPercentElement.textContent = `${userData.percent}%`;
+        if (totalStudents > 0) {
+            const totalScore = currentRankingData.reduce((sum, student) => sum + (student.pont || 0), 0);
+            const totalPossible = totalStudents * (currentSimulado.questions || 1);
+            const averagePercent = Math.round((totalScore / totalPossible) * 1000) / 10;
             
-            // Adicionar classe de percentual
-            myPercentElement.className = 'stat-value percent';
+            elements.averageScore.textContent = `${averagePercent}%`;
+            elements.sidebarAverage.textContent = `${averagePercent}%`;
+            
+            // Maior nota
+            const topScore = Math.max(...currentRankingData.map(s => s.pont || 0));
+            elements.sidebarTopScore.textContent = topScore;
+            
         } else {
-            myPerformanceSection.style.display = 'none';
+            elements.averageScore.textContent = '0%';
+            elements.sidebarAverage.textContent = '0%';
+            elements.sidebarTopScore.textContent = '0';
+        }
+    }
+
+    function updateMedals() {
+        // Limpar medalhas primeiro
+        elements.goldName.textContent = '-';
+        elements.goldScore.textContent = '0 acertos';
+        elements.silverName.textContent = '-';
+        elements.silverScore.textContent = '0 acertos';
+        elements.bronzeName.textContent = '-';
+        elements.bronzeScore.textContent = '0 acertos';
+
+        if (currentRankingData.length >= 1) {
+            elements.goldName.textContent = currentRankingData[0].name || '-';
+            elements.goldScore.textContent = `${currentRankingData[0].pont || 0} acertos`;
+        }
+
+        if (currentRankingData.length >= 2) {
+            elements.silverName.textContent = currentRankingData[1].name || '-';
+            elements.silverScore.textContent = `${currentRankingData[1].pont || 0} acertos`;
+        }
+
+        if (currentRankingData.length >= 3) {
+            elements.bronzeName.textContent = currentRankingData[2].name || '-';
+            elements.bronzeScore.textContent = `${currentRankingData[2].pont || 0} acertos`;
         }
     }
 
     function renderRankingTable() {
-        rankingBody.innerHTML = '';
+        elements.rankingBody.innerHTML = '';
 
         if (currentRankingData.length === 0) {
             const emptyRow = document.createElement('tr');
             emptyRow.innerHTML = `
-                <td colspan="6" style="text-align: center; padding: 3rem;">
+                <td colspan="6">
                     <div class="empty-state">
                         <i class="fas fa-users-slash"></i>
                         <h3>Nenhum participante</h3>
@@ -306,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </td>
             `;
-            rankingBody.appendChild(emptyRow);
+            elements.rankingBody.appendChild(emptyRow);
             return;
         }
 
@@ -318,170 +269,124 @@ document.addEventListener('DOMContentLoaded', function () {
         pageData.forEach((student, index) => {
             const globalIndex = startIndex + index;
             const row = document.createElement('tr');
-            row.classList.add('ranking-row', 'fade-in');
+            row.classList.add('fade-in');
             
             // Adicionar classes para medalhas
             if (globalIndex === 0) {
-                row.classList.add('gold');
+                row.classList.add('gold-row');
             } else if (globalIndex === 1) {
-                row.classList.add('silver');
+                row.classList.add('silver-row');
             } else if (globalIndex === 2) {
-                row.classList.add('bronze');
+                row.classList.add('bronze-row');
             }
             
             // Verificar se é o usuário atual
-            if (student.id === user.id || student.completename === user.completename) {
+            const isCurrentUser = student.id === currentUser._id || 
+                                 student.completename === currentUser.completename;
+            if (isCurrentUser) {
                 row.classList.add('user-row');
             }
 
-            // Determinar turma para exibição
-            let turmaDisplay = student.turma;
+            // Determinar turma para exibição (baseado na lógica da API)
+            let turmaDisplay = student.turma || 0;
             if (currentTurma > 3) {
-                turmaDisplay = `${student.turma}° (F)`;
+                // Turmas F (faltosos)
+                turmaDisplay = `${turmaDisplay}° (F)`;
             } else {
-                turmaDisplay = `${student.turma}°`;
+                // Turmas regulares
+                turmaDisplay = `${turmaDisplay}°`;
             }
 
             // Determinar classe do percentual
             let percentClass = 'low';
-            if (student.percent >= 70) percentClass = 'high';
-            else if (student.percent >= 50) percentClass = 'medium';
+            const percent = student.percent || 0;
+            if (percent >= 70) percentClass = 'high';
+            else if (percent >= 50) percentClass = 'medium';
+
+            // Formatar nome (usar nome curto da API)
+            const displayName = student.name || student.completename || 'Sem nome';
 
             row.innerHTML = `
                 <td class="position-cell">${globalIndex + 1}</td>
                 <td>
                     <div class="student-name">
-                        <a href="desempenho.html?id=${student.id}&simulado=${currentSimulado.id}" 
-                           title="Ver desempenho detalhado">
-                            ${student.name}
-                        </a>
+                        ${displayName}
                     </div>
                 </td>
                 <td>
                     <span class="class-badge">${turmaDisplay}</span>
                 </td>
                 <td>
-                    <span class="score-value">${student.pont}</span>
+                    <span class="score-value">${student.pont || 0}</span>
                 </td>
                 <td>
-                    <span class="percent-value ${percentClass}">${student.percent}%</span>
+                    <span class="percent-value ${percentClass}">${percent}%</span>
                 </td>
                 <td>
-                    <button class="details-btn" onclick="viewStudentDetails('${student.id}', '${currentSimulado.id}')">
+                    <button class="details-btn" onclick="viewStudentDetails('${student.id}', '${currentSimulado?.id || ''}')">
                         <i class="fas fa-chart-bar"></i>
                         <span>Detalhes</span>
                     </button>
                 </td>
             `;
 
-            rankingBody.appendChild(row);
+            elements.rankingBody.appendChild(row);
         });
     }
 
     function updatePagination() {
         totalPages = Math.ceil(currentRankingData.length / itemsPerPage);
         
-        pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
-        resultsCount.textContent = `${currentRankingData.length} participantes`;
+        elements.rankingPagination.innerHTML = '';
         
-        prevPageBtn.disabled = currentPage === 1;
-        nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+        if (totalPages <= 1) return;
         
-        updatePageNumbers();
-    }
-
-    function updatePageNumbers() {
-        pageNumbers.innerHTML = '';
+        // Botão anterior
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn';
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderRankingTable();
+                updatePagination();
+            }
+        });
+        elements.rankingPagination.appendChild(prevBtn);
         
-        // Mostrar até 5 números de página
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        
-        if (endPage - startPage < 4) {
-            startPage = Math.max(1, endPage - 4);
-        }
-        
-        for (let i = startPage; i <= endPage; i++) {
+        // Números das páginas
+        for (let i = 1; i <= totalPages; i++) {
             const pageBtn = document.createElement('button');
             pageBtn.className = 'page-btn';
-            if (i === currentPage) {
-                pageBtn.classList.add('active');
-            }
+            if (i === currentPage) pageBtn.classList.add('active');
             pageBtn.textContent = i;
             pageBtn.addEventListener('click', () => {
                 currentPage = i;
                 renderRankingTable();
                 updatePagination();
             });
-            pageNumbers.appendChild(pageBtn);
+            elements.rankingPagination.appendChild(pageBtn);
         }
-    }
-
-    // Funções de utilidade
-    function showLoading() {
-        rankingBody.innerHTML = `
-            <tr>
-                <td colspan="6" style="text-align: center; padding: 3rem;">
-                    <div class="loading-spinner"></div>
-                    <p style="margin-top: 1rem; color: var(--azul);">Carregando ranking...</p>
-                </td>
-            </tr>
-        `;
-    }
-
-    function hideLoading() {
-        // A renderização do ranking já acontece
-    }
-
-    function showError(message) {
-        showNotification(message, 'error');
-    }
-
-    function showSuccess(message) {
-        showNotification(message, 'success');
-    }
-
-    function showNotification(message, type) {
-        // Remover notificações existentes
-        const existingNotifications = document.querySelectorAll('.notification');
-        existingNotifications.forEach(notif => notif.remove());
-
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
-            <span>${message}</span>
-        `;
-
-        notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: ${type === 'error' ? '#f8d7da' : '#d4edda'};
-            color: ${type === 'error' ? '#721c24' : '#155724'};
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            z-index: 9999;
-            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            max-width: 400px;
-            border-left: 4px solid ${type === 'error' ? '#dc3545' : '#28a745'};
-        `;
-
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.style.animation = 'slideOut 0.4s ease forwards';
-            setTimeout(() => notification.remove(), 400);
-        }, 4000);
+        
+        // Botão próximo
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn';
+        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderRankingTable();
+                updatePagination();
+            }
+        });
+        elements.rankingPagination.appendChild(nextBtn);
     }
 
     // Dados mockados para fallback
     function useMockSimulados() {
-        const mockSimulados = [
+        simulados = [
             {
                 id: "052025",
                 name: "14° Simulado - 2025",
@@ -492,123 +397,54 @@ document.addEventListener('DOMContentLoaded', function () {
                 turmas: [1, 2, 3]
             }
         ];
-
-        populateSimuladoSelect(mockSimulados);
-    }
-
-    // Setup event listeners
-    function setupEventListeners() {
-        // Quando selecionar um simulado
-        simuladoSelect.addEventListener('change', async function() {
-            const simuladoId = this.value;
-            if (simuladoId) {
-                await loadSimuladoInfo(simuladoId);
-            } else {
-                clearSimuladoInfo();
-            }
-        });
-
-        // Quando selecionar uma turma
-        turmaSelect.addEventListener('change', function() {
-            currentTurma = this.value;
-            updateTurmasList(currentSimulado.turmas);
-            if (currentTurma) {
-                loadRanking();
-            }
-        });
-
-        // Aplicar filtros
-        applyFiltersBtn.addEventListener('click', () => {
-            if (simuladoSelect.value && turmaSelect.value) {
-                loadRanking();
-            } else {
-                showError('Selecione um simulado e uma turma');
-            }
-        });
-
-        // Atualizar
-        refreshBtn.addEventListener('click', () => {
-            if (currentSimulado && currentTurma) {
-                loadRanking();
-            } else {
-                showError('Selecione um simulado e uma turma primeiro');
-            }
-        });
-
-        // Exportar
-        exportBtn.addEventListener('click', exportRanking);
-
-        // Paginação
-        prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderRankingTable();
-                updatePagination();
-            }
-        });
-
-        nextPageBtn.addEventListener('click', () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderRankingTable();
-                updatePagination();
-            }
-        });
-
-        // Ver detalhes do usuário
-        if (viewDetailsBtn) {
-            viewDetailsBtn.addEventListener('click', function() {
-                if (currentSimulado) {
-                    window.location.href = `desempenho.html?id=${user.id}&simulado=${currentSimulado.id}`;
-                } else {
-                    showError('Selecione um simulado primeiro');
-                }
-            });
-        }
-
-        // Menu mobile
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navMenu = document.querySelector('.nav-menu');
         
-        if (mobileMenuBtn && navMenu) {
-            mobileMenuBtn.addEventListener('click', function () {
-                this.classList.toggle('active');
-                navMenu.classList.toggle('active');
-            });
-        }
-
-        // Logout
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                if (confirm('Tem certeza que deseja sair?')) {
-                    localStorage.removeItem('user');
-                    window.location.href = 'login.html';
-                }
-            });
-        }
+        populateSimuladoFilter();
     }
 
-    // Limpar informações do simulado
-    function clearSimuladoInfo() {
-        simuladoNameElement.textContent = 'Selecione um simulado';
-        simuladoDescriptionElement.textContent = '-';
-        simuladoDateElement.innerHTML = '<i class="fas fa-calendar"></i> -';
-        simuladoModelElement.innerHTML = '<i class="fas fa-university"></i> -';
-        simuladoQuestionsElement.innerHTML = '<i class="fas fa-question-circle"></i> 0 questões';
-        turmasListElement.innerHTML = '';
-        totalQuestionsElement.textContent = '0';
-        currentRankingData = [];
-        renderRankingTable();
-        updatePagination();
-        myPerformanceSection.style.display = 'none';
+    function showLoading() {
+        elements.rankingBody.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Carregando ranking...</p>
+                    </div>
+                </td>
+            </tr>
+        `;
+        
+        // Limpar medalhas enquanto carrega
+        updateMedals();
+    }
+
+    function hideLoading() {
+        // A renderização do ranking já acontece
+    }
+
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        `;
+
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
 
     // Exportar ranking
     function exportRanking() {
         if (currentRankingData.length === 0) {
-            showError('Não há dados para exportar');
+            showToast('Não há dados para exportar', 'error');
             return;
         }
 
@@ -623,10 +459,10 @@ document.addEventListener('DOMContentLoaded', function () {
         currentRankingData.forEach((student, index) => {
             const row = [
                 index + 1,
-                student.name,
-                student.turma,
-                student.pont,
-                student.percent + "%"
+                student.name || student.completename || '',
+                student.turma || 0,
+                student.pont || 0,
+                (student.percent || 0) + "%"
             ];
 
             csvContent += row.join(",") + "\n";
@@ -636,96 +472,106 @@ document.addEventListener('DOMContentLoaded', function () {
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `ranking_${currentSimulado.id}_turma${currentTurma}_${new Date().toISOString().slice(0,10)}.csv`);
+        link.setAttribute("download", `ranking_${currentSimulado?.id}_turma${currentTurma}_${new Date().toISOString().slice(0,10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
-        showSuccess('Ranking exportado com sucesso!');
+        showToast('Ranking exportado com sucesso!', 'success');
     }
 
     // Função global para visualizar detalhes do estudante
     window.viewStudentDetails = function(studentId, simuladoId) {
+        if (!simuladoId) {
+            showToast('Selecione um simulado primeiro', 'error');
+            return;
+        }
         window.location.href = `desempenho.html?id=${studentId}&simulado=${simuladoId}`;
     };
 
-    // Adicionar item admin na navbar
-    function addAdminItemToNavbar() {
-        const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    // Event Listeners
+    elements.simuladoFilter.addEventListener('change', async function() {
+        const simuladoId = this.value;
+        if (simuladoId) {
+            await loadSimuladoInfo(simuladoId);
+        } else {
+            clearSimuladoInfo();
+        }
+    });
 
-        if (!userData || !userData.permissions || userData.permissions < 1) {
+    elements.turmaFilter.addEventListener('change', function() {
+        currentTurma = this.value;
+    });
+
+    elements.applyFilters.addEventListener('click', async () => {
+        if (!elements.simuladoFilter.value) {
+            showToast('Selecione um simulado', 'error');
             return;
         }
-
-        const navMenu = document.querySelector('.nav-menu');
-        const logoutItem = document.querySelector('.nav-item .nav-link[href="#"]');
-
-        if (!navMenu) {
-            console.error('Menu de navegação não encontrado');
+        
+        if (!elements.turmaFilter.value) {
+            showToast('Selecione uma turma', 'error');
             return;
         }
+        
+        await loadRanking();
+    });
 
-        // Verificar se o item de admin já existe
-        if (document.querySelector('.nav-item .nav-link[href="admin.html"]')) {
-            return;
+    elements.clearFilters.addEventListener('click', () => {
+        elements.simuladoFilter.value = '';
+        elements.turmaFilter.value = '';
+        elements.subjectFilter.value = '';
+        currentSimulado = null;
+        currentTurma = '';
+        currentRankingData = [];
+        clearSimuladoInfo();
+        renderRankingTable();
+        updatePagination();
+    });
+
+    elements.exportRanking.addEventListener('click', exportRanking);
+
+    // Logout
+    elements.logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (confirm('Tem certeza que deseja sair?')) {
+            localStorage.removeItem('user');
+            localStorage.removeItem('lastViewedSimulado');
+            localStorage.removeItem('lastViewedTurma');
+            window.location.href = 'login.html';
         }
+    });
 
-        if (userData.permissions > 1) {
-            const adminItem = document.createElement('li');
-            adminItem.className = 'nav-item';
-            adminItem.innerHTML = `
-                <a href="admin.html" class="nav-link">
-                    <div class="nav-icon">
-                        <i class="fas fa-users-cog"></i>
-                    </div>
-                    <span class="nav-label">Administração</span>
-                    <div class="nav-glow"></div>
-                </a>
-            `;
-
-            if (logoutItem && logoutItem.closest('.nav-item')) {
-                const logoutListItem = logoutItem.closest('.nav-item');
-                navMenu.insertBefore(adminItem, logoutListItem);
-            }
-        }
+    // Limpar informações do simulado
+    function clearSimuladoInfo() {
+        elements.simuladoName.textContent = 'Selecione um simulado';
+        elements.simuladoDescription.textContent = '-';
+        elements.simuladoDate.innerHTML = '<i class="fas fa-calendar"></i> -';
+        elements.simuladoModel.innerHTML = '<i class="fas fa-university"></i> -';
+        elements.simuladoQuestionsCount.innerHTML = '<i class="fas fa-question-circle"></i> 0 questões';
+        elements.totalQuestions.textContent = '0';
+        elements.totalStudents.textContent = '0';
+        elements.averageScore.textContent = '0%';
+        elements.sidebarQuestions.textContent = '0';
+        elements.sidebarTotalStudents.textContent = '0';
+        elements.sidebarAverage.textContent = '0%';
+        elements.sidebarTopScore.textContent = '0';
+        
+        // Limpar medalhas
+        updateMedals();
     }
 
-    // Adicionar estilos CSS para animações
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideIn {
-            from { 
-                transform: translateX(100%) translateY(20px); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateX(0) translateY(0); 
-                opacity: 1; 
-            }
-        }
-        
-        @keyframes slideOut {
-            from { 
-                transform: translateX(0) translateY(0); 
-                opacity: 1; 
-            }
-            to { 
-                transform: translateX(100%) translateY(20px); 
-                opacity: 0; 
-            }
-        }
-        
-        .ranking-row {
-            animation: fadeIn 0.6s ease-out forwards;
-            animation-delay: calc(var(--row-index, 0) * 0.05s);
-        }
-    `;
-    document.head.appendChild(style);
+    // Menu mobile
+    const menuToggle = document.getElementById('menuToggle');
+    const navMobile = document.getElementById('navMobile');
+    
+    if (menuToggle && navMobile) {
+        menuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navMobile.classList.toggle('active');
+        });
+    }
 
     // Inicializar
-    init();
+    checkAuth();
 });
-
-document.getElementsByClassName("logo-text")[0].onclick = function () {
-    window.location.href = "/index.html";
-};

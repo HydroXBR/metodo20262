@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let performanceChart = null;
     let selectedAlternative = null;
     let currentQuestion = null;
+    let selectedHashtags = [];
+    let allHashtags = [];
 
     // Elementos DOM
     const elements = {
@@ -75,6 +77,118 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Função para extrair hashtags únicas das questões
+    function extractUniqueHashtags() {
+        const hashtagSet = new Set();
+        const tagCounts = {};
+        
+        questions.forEach(question => {
+            if (question.hashtags && Array.isArray(question.hashtags)) {
+                question.hashtags.forEach(tag => {
+                    if (tag && typeof tag === 'string') {
+                        const cleanTag = tag.trim();
+                        if (cleanTag) {
+                            hashtagSet.add(cleanTag);
+                            tagCounts[cleanTag] = (tagCounts[cleanTag] || 0) + 1;
+                        }
+                    }
+                });
+            }
+        });
+        
+        // Converter para array e ordenar por popularidade
+        const hashtagArray = Array.from(hashtagSet);
+        hashtagArray.sort((a, b) => {
+            const countA = tagCounts[a] || 0;
+            const countB = tagCounts[b] || 0;
+            return countB - countA;
+        });
+        
+        return hashtagArray;
+    }
+
+    function populateHashtagSuggestions() {
+        const container = document.getElementById('hashtagSuggestions');
+        if (!container || !allHashtags) return;
+
+        const html = allHashtags.map(tag => {
+            // Escapar aspas simples para evitar problemas no onclick
+            const safeTag = tag.replace(/'/g, "\\'");
+            return `
+                <div class="suggestion-item" onclick="addHashtag('${safeTag}')">
+                    #${tag}
+                </div>
+            `;
+        }).join('');
+        
+        container.innerHTML = html;
+    }
+
+    // Função para adicionar hashtag (global)
+    window.addHashtag = function (hashtag) {
+        if (!selectedHashtags.includes(hashtag)) {
+            selectedHashtags.push(hashtag);
+            updateHashtagTags();
+        }
+        const hashtagInput = document.getElementById('hashtagInput');
+        const suggestions = document.getElementById('hashtagSuggestions');
+        if (hashtagInput) hashtagInput.value = '';
+        if (suggestions) suggestions.classList.remove('active');
+        // Reaplicar filtros
+        setTimeout(applyFilters, 100);
+    };
+
+    // Função para remover hashtag (global)
+    window.removeHashtag = function (index) {
+        selectedHashtags.splice(index, 1);
+        updateHashtagTags();
+        // Reaplicar filtros
+        setTimeout(applyFilters, 100);
+    };
+
+    // Função para limpar todas as hashtags (global)
+    window.clearAllHashtags = function () {
+        selectedHashtags = [];
+        updateHashtagTags();
+        // Reaplicar filtros
+        setTimeout(applyFilters, 100);
+    };
+
+    // Atualizar tags visíveis
+    function updateHashtagTags() {
+        const container = document.getElementById('hashtagTags');
+        if (!container) return;
+        
+        container.innerHTML = selectedHashtags.map((tag, index) => {
+            // Escapar caracteres especiais
+            const safeTag = tag.replace(/'/g, "\\'");
+            return `
+                <div class="hashtag-tag">
+                    #${tag}
+                    <button class="remove-tag" onclick="removeHashtag(${index})">&times;</button>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Atualizar hashtags populares
+    function updatePopularHashtags() {
+        const container = document.getElementById('popularHashtags');
+        if (!container || !allHashtags) return;
+
+        // Pegar as 10 hashtags mais populares (ou todas se menos que 10)
+        const popular = allHashtags.slice(0, 10);
+
+        container.innerHTML = popular.map(tag => {
+            const safeTag = tag.replace(/'/g, "\\'");
+            return `
+                <button class="popular-hashtag" onclick="addHashtag('${safeTag}')">
+                    #${tag}
+                </button>
+            `;
+        }).join('');
+    }
+
     // Carregar questões
     async function loadQuestions() {
         showLoading();
@@ -88,6 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 filteredQuestions = [...questions];
                 elements.totalQuestions.textContent = questions.length;
                 populateYearFilter();
+                
+                // Extrair e carregar hashtags das questões
+                allHashtags = extractUniqueHashtags();
+                populateHashtagSuggestions();
+                updatePopularHashtags();
+                
                 renderQuestions();
                 updateStatsSidebar();
             } else {
@@ -227,8 +347,30 @@ document.addEventListener('DOMContentLoaded', function () {
             filtered = filtered.filter(q => q.difficulty === difficulty);
         }
 
+        // Filtrar por hashtags (se alguma foi selecionada)
+        if (selectedHashtags.length > 0) {
+            filtered = filtered.filter(q => {
+                if (!q.hashtags || !Array.isArray(q.hashtags) || q.hashtags.length === 0) {
+                    return false;
+                }
+                
+                // Verificar se a questão tem PELO MENOS UMA das hashtags selecionadas
+                return selectedHashtags.some(selectedTag => 
+                    q.hashtags.some(questionTag => 
+                        questionTag.toLowerCase() === selectedTag.toLowerCase()
+                    )
+                );
+            });
+        }
+
         filteredQuestions = filtered;
         renderQuestions();
+        
+        // Atualizar contador de resultados
+        const resultsCount = document.getElementById('resultsCount');
+        if (resultsCount) {
+            resultsCount.textContent = `${filtered.length} questão${filtered.length !== 1 ? 'es' : ''} encontrada${filtered.length !== 1 ? 's' : ''}`;
+        }
     }
 
     // Renderizar questões
@@ -244,7 +386,13 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        elements.questionsList.innerHTML = filteredQuestions.map(question => `
+        elements.questionsList.innerHTML = filteredQuestions.map(question => {
+            const safeId = question._id.replace(/'/g, "\\'");
+            const statement = question.statement || '';
+            const truncatedStatement = statement.length > 200 ? 
+                statement.substring(0, 200) + '...' : statement;
+            
+            return `
             <div class="question-card" data-id="${question._id}">
                 <div class="question-header">
                     <div class="question-meta">
@@ -258,25 +406,23 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="question-stats">
                         <div class="stat-bubble attempts">
                             <i class="fas fa-chart-bar"></i>
-                            <span>${question.timesAttempted || 0}</span>
+                            <span>${question.stats?.timesAttempted || question.timesAttempted || 0}</span>
                         </div>
                         <div class="stat-bubble success-rate">
                             <i class="fas fa-percentage"></i>
-                            <span>${question.successRate ? question.successRate.toFixed(1) : '0'}%</span>
+                            <span>${question.stats?.successRate ? question.stats.successRate.toFixed(1) : '0'}%</span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="question-statement">
-                    ${question.statement.length > 200 ?
-                question.statement.substring(0, 200) + '...' :
-                question.statement}
+                    ${truncatedStatement}
                 </div>
                 
                 ${question.hashtags?.length > 0 ? `
                     <div class="question-hashtags">
                         ${question.hashtags.slice(0, 3).map(tag => `
-                            <span class="hashtag-small">${tag}</span>
+                            <span class="hashtag-small">#${tag}</span>
                         `).join('')}
                         ${question.hashtags.length > 3 ? `
                             <span class="hashtag-small">+${question.hashtags.length - 3}</span>
@@ -285,17 +431,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 ` : ''}
                 
                 <div class="question-actions">
-                    <button class="action-btn solve" onclick="openQuestionModal('${question._id}')">
+                    <button class="action-btn solve" onclick="openQuestionModal('${safeId}')">
                         <i class="fas fa-play"></i> Resolver
                     </button>
                     ${currentUser?.permissions === 1 ? `
-                        <button class="action-btn edit" onclick="editQuestion('${question._id}')">
+                        <button class="action-btn edit" onclick="editQuestion('${safeId}')">
                             <i class="fas fa-edit"></i> Editar
                         </button>
                     ` : ''}
                 </div>
             </div>
-        `).join('');
+        `}).join('');
     }
 
     // Formatar matéria
@@ -370,13 +516,13 @@ document.addEventListener('DOMContentLoaded', function () {
             <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
             <span>${message}</span>
         `;
-        
+
         document.body.appendChild(toast);
-        
+
         setTimeout(() => {
             toast.classList.add('show');
         }, 10);
-        
+
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => toast.remove(), 300);
@@ -395,11 +541,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const question = data.questao;
                 const modal = document.getElementById('questionModal');
                 const content = document.getElementById('modalQuestionContent');
-                
+
                 // Armazenar questão atual
                 currentQuestion = question;
                 selectedAlternative = null;
-                
+
                 // Formatar conteúdo da questão
                 content.innerHTML = `
                     <div class="question-modal-header">
@@ -414,44 +560,42 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <i class="fas fa-signal"></i> ${formatDifficulty(question.difficulty)}
                             </span>
                         </div>
-                        <div class="question-subject-info">
-                            <h4><i class="fas fa-graduation-cap"></i> ${formatSubject(question.subject)} • ${question.topic || 'Geral'}</h4>
-                            <div class="question-timer">
-                                <i class="far fa-clock"></i>
-                                <span>Tempo sugerido: ${getSuggestedTime(question.difficulty)}</span>
-                            </div>
-                        </div>
+                        <!-- BOTÃO CLOSE CORRETO -->
+                        <button class="modal-close" onclick="closeQuestionModal()">&times;</button>
                     </div>
                     
                     <div class="question-statement-full">
-                        ${question.statement}
-                        ${question.statementImage ? 
-                            `<img src="${question.statementImage}" alt="Enunciado" class="question-image">` : ''}
+                        ${question.statement || ''}
+                        ${question.statementImage ?
+                        `<img src="${question.statementImage}" alt="Enunciado" class="question-image">` : ''}
                     </div>
                     
                     <div class="alternatives-list" id="alternativesList">
-                        ${question.alternatives.map(alt => `
-                            <div class="alternative-item" data-letter="${alt.letter}" onclick="selectAlternative('${alt.letter}')">
+                        ${(question.alternatives || []).map(alt => {
+                            const safeLetter = alt.letter.replace(/'/g, "\\'");
+                            return `
+                            <div class="alternative-item" data-letter="${alt.letter}" onclick="selectAlternative('${safeLetter}')">
                                 <div class="alternative-content">
                                     <div class="alt-letter">${alt.letter}</div>
                                     <div class="alt-text">
-                                        ${alt.isImage ? 
-                                            `<img src="${alt.imageUrl}" alt="Alternativa ${alt.letter}" class="alternative-image">` :
-                                            alt.text
-                                        }
+                                        ${alt.isImage ?
+                                        `<img src="${alt.imageUrl}" alt="Alternativa ${alt.letter}" class="alternative-image">` :
+                                        alt.text || ''}
                                     </div>
                                 </div>
                             </div>
-                        `).join('')}
+                        `}).join('')}
                     </div>
                     
                     <div class="answer-section">
                         <div class="answer-options">
-                            ${['A', 'B', 'C', 'D', 'E'].map(letter => `
-                                <button class="answer-btn" onclick="selectAlternative('${letter}')">
+                            ${['A', 'B', 'C', 'D', 'E'].map(letter => {
+                                const safeLetter = letter.replace(/'/g, "\\'");
+                                return `
+                                <button class="answer-btn" onclick="selectAlternative('${safeLetter}')">
                                     <span>${letter}</span>
                                 </button>
-                            `).join('')}
+                            `}).join('')}
                         </div>
                         
                         <div class="modal-controls">
@@ -466,21 +610,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     
                     <div id="feedbackSection" style="display: none;"></div>
                 `;
-                
+
                 modal.classList.add('active');
-                
-                // Adicionar evento para fechar modal
-                const closeBtn = modal.querySelector('.close-modal');
-                closeBtn.onclick = () => closeQuestionModal();
-                
+
                 // Fechar ao clicar fora
                 modal.onclick = (e) => {
                     if (e.target === modal) closeQuestionModal();
                 };
-                
+
                 // Fechar com ESC
                 document.addEventListener('keydown', handleModalKeyPress);
-                
+
             } else {
                 showToast('Erro ao carregar questão', 'error');
             }
@@ -493,12 +633,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Selecionar alternativa
     window.selectAlternative = function (letter) {
         selectedAlternative = letter;
-        
+
         // Remover seleção anterior de alternativas
         document.querySelectorAll('.alternative-item').forEach(item => {
             item.classList.remove('selected');
         });
-        
+
         // Remover seleção anterior de botões
         document.querySelectorAll('.answer-btn').forEach(btn => {
             btn.classList.remove('selected');
@@ -506,24 +646,24 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.style.color = '';
             btn.style.borderColor = '';
         });
-        
+
         // Adicionar nova seleção
         const selectedAlt = document.querySelector(`.alternative-item[data-letter="${letter}"]`);
-        const selectedBtn = Array.from(document.querySelectorAll('.answer-btn')).find(btn => 
+        const selectedBtn = Array.from(document.querySelectorAll('.answer-btn')).find(btn =>
             btn.textContent.trim() === letter
         );
-        
+
         if (selectedAlt) {
             selectedAlt.classList.add('selected');
         }
-        
+
         if (selectedBtn) {
             selectedBtn.classList.add('selected');
             selectedBtn.style.background = 'var(--vermelho)';
             selectedBtn.style.color = 'var(--branco)';
             selectedBtn.style.borderColor = 'var(--vermelho)';
         }
-        
+
         // Habilitar botão de submit
         const submitBtn = document.querySelector('.control-btn.submit');
         if (submitBtn) {
@@ -536,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Enviar resposta selecionada
     window.submitSelectedAnswer = async function () {
         if (!selectedAlternative || !currentQuestion) return;
-        
+
         await submitAnswer(currentQuestion._id, selectedAlternative);
     };
 
@@ -588,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Mostrar feedback
                 showFeedback(selectedAlt, isCorrect, question);
-                
+
                 // Atualizar estatísticas do usuário
                 setTimeout(loadUserStats, 500);
 
@@ -606,43 +746,43 @@ document.addEventListener('DOMContentLoaded', function () {
         const content = document.getElementById('modalQuestionContent');
         const answerSection = content.querySelector('.answer-section');
         const feedbackSection = document.getElementById('feedbackSection');
-        
+
         if (!answerSection) return;
-        
+
         // Destacar alternativas
         const allAlternatives = content.querySelectorAll('.alternative-item');
         const allAnswerBtns = content.querySelectorAll('.answer-btn');
-        
+
         allAlternatives.forEach(alt => {
             const letter = alt.getAttribute('data-letter');
             alt.classList.remove('correct', 'wrong');
-            
+
             if (letter === selectedAlt && !isCorrect) {
                 alt.classList.add('wrong');
             }
-            
+
             if (letter === question.correctAlternative) {
                 alt.classList.add('correct');
             }
         });
-        
+
         allAnswerBtns.forEach(btn => {
             const letter = btn.textContent.trim();
             btn.disabled = true;
-            
+
             if (letter === selectedAlt && !isCorrect) {
                 btn.style.background = '#F44336';
                 btn.style.color = 'white';
                 btn.style.borderColor = '#F44336';
             }
-            
+
             if (letter === question.correctAlternative) {
                 btn.style.background = '#4CAF50';
                 btn.style.color = 'white';
                 btn.style.borderColor = '#4CAF50';
             }
         });
-        
+
         // Criar feedback HTML
         const feedbackHtml = `
             <div class="feedback-section ${isCorrect ? 'correct' : 'incorrect'} slide-in-left">
@@ -666,8 +806,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="explanation">
                             <h5><i class="fas fa-lightbulb"></i> Explicação:</h5>
                             <p>${question.explanation}</p>
-                            ${question.explanationImage ? 
-                                `<img src="${question.explanationImage}" alt="Explicação" class="explanation-image">` : ''}
+                            ${question.explanationImage ?
+                    `<img src="${question.explanationImage}" alt="Explicação" class="explanation-image">` : ''}
                         </div>
                     ` : ''}
                     
@@ -682,7 +822,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
         `;
-        
+
         // Substituir answer section pelo feedback
         answerSection.style.display = 'none';
         feedbackSection.innerHTML = feedbackHtml;
@@ -692,7 +832,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Pular questão
     window.skipQuestion = function () {
         closeQuestionModal();
-        
+
         setTimeout(() => {
             if (filteredQuestions.length > 0) {
                 const randomQuestion = filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)];
@@ -704,7 +844,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Próxima questão
     window.nextQuestion = function () {
         closeQuestionModal();
-        
+
         setTimeout(() => {
             if (filteredQuestions.length > 0) {
                 const randomQuestion = filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)];
@@ -717,19 +857,19 @@ document.addEventListener('DOMContentLoaded', function () {
     window.closeQuestionModal = function () {
         const modal = document.getElementById('questionModal');
         const content = document.getElementById('modalQuestionContent');
-        
+
         modal.classList.remove('active');
-        
+
         // Limpar conteúdo após animação
         setTimeout(() => {
             content.innerHTML = '';
             selectedAlternative = null;
             currentQuestion = null;
         }, 300);
-        
+
         // Remover event listener
         document.removeEventListener('keydown', handleModalKeyPress);
-        
+
         // Recarregar estatísticas
         loadUserStats();
     };
@@ -738,24 +878,24 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleModalKeyPress(e) {
         const modal = document.getElementById('questionModal');
         if (!modal || !modal.classList.contains('active')) return;
-        
+
         if (e.key === 'Escape') {
             closeQuestionModal();
         }
-        
+
         // Teclas 1-5 para alternativas A-E
         if (e.key >= '1' && e.key <= '5') {
             const letters = ['A', 'B', 'C', 'D', 'E'];
             const letter = letters[parseInt(e.key) - 1];
             selectAlternative(letter);
         }
-        
+
         // Enter para confirmar
         if (e.key === 'Enter' && selectedAlternative) {
             const submitBtn = document.querySelector('.control-btn.submit:not(:disabled)');
             if (submitBtn) submitBtn.click();
         }
-        
+
         // Espaço para pular
         if (e.key === ' ' && e.target === document.body) {
             e.preventDefault();
@@ -763,13 +903,81 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Configurar input de hashtags
+    function setupHashtagInput() {
+        const hashtagInput = document.getElementById('hashtagInput');
+        const suggestions = document.getElementById('hashtagSuggestions');
+
+        if (hashtagInput && suggestions) {
+            hashtagInput.addEventListener('focus', () => {
+                if (allHashtags && allHashtags.length > 0) {
+                    suggestions.classList.add('active');
+                }
+            });
+
+            hashtagInput.addEventListener('input', (e) => {
+                const value = e.target.value.toLowerCase().replace('#', '').trim();
+                
+                if (!value) {
+                    populateHashtagSuggestions();
+                    return;
+                }
+                
+                if (!allHashtags) return;
+                
+                const filtered = allHashtags.filter(tag => 
+                    tag.toLowerCase().includes(value)
+                );
+                
+                if (filtered.length > 0) {
+                    suggestions.innerHTML = filtered.map(tag => {
+                        const safeTag = tag.replace(/'/g, "\\'");
+                        return `
+                            <div class="suggestion-item" onclick="addHashtag('${safeTag}')">
+                                #${tag}
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    suggestions.innerHTML = '<div class="no-results">Nenhuma hashtag encontrada</div>';
+                }
+            });
+
+            hashtagInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const tag = hashtagInput.value.trim().replace('#', '');
+                    if (tag && tag.length > 0) {
+                        addHashtag(tag);
+                    }
+                }
+                
+                if (e.key === 'Escape') {
+                    suggestions.classList.remove('active');
+                    hashtagInput.blur();
+                }
+            });
+        }
+
+        // Fechar sugestões ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.hashtag-input-container')) {
+                const suggestions = document.getElementById('hashtagSuggestions');
+                if (suggestions) suggestions.classList.remove('active');
+            }
+        });
+    }
+
     // Event Listeners
     elements.applyFilters.addEventListener('click', applyFilters);
+    
     elements.clearFilters.addEventListener('click', () => {
         elements.subjectFilter.value = '';
         elements.originFilter.value = '';
         elements.yearFilter.value = '';
         elements.difficultyFilter.value = '';
+        selectedHashtags = [];
+        updateHashtagTags();
         applyFilters();
     });
 
@@ -793,4 +1001,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Inicializar
     checkAuth();
+    
+    // Configurar input de hashtags após carregar o DOM
+    setTimeout(setupHashtagInput, 500);
 });

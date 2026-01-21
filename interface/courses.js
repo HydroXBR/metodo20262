@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const API_BASE_URL = '/api';
-    
+
     // Verificar autenticação
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user || !user.id) {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const userAvatarElement = document.getElementById('userAvatar');
     const coursesGrid = document.getElementById('coursesGrid');
     const noCourses = document.getElementById('noCourses');
-    
+
     // Inicializar informações do usuário
     if (userNameElement) userNameElement.textContent = user.name || 'Estudante';
     if (userAvatarElement && user.profilePicture) {
@@ -28,11 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const dashboardResponse = await fetch(`${API_BASE_URL}/dashboard?userId=${user.id}`);
             const dashboardResult = await dashboardResponse.json();
-            
+
             if (dashboardResult.success) {
                 userStats = dashboardResult.data.estatisticas || {};
                 updateGeneralStats(userStats);
-                
+
                 if (dashboardResult.data.userInfo?.name && userNameElement) {
                     userNameElement.textContent = dashboardResult.data.userInfo.name.split(" ")[0];
                 }
@@ -40,20 +40,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     userAvatarElement.src = dashboardResult.data.userInfo.profilePicture;
                 }
             }
-            
+
             // 2. Carregar cursos do usuário
             await loadUserCourses();
-            
+
             // 3. Carregar cursos disponíveis
             await loadAvailableCourses();
-            
+
             // 4. Carregar estatísticas detalhadas de progresso
             await loadCourseProgressDetails();
-            
+
         } catch (error) {
             console.error('Erro ao carregar dados da página:', error);
             showError('Erro ao carregar dados. Tente novamente.');
-            
+
             // Usar dados mockados como fallback
             useMockData();
         }
@@ -63,14 +63,14 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(`${API_BASE_URL}/user-cursos?userId=${user.id}`);
             const result = await response.json();
-            
+
             if (result.success) {
                 userCourses = result.cursos || [];
                 renderUserCourses(userCourses);
             } else {
                 throw new Error(result.message || 'Erro ao carregar cursos');
             }
-            
+
         } catch (error) {
             console.error('Erro ao carregar cursos do usuário:', error);
             throw error;
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(`${API_BASE_URL}/cursos-disponiveis`);
             const result = await response.json();
-            
+
             if (result.success) {
                 availableCourses = result.cursos || [];
                 renderAvailableCourses(availableCourses);
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(`${API_BASE_URL}/course/${cursoId}?userId=${user.id}`);
             const result = await response.json();
-            
+
             if (result.success) {
                 // Atualizar o card do curso com progresso real
                 updateCourseCard(cursoId, result.course, result.progress);
@@ -118,16 +118,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderUserCourses(cursosIds) {
         if (!coursesGrid) return;
-        
+
         coursesGrid.innerHTML = '';
-        
+
         if (!cursosIds || cursosIds.length === 0) {
             if (noCourses) noCourses.style.display = 'flex';
             return;
         }
-        
+
         if (noCourses) noCourses.style.display = 'none';
-        
+
         // Mostrar loading enquanto carrega detalhes
         cursosIds.forEach(cursoId => {
             const loadingCard = createLoadingCard(cursoId);
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateCourseCard(cursoId, cursoData, progressData) {
         const cardId = `course-card-${cursoId}`;
         let card = document.getElementById(cardId);
-        
+
         if (!card) {
             // Criar novo card se não existir
             card = createCourseCard(cursoId, cursoData, progressData);
@@ -153,11 +153,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const card = document.createElement('div');
         card.className = 'course-card';
         card.id = `course-card-${cursoId}`;
-        
+
         const cursoInfo = getCourseInfo(cursoData);
         const progress = calculateProgress(progressData, cursoData);
         const stats = calculateCourseStats(progressData, cursoData);
-        
+
         card.innerHTML = `
             <div class="course-header">
                 <div class="course-icon ${cursoInfo.colorClass}">
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <div class="course-progress">
                     <div class="progress-label">
-                        <span>Progresso</span>
+                        <span class="lbl">Progresso</span>
                         <span>${progress.percentage}%</span>
                     </div>
                     <div class="progress-bar">
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </button>
             </div>
         `;
-        
+
         return card;
     }
 
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const card = document.createElement('div');
         card.className = 'course-card loading';
         card.id = `course-card-${cursoId}`;
-        
+
         card.innerHTML = `
             <div class="course-header">
                 <div class="course-icon loading">
@@ -257,45 +257,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 </button>
             </div>
         `;
-        
+
         return card;
     }
 
     function updateExistingCard(card, cursoData, progressData) {
         // Remover estado de loading
         card.classList.remove('loading');
-        
+
         const cursoInfo = getCourseInfo(cursoData);
         const progress = calculateProgress(progressData, cursoData);
         const stats = calculateCourseStats(progressData, cursoData);
-        
+
         // Atualizar título
         const title = card.querySelector('.course-title');
         if (title) title.textContent = cursoData.title || cursoInfo.name;
         title.classList.remove('loading');
-        
+
         // Atualizar subtítulo
         const subtitle = card.querySelector('.course-subtitle');
         if (subtitle) subtitle.textContent = cursoInfo.description;
         subtitle.classList.remove('loading');
-        
+
         // Atualizar ícone
         const icon = card.querySelector('.course-icon');
         if (icon) {
             icon.className = `course-icon ${cursoInfo.colorClass}`;
             icon.innerHTML = `<i class="${cursoInfo.icon}"></i>`;
         }
-        
+
         // Atualizar progresso
         const progressLabel = card.querySelector('.progress-label span:last-child');
         if (progressLabel) progressLabel.textContent = `${progress.percentage}%`;
-        
+
         const progressFill = card.querySelector('.progress-fill');
         if (progressFill) {
             progressFill.style.width = `${progress.percentage}%`;
             progressFill.classList.remove('loading');
         }
-        
+
         // Atualizar estatísticas
         const statItems = card.querySelectorAll('.stat-item strong');
         if (statItems.length >= 3) {
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
             statItems[1].textContent = `${stats.totalHours}h`;
             statItems[2].textContent = `${progress.percentage}%`;
         }
-        
+
         // Atualizar botões
         const continueBtn = card.querySelector('.btn-course.primary');
         if (continueBtn) {
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
             continueBtn.innerHTML = `<i class="fas fa-play"></i><span>${progress.percentage === 100 ? 'Revisar' : 'Continuar'}</span>`;
             continueBtn.onclick = () => acessarCurso(cursoData.courseId);
         }
-        
+
         const detailsBtn = card.querySelector('.btn-course.secondary');
         if (detailsBtn) {
             detailsBtn.className = 'btn-course secondary';
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
             icon: 'fas fa-book',
             colorClass: 'default'
         };
-        
+
         if (cursoData.type === 'enem') {
             return {
                 ...baseInfo,
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 description: 'Sistema de Ingresso Seriado'
             };
         }
-        
+
         return baseInfo;
     }
 
@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalLessons = cursoData.totalLessons || 1;
         const completedLessons = progressData?.completedLessons?.length || 0;
         const percentage = Math.round((completedLessons / totalLessons) * 100);
-        
+
         return {
             percentage,
             completedLessons,
@@ -367,11 +367,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function calculateCourseStats(progressData, cursoData) {
         const progress = calculateProgress(progressData, cursoData);
-        
+
         // Calcular tempo total baseado nas aulas concluídas
         // Assumindo média de 45 minutos por aula
         const totalHours = Math.round((progress.completedLessons * 45) / 60);
-        
+
         return {
             completedLessons: progress.completedLessons,
             totalLessons: progress.totalLessons,
@@ -383,30 +383,41 @@ document.addEventListener('DOMContentLoaded', function() {
         const elements = {
             'totalAulas': stats.aulasAssistidas || 0,
             'totalQuestoes': stats.totalQuestoes || 0,
-            'taxaAcerto': (stats.taxaAcerto || 0) + '%'
+            'taxaAcerto': (stats.taxaAcerto || 0) + '%',
+            'totalCursos': userCourses.length || 0,
+            'progressoGeral': calcularProgressoGeral() + '%',
+            'diasSequencia': stats.diasSequencia || 0
         };
-        
+
         Object.entries(elements).forEach(([id, value]) => {
             const element = document.getElementById(id);
             if (element) element.textContent = value;
         });
-        
+
         // Calcular tempo total de estudo
-        // 1 questão ≈ 2 minutos, 1 aula ≈ 45 minutos
         const questionTime = ((stats.totalQuestoes || 0) * 2) / 60;
         const classTime = ((stats.aulasAssistidas || 0) * 45) / 60;
         const totalTime = Math.round(questionTime + classTime);
-        
+
         const tempoElement = document.getElementById('tempoEstudo');
         if (tempoElement) tempoElement.textContent = totalTime + 'h';
+    }
+
+    function calcularProgressoGeral() {
+        // Calcular progresso médio de todos os cursos
+        if (userCourses.length === 0) return 0;
+
+        let progressoTotal = 0;
+        // Implementar cálculo real baseado nos dados dos cursos
+        return Math.round(progressoTotal / userCourses.length);
     }
 
     function renderAvailableCourses(cursos) {
         const availableGrid = document.getElementById('availableCourses');
         if (!availableGrid) return;
-        
+
         availableGrid.innerHTML = '';
-        
+
         if (!cursos || cursos.length === 0) {
             const emptyMsg = document.createElement('div');
             emptyMsg.className = 'empty-state';
@@ -420,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
             availableGrid.appendChild(emptyMsg);
             return;
         }
-        
+
         cursos.forEach(curso => {
             const cursoElement = createAvailableCard(curso);
             availableGrid.appendChild(cursoElement);
@@ -430,11 +441,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function createAvailableCard(curso) {
         const card = document.createElement('div');
         card.className = 'available-card';
-        
+
         // Determinar informações do curso
         let icon = 'fas fa-book';
         let colorClass = '';
-        
+
         if (curso.id.includes('enem')) {
             icon = 'fas fa-star';
             colorClass = 'enem';
@@ -445,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
             icon = 'fas fa-university';
             colorClass = 'psc';
         }
-        
+
         card.innerHTML = `
             <i class="${icon} ${colorClass}"></i>
             <h4>${curso.nome}</h4>
@@ -456,28 +467,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 Adquirir Curso
             </button>
         `;
-        
+
         return card;
     }
 
     // Funções globais
-    window.acessarCurso = function(cursoId) {
+    window.acessarCurso = function (cursoId) {
         window.location.href = `course.html?curso=${cursoId}`;
     };
 
-    window.verDetalhesCurso = async function(cursoId) {
+    window.verDetalhesCurso = async function (cursoId) {
         try {
             const response = await fetch(`${API_BASE_URL}/course/${cursoId}?userId=${user.id}`);
             const result = await response.json();
-            
+
             if (result.success) {
                 const curso = result.course;
                 const progress = result.progress;
-                
+
                 const completedLessons = progress?.completedLessons?.length || 0;
                 const totalLessons = curso.totalLessons || 1;
                 const progressPercent = Math.round((completedLessons / totalLessons) * 100);
-                
+
                 const message = `
 Curso: ${curso.title}
 Professor: ${curso.professors?.join(', ') || 'Não informado'}
@@ -489,7 +500,7 @@ Alunos: ${curso.enrolledStudents || 0}
 
 Descrição: ${curso.description || 'Sem descrição disponível.'}
                 `;
-                
+
                 alert(message);
             } else {
                 alert('Não foi possível carregar os detalhes do curso.');
@@ -500,7 +511,7 @@ Descrição: ${curso.description || 'Sem descrição disponível.'}
         }
     };
 
-    window.adquirirCurso = async function(cursoId) {
+    window.adquirirCurso = async function (cursoId) {
         try {
             const response = await fetch(`${API_BASE_URL}/adicionar-curso`, {
                 method: 'POST',
@@ -512,21 +523,21 @@ Descrição: ${curso.description || 'Sem descrição disponível.'}
                     curso: cursoId
                 })
             });
-            
+
             const result = await response.json();
-            
+
             if (result.success) {
                 showSuccess('Curso adicionado com sucesso!');
-                
+
                 // Atualizar localmente
                 userCourses.push(cursoId);
                 localStorage.setItem('user', JSON.stringify(user));
-                
+
                 // Recarregar página após 1.5 segundos
                 setTimeout(() => {
                     loadPageData();
                 }, 1500);
-                
+
             } else {
                 alert('Erro ao adicionar curso: ' + result.message);
             }
@@ -552,7 +563,7 @@ Descrição: ${curso.description || 'Sem descrição disponível.'}
             <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
             <span>${message}</span>
         `;
-        
+
         notification.style.cssText = `
             position: fixed;
             top: 20px;
@@ -568,9 +579,9 @@ Descrição: ${curso.description || 'Sem descrição disponível.'}
             z-index: 9999;
             animation: slideIn 0.3s ease;
         `;
-        
+
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.style.animation = 'slideOut 0.3s ease';
             setTimeout(() => notification.remove(), 300);
@@ -585,7 +596,7 @@ Descrição: ${curso.description || 'Sem descrição disponível.'}
             taxaAcerto: 68,
             aulasAssistidas: 28
         };
-        
+
         updateGeneralStats(mockStats);
         renderUserCourses(mockCourses);
     }
@@ -603,7 +614,7 @@ Descrição: ${curso.description || 'Sem descrição disponível.'}
     });
 
     // Logout
-    document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+    document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
         e.preventDefault();
         if (confirm('Tem certeza que deseja sair?')) {
             localStorage.removeItem('user');
@@ -614,9 +625,9 @@ Descrição: ${curso.description || 'Sem descrição disponível.'}
     // Menu mobile
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navMenu = document.querySelector('.nav-menu');
-    
+
     if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function() {
+        mobileMenuBtn.addEventListener('click', function () {
             this.classList.toggle('active');
             navMenu?.classList.toggle('active');
         });

@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Atualizar nome
         const userName = document.getElementById('userName');
         if (userName) {
-            userName.textContent = userInfo.completename || 'Usuário';
+            userName.textContent = userInfo.name.split(" ")[0] || 'Usuário';
         }
 
         // Adicionar item de admin se tiver permissões
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
             <div class="curso-info">
                 <h4>${curso.title}</h4>
-                <p>${tipoTexto} • ${curso.professors?.[0] || 'Professor'}</p>
+                <p>${tipoTexto}</p>
                 <div class="curso-progress">
                     <div class="curso-progress-bar">
                         <div class="curso-progress-fill" style="width: ${progressoPercent}%"></div>
@@ -639,12 +639,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Funções globais para acesso externo
     window.acessarCurso = function (cursoId) {
-        // Redirecionar para a página do curso
         window.location.href = `course.html?curso=${cursoId}`;
     };
 
     window.iniciarPratica = function () {
-        window.location.href = 'questoes.html';
+        window.location.href = 'question.html';
     };
 
     // Event listeners
@@ -838,72 +837,52 @@ function adicionarItemAdminNaNavbar() {
 
     console.log('Usuário tem permissões para administração:', userData.permissions);
 
+    // Remover itens de admin antigos (se existirem)
+    const oldAdminItems = document.querySelectorAll('.admin-nav-item');
+    oldAdminItems.forEach(item => item.remove());
+
     if (userData.permissions > 1) {
         const navMenu = document.querySelector('.nav-menu');
-        const logoutItem = document.querySelector('.nav-item .nav-link[href="#"]'); // Item de logout
+        const logoutItem = document.getElementById("logoutBtn")
 
         if (!navMenu) {
             console.error('Menu de navegação não encontrado');
             return;
         }
 
-        // Verificar se o item de admin já existe
-        if (document.querySelector('.nav-item .nav-link[href="admin.html"]')) {
-            console.log('Item de administração já existe na navbar');
-            return;
-        }
-
-        // Criar o novo item de administração
+        // Criar o item de administração
         const adminItem = document.createElement('li');
-        adminItem.className = 'nav-item';
-        const admin2Item = document.createElement('li');
-        admin2Item.className = 'nav-item';
-
-        // Inserir antes do item de logout ou no final
-        if (logoutItem && logoutItem.closest('.nav-item')) {
-            const logoutListItem = logoutItem.closest('.nav-item');
-            adminItem.innerHTML = `
+        adminItem.className = 'nav-item admin-nav-item';
+        
+        adminItem.innerHTML = `
             <a href="admin.html" class="nav-link">
-                <div class="nav-icon">
-                    <i class="fas fa-users-cog"></i>
-                </div>
-                <span class="nav-label">Administração</span>
-                <div class="nav-glow"></div>
-            </a>
-            
-            `;
-
-            admin2Item.innerHTML = `<a href="admincourse.html" class="nav-link">
-                <div class="nav-icon">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-                <span class="nav-label">Gerenciar</span>
-                <div class="nav-glow"></div>
-            </a>`
-
-            // Inserir antes do logout
-            navMenu.insertBefore(adminItem, logoutListItem);
-            navMenu.insertBefore(admin2Item, logoutListItem);
-        } else {
-            // Se não encontrar logout, adicionar no final
-            adminItem.innerHTML = `
-            <a href="admin.html" class="nav-link">
-                <div class="nav-icon">
-                    <i class="fas fa-users-cog"></i>
-                </div>
-                <span class="nav-label">Administração</span>
-                <div class="nav-glow"></div>
-            </a>
-            <a href="admincourse.html" class="nav-link">
-                <div class="nav-icon">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-                <span class="nav-label">Gerenciar</span>
-                <div class="nav-glow"></div>
+                <i class="fas fa-users-cog"></i>
             </a>
         `;
+
+        // Criar o item de gerenciar cursos
+        const adminCoursesItem = document.createElement('li');
+        adminCoursesItem.className = 'nav-item admin-nav-item';
+        
+        adminCoursesItem.innerHTML = `
+            <a href="admincourse.html" class="nav-link">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </a>
+        `;
+
+        // Inserir antes do item de logout
+        if (logoutItem) {
+            const logoutListItem = logoutItem.closest('.nav-item');
+            
+            // Inserir em ordem: Gerenciar Cursos, Administração, Sair
+            navMenu.insertBefore(adminCoursesItem, logoutListItem);
+            navMenu.insertBefore(adminItem, logoutListItem);
+        } else {
+            // Se não encontrar logout, adicionar no final
             navMenu.appendChild(adminItem);
+            navMenu.appendChild(adminCoursesItem);
         }
+
     } else if (userData.permissions == 1) {
         const navMenu = document.querySelector('.nav-menu');
         const logoutItem = document.querySelector('.nav-item .nav-link[href="#"]');
@@ -913,42 +892,73 @@ function adicionarItemAdminNaNavbar() {
             return;
         }
 
-        if (document.querySelector('.nav-item .nav-link[href="admincourse.html"]')) {
-            console.log('Item de admincourses já existe na navbar');
-            return;
-        }
+        // Criar apenas o item de gerenciar cursos para permissão 1
+        const adminCoursesItem = document.createElement('li');
+        adminCoursesItem.className = 'nav-item admin-nav-item';
+        
+        adminCoursesItem.innerHTML = `
+            <a href="admincourse.html" class="nav-link">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </a>
+        `;
 
-        const adminItem = document.createElement('li');
-        adminItem.className = 'nav-item';
-
-        // Inserir antes do item de logout ou no final
+        // Inserir antes do item de logout
         if (logoutItem && logoutItem.closest('.nav-item')) {
             const logoutListItem = logoutItem.closest('.nav-item');
-            adminItem.innerHTML = `
-            <a href="admincourse.html" class="nav-link">
-                <div class="nav-icon">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-                <span class="nav-label">Gerenciar</span>
-                <div class="nav-glow"></div>
-            </a>
-        `;
-
-            navMenu.insertBefore(adminItem, logoutListItem);
+            navMenu.insertBefore(adminCoursesItem, logoutListItem);
         } else {
-            adminItem.innerHTML = `
-            <a href="admincourse.html" class="nav-link">
-                <div class="nav-icon">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-                <span class="nav-label">Gerenciar</span>
-                <div class="nav-glow"></div>
-            </a>
-        `;
-            navMenu.appendChild(adminItem);
+            navMenu.appendChild(adminCoursesItem);
         }
     }
 
-
+    // Atualizar o menu mobile também (se existir)
+    atualizarNavbarMobileAdmin(userData.permissions);
 }
+
+function atualizarNavbarMobileAdmin(permissions) {
+    const navMobile = document.getElementById('navMobile');
+    if (!navMobile) return;
+
+    // Remover itens de admin antigos no mobile
+    const oldMobileAdminItems = navMobile.querySelectorAll('.admin-mobile-item');
+    oldMobileAdminItems.forEach(item => item.remove());
+
+    if (permissions > 1) {
+        // Adicionar itens para permissão > 1
+        const adminLink = document.createElement('a');
+        adminLink.className = 'admin-mobile-item';
+        adminLink.href = 'admin.html';
+        adminLink.textContent = 'Administração';
+        
+        const coursesLink = document.createElement('a');
+        coursesLink.className = 'admin-mobile-item';
+        coursesLink.href = 'admincourse.html';
+        coursesLink.textContent = 'Gerenciar Cursos';
+        
+        // Adicionar antes do "Matricule-se"
+        const matriculeBtn = navMobile.querySelector('.btn');
+        if (matriculeBtn) {
+            navMobile.insertBefore(coursesLink, matriculeBtn);
+            navMobile.insertBefore(adminLink, matriculeBtn);
+        } else {
+            navMobile.appendChild(adminLink);
+            navMobile.appendChild(coursesLink);
+        }
+        
+    } else if (permissions == 1) {
+        // Adicionar apenas gerenciar cursos para permissão 1
+        const coursesLink = document.createElement('a');
+        coursesLink.className = 'admin-mobile-item';
+        coursesLink.href = 'admincourse.html';
+        coursesLink.textContent = 'Gerenciar Cursos';
+        
+        const matriculeBtn = navMobile.querySelector('.btn');
+        if (matriculeBtn) {
+            navMobile.insertBefore(coursesLink, matriculeBtn);
+        } else {
+            navMobile.appendChild(coursesLink);
+        }
+    }
+}
+
 

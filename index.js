@@ -1029,15 +1029,6 @@ app.get('/profile', function (req, res) {
 	res.sendFile(__dirname + '/interface/profile.html')
 });
 
-app.get('/src', function (req, res) {
-	let urlparsed = "https://metodosimulados.yeshayahudesigndeveloper.repl.co" + req._parsedOriginalUrl.href
-	let required = new URL(urlparsed).searchParams.get('id') || res.sendStatus(404)
-	let format = new URL(urlparsed).searchParams.get('format') || "png"
-
-
-	res.sendFile(__dirname + `/src/${required}.${format}`)
-})
-
 app.get('/recibo', async (req, res) => {
 	console.log("Access ADMIN RECIBO: " + new Date())
 	res.sendFile(__dirname + '/interface/recibo.html')
@@ -1112,6 +1103,33 @@ app.get('/getalunobynameadm', async (req, res) => {
 			res.status(200).send(use)
 		}
 	})
+});
+
+app.get('/src/:filename', async (req, res) => {
+    const filename = req.params.filename;
+    
+    if (!filename) {
+        res.status(400).send('Missing filename parameter.');
+        return;
+    }
+
+    const filePath = path.join(__dirname, 'src', filename);
+    
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            if (err.code === 'ENOENT') {
+                res.status(404).send({ 
+                    success: false, 
+                    message: "File not found" 
+                });
+            } else {
+                res.status(500).send({ 
+                    success: false, 
+                    message: "Server error" 
+                });
+            }
+        }
+    });
 });
 
 
