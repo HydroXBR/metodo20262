@@ -2263,7 +2263,7 @@ app.delete('/api/admin/course/:courseId', isAdmin, async (req, res) => {
 	}
 });
 // models/Question.js (mantenha o mesmo schema que criamos antes)
-import Question from './database/question.js';
+import Question from './database/Question.js';
 
 // GET - Listar questões
 app.get('/api/questoes', async (req, res) => {
