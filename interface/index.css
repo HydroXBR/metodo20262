@@ -30,7 +30,7 @@ html {
 body {
   font-family: var(--font-sans);
   color: var(--primary);
-  background-color: var(--white);
+  background-color: #b9d1f1;
   line-height: 1.6;
   overflow-x: hidden;
 }
