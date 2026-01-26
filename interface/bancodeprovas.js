@@ -386,7 +386,6 @@ class BancoDeProvas {
         let totalProvas = 0;
         const anosSet = new Set();
 
-        // Somar todas as provas SIS
         Object.values(this.provasData.sis).forEach(etapaProvas => {
             totalProvas += etapaProvas.length * 2; // Cada ano tem prova e gabarito
             etapaProvas.forEach(prova => {
