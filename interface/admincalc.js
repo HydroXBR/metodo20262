@@ -7,6 +7,8 @@ class AdminCalculadora {
         this.totalPages = 1;
         this.cotaSelecionada = null;
         this.cotaData = this.carregarDadosCotas();
+        this.isAddingCota = false; // Flag para prevenir múltiplos cliques
+        this.currentVestibular = 'PSC'; // Vestibular atual
 
         this.init();
     }
@@ -95,13 +97,10 @@ class AdminCalculadora {
         });
 
         document.getElementById('vestibular')?.addEventListener('change', (e) => {
-            const novoVestibular = e.target.value;
-
-            // Atualizar apenas o evento do botão, NÃO limpar as cotas existentes
-            this.atualizarCotasPorVestibular(novoVestibular);
-
+            this.currentVestibular = e.target.value;
+            
             // Atualizar opções de bônus para PSI
-            this.atualizarCamposBonus(novoVestibular);
+            this.atualizarCamposBonus(this.currentVestibular);
         });
 
         // Formulário de adicionar curso
@@ -110,13 +109,9 @@ class AdminCalculadora {
             this.salvarCurso();
         });
 
-        // Botão adicionar cota
+        // Botão adicionar cota - Configurar apenas uma vez
         document.getElementById('adicionarCota').addEventListener('click', () => {
-            const vestibular = this.getVestibularAtual();
-            const tiposCota = this.cotaData.TIPOS_POR_VESTIBULAR[vestibular] || ['AMPLA'];
-
-            // Primeiro mostrar o modal para selecionar
-            this.mostrarSelecionarCota(tiposCota, vestibular);
+            this.handleAdicionarCota();
         });
 
         // Botão visualizar
@@ -263,7 +258,7 @@ class AdminCalculadora {
 
     configurarSistemaCotas() {
         // Inicializar com PSC
-        const vestibularInicial = 'PSC';
+        this.currentVestibular = 'PSC';
 
         // Verificar se já há cotas (pode ser que o usuário já tenha adicionado manualmente)
         const container = document.getElementById('cotasContainer');
@@ -271,31 +266,27 @@ class AdminCalculadora {
 
         // Se não houver cotas, adicionar AMPLA automaticamente
         if (cotasExistentes.length === 0) {
-            this.adicionarCampoCota('AMPLA', 'Ampla Concorrência', vestibularInicial);
+            this.adicionarCampoCota('AMPLA', 'Ampla Concorrência', this.currentVestibular);
         }
 
-        // Configurar o botão de adicionar para este vestibular
-        this.atualizarCotasPorVestibular(vestibularInicial);
+        // Configurar o vestibular inicial no select
+        const selectVestibular = document.getElementById('vestibular');
+        if (selectVestibular) {
+            selectVestibular.value = this.currentVestibular;
+        }
     }
 
-    atualizarCotasPorVestibular(vestibular) {
-        const container = document.getElementById('cotasContainer');
-        const btnAdicionar = document.getElementById('adicionarCota');
-
-        if (!btnAdicionar) return;
-
-        // ⚠️ PROBLEMA: Isso reatribui o onclick toda vez
-        // btnAdicionar.onclick = () => { ... };
-
-        // ✅ SOLUÇÃO: Usar event listener com flag
-        btnAdicionar.removeEventListener('click', this.handleAdicionarCota);
-
-        // Criar handler específico
-        this.handleAdicionarCota = () => {
-            // Obter tipos de cota para este vestibular
+    handleAdicionarCota() {
+        // Prevenir múltiplos cliques rápidos
+        if (this.isAddingCota) return;
+        
+        this.isAddingCota = true;
+        
+        try {
+            const vestibular = this.getVestibularAtual();
             const tiposCota = this.cotaData.TIPOS_POR_VESTIBULAR[vestibular] || ['AMPLA'];
-
-            // Filtrar para não mostrar AMPLA se já existir
+            
+            const container = document.getElementById('cotasContainer');
             const tiposDisponiveis = this.filtrarTiposCotaDisponiveis(tiposCota, container);
 
             if (tiposDisponiveis.length === 0) {
@@ -304,10 +295,12 @@ class AdminCalculadora {
             }
 
             this.mostrarSelecionarCota(tiposDisponiveis, vestibular);
-        };
-
-        // Adicionar novo listener
-        btnAdicionar.addEventListener('click', this.handleAdicionarCota);
+        } finally {
+            // Resetar flag após um pequeno delay
+            setTimeout(() => {
+                this.isAddingCota = false;
+            }, 300);
+        }
     }
 
     atualizarCamposBonus(vestibular) {
@@ -322,7 +315,7 @@ class AdminCalculadora {
         });
     }
 
-    // NOVA FUNÇÃO: Filtrar tipos de cota já adicionados
+    // Filtrar tipos de cota já adicionados
     filtrarTiposCotaDisponiveis(tiposCota, container) {
         // Coletar tipos já adicionados
         const tiposAdicionados = new Set();
@@ -337,65 +330,54 @@ class AdminCalculadora {
         // Filtrar tipos que ainda não foram adicionados
         return tiposCota.filter(tipo => !tiposAdicionados.has(tipo));
     }
-    criarNovaCotaCompleta(tipo, descricao, vestibular) {
-        const container = document.getElementById('cotasContainer');
-
-        // Verificar se já existe esta cota
-        const cotaExistente = Array.from(container.querySelectorAll('input[id$="_tipo"]'))
-            .find(input => input.value === tipo);
-
-        if (cotaExistente) {
-            this.showNotification(`A cota ${tipo} já foi adicionada`, 'warning');
-            return;
-        }
-
-        // Criar nova cota
-        this.criarNovaCota(container, tipo, descricao, vestibular);
-    }
 
     mostrarSelecionarCota(tiposCota, vestibular) {
-        // Prevenir múltiplos modais
-        if (document.querySelector('.modal-select-cota')) {
-            return;
+        // Verificar se o modal já está aberto
+        const modal = document.getElementById('cursoModal');
+        if (modal && modal.classList.contains('active')) {
+            return; // Modal já está aberto
         }
 
         const modalContent = `
-    <div class="modal-select-cota">
-        <h4>Selecione o tipo de cota</h4>
-        <p class="modal-help">Uma nova cota será criada com o tipo selecionado</p>
-        <div class="cota-options">
-            ${tiposCota.map(tipo => `
-                <button class="cota-option" data-tipo="${tipo}">
-                    <strong>${tipo}</strong>
-                    <span>${this.cotaData.DESCRICOES_COTA[tipo] || tipo}</span>
-                </button>
-            `).join('')}
-        </div>
-    </div>
-    `;
+            <div class="modal-select-cota">
+                <h4>Selecione o tipo de cota</h4>
+                <p class="modal-help">Uma nova cota será criada com o tipo selecionado</p>
+                <div class="cota-options">
+                    ${tiposCota.map(tipo => `
+                        <button class="cota-option" data-tipo="${tipo}" type="button">
+                            <strong>${tipo}</strong>
+                            <span>${this.cotaData.DESCRICOES_COTA[tipo] || tipo}</span>
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="modal-actions" style="margin-top: 20px; text-align: center;">
+                    <button type="button" class="btn btn-secondary modal-close" style="padding: 10px 20px;">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        `;
 
         this.showModal('Selecionar Cota', modalContent, () => {
-            // Adicionar flag para prevenir múltiplos cliques
-            let selecionado = false;
-
+            // Adicionar eventos aos botões
             document.querySelectorAll('.cota-option').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    // Prevenir múltiplas seleções
-                    if (selecionado) return;
-                    selecionado = true;
-
                     const tipo = e.currentTarget.dataset.tipo;
                     const descricao = this.cotaData.DESCRICOES_COTA[tipo] || tipo;
-
-                    // Fechar modal primeiro
+                    
+                    // Fechar modal
                     document.getElementById('cursoModal').classList.remove('active');
-
-                    // Criar cota com o tipo selecionado
+                    
+                    // Adicionar cota após um pequeno delay
                     setTimeout(() => {
                         this.adicionarCampoCota(tipo, descricao, vestibular, true);
-                        selecionado = false; // Reset flag
-                    }, 300);
+                    }, 100);
                 });
+            });
+
+            // Botão cancelar no modal
+            document.querySelector('.modal-select-cota .modal-close')?.addEventListener('click', () => {
+                document.getElementById('cursoModal').classList.remove('active');
             });
         });
     }
@@ -457,17 +439,11 @@ class AdminCalculadora {
             cotaElement.classList.remove('vazia');
             cotaElement.classList.add('preenchida');
         }
-    }
 
-    preencherCotaExistente(cotaId, tipo, descricao, vestibular) {
-        document.getElementById(`${cotaId}_tipo`).value = tipo;
-        document.getElementById(`${cotaId}_codigo`).value = tipo;
-        document.getElementById(`${cotaId}_descricao`).value = descricao;
-
-        // Atualizar cabeçalho
-        const header = document.querySelector(`#${cotaId} .cota-item-header h5`);
-        if (header) {
-            header.textContent = descricao || 'Nova Cota';
+        // Remover aviso se existir
+        const aviso = cotaElement.querySelector('.cota-aviso');
+        if (aviso) {
+            aviso.remove();
         }
     }
 
@@ -476,80 +452,79 @@ class AdminCalculadora {
         const temTipo = tipo && tipo.trim() !== '';
 
         const cotaHTML = `
-    <div class="cota-item-form ${!temTipo ? 'vazia' : 'preenchida'}" id="${cotaId}">
-        <div class="cota-item-header">
-            <h5>${descricao || (temTipo ? tipo : 'Nova Cota')}</h5>
-            <button type="button" class="btn-remove-cota" onclick="admin.removeCota('${cotaId}')">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="form-group">
-            <label for="${cotaId}_tipo">Tipo de Cota</label>
-            <input type="text" id="${cotaId}_tipo" value="${tipo}" readonly>
-        </div>
-        
-        <div class="form-group">
-            <label for="${cotaId}_codigo">Código</label>
-            <input type="text" id="${cotaId}_codigo" value="${tipo}" 
-                   placeholder="AMPLA, PP1, L1, etc." ${!temTipo ? 'required' : ''}>
-        </div>
-        
-        <div class="form-group">
-            <label for="${cotaId}_descricao">Descrição</label>
-            <input type="text" id="${cotaId}_descricao" value="${descricao}" ${!temTipo ? 'required' : ''}>
-        </div>
-        
-        <div class="form-group">
-            <label for="${cotaId}_nota">Nota de Corte *</label>
-            <input type="number" id="${cotaId}_nota" step="0.001" required 
-                   placeholder="Ex: 750.500">
-        </div>
-        
-        <div class="form-group">
-            <label for="${cotaId}_vagas">Vagas</label>
-            <input type="number" id="${cotaId}_vagas" min="0" 
-                   placeholder="Número de vagas">
-        </div>
-        
-        <div class="form-group">
-            <label for="${cotaId}_colocacao">Colocação do Último</label>
-            <input type="number" id="${cotaId}_colocacao" min="0" 
-                   placeholder="Posição do último classificado">
-        </div>
-        
-        ${vestibular === 'PSI' ? `
-        <div class="form-group">
-            <label for="${cotaId}_bonus">Bônus (%)</label>
-            <input type="number" id="${cotaId}_bonus" min="0" max="100" 
-                   placeholder="Ex: 20 para interior">
-        </div>
-        ` : ''}
-        
-        <div class="form-group">
-            <label class="checkbox-label">
-                <input type="checkbox" id="${cotaId}_preenchida">
-                <span>Vaga preenchida</span>
-            </label>
-        </div>
-        
-        <div class="form-group">
-            <label for="${cotaId}_obs">Observações</label>
-            <textarea id="${cotaId}_obs" rows="2" placeholder="Migração de vagas, etc."></textarea>
-        </div>
-        
-        ${!temTipo ? `
-        <div class="cota-aviso">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span>Selecione um tipo de cota predefinido</span>
-        </div>
-        ` : ''}
-    </div>
-    `;
+            <div class="cota-item-form ${!temTipo ? 'vazia' : 'preenchida'}" id="${cotaId}">
+                <div class="cota-item-header">
+                    <h5>${descricao || (temTipo ? tipo : 'Nova Cota')}</h5>
+                    <button type="button" class="btn-remove-cota" onclick="admin.removeCota('${cotaId}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="${cotaId}_tipo">Tipo de Cota</label>
+                    <input type="text" id="${cotaId}_tipo" value="${tipo}" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="${cotaId}_codigo">Código</label>
+                    <input type="text" id="${cotaId}_codigo" value="${tipo}" 
+                           placeholder="AMPLA, PP1, L1, etc." ${!temTipo ? 'required' : ''}>
+                </div>
+                
+                <div class="form-group">
+                    <label for="${cotaId}_descricao">Descrição</label>
+                    <input type="text" id="${cotaId}_descricao" value="${descricao}" ${!temTipo ? 'required' : ''}>
+                </div>
+                
+                <div class="form-group">
+                    <label for="${cotaId}_nota">Nota de Corte *</label>
+                    <input type="number" id="${cotaId}_nota" step="0.001" required 
+                           placeholder="Ex: 750.500">
+                </div>
+                
+                <div class="form-group">
+                    <label for="${cotaId}_vagas">Vagas</label>
+                    <input type="number" id="${cotaId}_vagas" min="0" 
+                           placeholder="Número de vagas">
+                </div>
+                
+                <div class="form-group">
+                    <label for="${cotaId}_colocacao">Colocação do Último</label>
+                    <input type="number" id="${cotaId}_colocacao" min="0" 
+                           placeholder="Posição do último classificado">
+                </div>
+                
+                ${vestibular === 'PSI' ? `
+                <div class="form-group">
+                    <label for="${cotaId}_bonus">Bônus (%)</label>
+                    <input type="number" id="${cotaId}_bonus" min="0" max="100" 
+                           placeholder="Ex: 20 para interior">
+                </div>
+                ` : ''}
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="${cotaId}_preenchida">
+                        <span>Vaga preenchida</span>
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="${cotaId}_obs">Observações</label>
+                    <textarea id="${cotaId}_obs" rows="2" placeholder="Migração de vagas, etc."></textarea>
+                </div>
+                
+                ${!temTipo ? `
+                <div class="cota-aviso">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Selecione um tipo de cota predefinido</span>
+                </div>
+                ` : ''}
+            </div>
+        `;
 
         container.insertAdjacentHTML('beforeend', cotaHTML);
     }
-
 
     removeCota(cotaId) {
         const element = document.getElementById(cotaId);
@@ -675,7 +650,7 @@ class AdminCalculadora {
         // Re-adicionar apenas AMPLA
         const vestibular = document.getElementById('vestibular').value;
         if (vestibular) {
-            this.atualizarCotasPorVestibular(vestibular);
+            this.adicionarCampoCota('AMPLA', 'Ampla Concorrência', vestibular);
         }
     }
 
@@ -874,7 +849,8 @@ class AdminCalculadora {
                         this.adicionarCampoCota(
                             cota.tipo || cota.codigo,
                             cota.descricao,
-                            curso.vestibular
+                            curso.vestibular,
+                            true
                         );
 
                         // Preencher os campos da cota recém-adicionada
@@ -1008,10 +984,8 @@ class AdminCalculadora {
 
     getVestibularAtual() {
         const select = document.getElementById('vestibular');
-        return select ? select.value : 'PSC';
+        return select ? select.value : this.currentVestibular;
     }
-
-
 
     selecionarCotaParaEdicao(tipo, vestibular) {
         this.cotaSelecionada = { tipo, vestibular };
@@ -1365,6 +1339,7 @@ adminStyles.textContent = `
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 10px;
         margin-top: 15px;
+        margin-bottom: 20px;
     }
     
     .cota-option {
@@ -1503,6 +1478,31 @@ adminStyles.textContent = `
     .no-results i {
         font-size: 2em;
         margin-bottom: 15px;
+    }
+    
+    .modal-actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s;
+    }
+    
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #5a6268;
     }
 `;
 document.head.appendChild(adminStyles);

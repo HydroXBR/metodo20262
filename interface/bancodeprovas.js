@@ -9,10 +9,9 @@ class BancoDeProvas {
                 iii: this.getSISProvasIII()
             },
             psc: {
-                // Será preenchido posteriormente
-                i: [],
-                ii: [],
-                iii: []
+                i: this.getPSCProvasI(),
+                ii: this.getPSCProvasII(),
+                iii: this.getPSCProvasIII()
             },
             macro: {
                 // Será preenchido posteriormente
@@ -27,14 +26,14 @@ class BancoDeProvas {
                 provas: []
             }
         };
-        
+
         this.init();
     }
 
     init() {
         this.setupEventListeners();
         this.updateStats();
-        this.showSISProvas();
+        this.showProvas();
     }
 
     setupEventListeners() {
@@ -77,7 +76,6 @@ class BancoDeProvas {
             }
         });
     }
-
     switchVestibular(vestibular) {
         this.currentVestibular = vestibular;
 
@@ -87,17 +85,15 @@ class BancoDeProvas {
         });
 
         // Mostrar/ocultar seletor de etapa
-        const etapaSelector = document.getElementById('sisEtapaSelector');
+        const etapaSelector = document.getElementById('etapaSelector');
         const comingSoon = document.getElementById('comingSoon');
-        
-        if (vestibular === 'sis') {
+
+        if (vestibular === 'sis' || vestibular === 'psc') {
             etapaSelector.classList.add('active');
-            comingSoon.classList.remove('active');
-            this.showSISProvas();
+            this.showProvas();
         } else {
             etapaSelector.classList.remove('active');
-            comingSoon.classList.add('active');
-            this.clearProvasGrid();
+            this.showProvas(); // Isso mostrará a mensagem "coming soon"
         }
     }
 
@@ -110,7 +106,7 @@ class BancoDeProvas {
         });
 
         // Mostrar provas da etapa selecionada
-        this.showSISProvas();
+        this.showProvas();
     }
 
     getSISProvasI() {
@@ -176,7 +172,7 @@ class BancoDeProvas {
             const nomeGabarito = nomes[i];
             const nomeProva = nomes[i + 1];
             const ano = this.extractAnoFromNome(nomeGabarito || nomeProva);
-            
+
             provas.push({
                 ano: ano,
                 etapa: 'I',
@@ -288,7 +284,7 @@ class BancoDeProvas {
         // Criar array de provas com anos de 2013 a 2024
         const provas = [];
         const anos = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
-        
+
         let linkIndex = 0;
         anos.forEach(ano => {
             provas.push({
@@ -308,70 +304,346 @@ class BancoDeProvas {
         return provas;
     }
 
+    getPSCProvasI() {
+        // Links fornecidos para PSC I
+        const links = [
+            'https://drive.google.com/file/d/1MWnp59mYT82BccLiAf6QjzdqdbVDOUBN/view?usp=drive_link',
+            'https://drive.google.com/file/d/1k0Ay3QzExxrNWIo9-tnklwkYKTM1i6UY/view?usp=drive_link',
+            'https://drive.google.com/file/d/1NVYMEWypcYZQDlRrOTjx1I7sB3JZoIlO/view?usp=drive_link',
+            'https://drive.google.com/file/d/1S60UWWmY8jRkQatCtSHmeOnUdVrhONip/view?usp=drive_link',
+            'https://drive.google.com/file/d/1kwjs5lwqmkoXyzwU0IykJDAMdxSpyZUg/view?usp=drive_link',
+            'https://drive.google.com/file/d/1KKFQEdaoHEXnfCc0jQoEjo0_WgD37LMN/view?usp=drive_link',
+            'https://drive.google.com/file/d/1CuOEPKoqW3yXHBRgDD5ned9BFTWc4ag2/view?usp=drive_link',
+            'https://drive.google.com/file/d/1a9Q-yU_ST2OfWaPPTU-9TAHT3iUaCyVB/view?usp=drive_link',
+            'https://drive.google.com/file/d/1GT0jPljmlgrXVqFSSD_PC5nlIAmeh5dn/view?usp=drive_link',
+            'https://drive.google.com/file/d/1Tp3WWXtRGn04opHkj9U2aalJPL5gm4wD/view?usp=drive_link',
+            'https://drive.google.com/file/d/198rr6J2dg96EpzMuxZDxP-wcLbsiLTb4/view?usp=drive_link',
+            'https://drive.google.com/file/d/1l_1nCmds37seOD6b_i78GunqGXhwHR_c/view?usp=drive_link',
+            'https://drive.google.com/file/d/1CgLnNnh5pcQiziRqXNwCVKNPBLIKeVhL/view?usp=drive_link',
+            'https://drive.google.com/file/d/1xgsP-Vx2cyreABnVk3-_k0XDj4kBmI7c/view?usp=drive_link',
+            'https://drive.google.com/file/d/1yaHooOj_zs4VBC0ASigY_Jz8CSwFFmL6/view?usp=drive_link',
+            'https://drive.google.com/file/d/1N5Pyrv09XWmJG-cED8NmUp0k3g6ndNtD/view?usp=drive_link',
+            'https://drive.google.com/file/d/11rBFDVDw5yHGXhq5hlHgfKvJFC-Tu3WJ/view?usp=drive_link',
+            'https://drive.google.com/file/d/14a_0bLQIqz1yw1a3ZZDTnPKnk5_8IZ1k/view?usp=drive_link',
+            'https://drive.google.com/file/d/1nUKpooM__Lu-p9qekJq2x-HUb8Qemuav/view?usp=drive_link',
+            'https://drive.google.com/file/d/1z506oBqBtE5T1EuyKNpYDLS_07aHIQZC/view?usp=drive_link',
+            'https://drive.google.com/file/d/1w34RveuFgZAjzYGvwRcOzmUglyk4vXiA/view?usp=drive_link',
+            'https://drive.google.com/file/d/1Euig9ss0JlK3yzdZE_AjUpcLFJ1AJrgu/view?usp=drive_link',
+            'https://drive.google.com/file/d/1d331tqMYuRMRIUBtoMg7B7W4wexwI0CS/view?usp=drive_link',
+            'https://drive.google.com/file/d/1lFRgrPL0dPIkJl1r5vsMkkPA3YkxM88e/view?usp=drive_link',
+            'https://drive.google.com/file/d/1wy1e3GGIBuI1qs22pDrcSYkQkpEFaCgv/view?usp=drive_link',
+            'https://drive.google.com/file/d/19N2ShKxosetaaMdUmaP-xsd8jPLgkpZ5/view?usp=drive_link'
+        ];
+
+        // Nomes dos arquivos na ordem fornecida
+        const nomes = [
+            'Edital 01 de 2025 - Gabarito Definitivo.pdf',
+            'Edital-01-de-2025-Prova-PSC1.pdf',
+            'PSC-2013-Etapa-I-Gabarito.pdf',
+            'PSC-2013-Etapa-I-Prova.pdf',
+            'PSC-2014-Etapa-I-Gabarito.pdf',
+            'PSC-2014-Etapa-I-Prova.pdf',
+            'PSC-2015-Etapa-I-Gabarito.pdf',
+            'PSC-2015-Etapa-I-Prova.pdf',
+            'PSC-2016-Etapa-I-Gabarito.pdf',
+            'PSC-2016-Etapa-I-Prova.pdf',
+            'PSC-2017-Etapa-I-Gabarito.pdf',
+            'PSC-2017-Etapa-I-Prova.pdf',
+            'PSC-2018-Etapa-I-Gabarito.pdf',
+            'PSC-2018-Etapa-I-Prova.pdf',
+            'PSC-2019-Etapa-I-Gabarito.pdf',
+            'PSC-2019-Etapa-I-Prova.pdf',
+            'PSC-2020-Etapa-I-Gabarito.pdf',
+            'PSC-2020-Etapa-I-Prova.pdf',
+            'PSC-2021-Etapa-I-Gabarito.pdf',
+            'PSC-2021-Etapa-I-Prova.pdf',
+            'PSC-2022-Etapa-I-Gabarito.pdf',
+            'PSC-2022-Etapa-I-Prova.pdf',
+            'PSC-2023---Etapa-I---Gabarito.pdf',
+            'PSC-2023---ETAPA-I---PROVA.pdf',
+            'PSC-2024---Etapa-I---Gabarito.pdf',
+            'PSC-2024---Etapa-I---Prova.pdf'
+        ];
+
+        // Organizar por ano
+        const provas = [];
+        for (let i = 0; i < nomes.length; i += 2) {
+            const nomeGabarito = nomes[i];
+            const nomeProva = nomes[i + 1];
+            let ano = this.extractAnoFromNome(nomeGabarito || nomeProva);
+
+            // Tratar caso especial do edital 2025
+            if (nomeGabarito.includes('2025')) {
+                ano = '2025';
+            }
+
+            provas.push({
+                ano: ano,
+                etapa: 'I',
+                gabarito: {
+                    nome: nomeGabarito,
+                    link: links[i]
+                },
+                prova: {
+                    nome: nomeProva,
+                    link: links[i + 1]
+                }
+            });
+        }
+
+        return provas;
+    }
+
+    getPSCProvasII() {
+        // Links fornecidos para PSC II
+        const links = [
+            'https://drive.google.com/file/d/1GHCz1CBHCKq_HUqcuaoGGtjr8V8fuH76/view?usp=drive_link',
+            'https://drive.google.com/file/d/1Hu3F4jXvYzlNxZYH8SoDfgAzBm4xweDT/view?usp=drive_link',
+            'https://drive.google.com/file/d/1qyoAbo44iXy6BRA6XaR4QmCNXdeE7i4j/view?usp=drive_link',
+            'https://drive.google.com/file/d/12b39KzDam6Pu_PazZLKmReNV_768MgNy/view?usp=drive_link',
+            'https://drive.google.com/file/d/17Ps2JTiMD0CrKkmaXStTieKPF7bTVAe6/view?usp=drive_link',
+            'https://drive.google.com/file/d/1jdvt5FgaamR3rTdYfJKtKMUkwS_W_pJh/view?usp=drive_link',
+            'https://drive.google.com/file/d/1DZV_k1tQg5lqa2xztnH14jHEvXP3150p/view?usp=drive_link',
+            'https://drive.google.com/file/d/1NUXbcr8UCGLO9O5vUBmIqYcLHev78epl/view?usp=drive_link',
+            'https://drive.google.com/file/d/1-pwXJCFwkDYL3waLj7tI4cluG09dOX4j/view?usp=drive_link',
+            'https://drive.google.com/file/d/1U0ArtqZh7SRAbHrBlEcY_77TO_h5LGU1/view?usp=drive_link',
+            'https://drive.google.com/file/d/1LrrVAHrksASKD_tuMXe01qCgyNc519Fa/view?usp=drive_link',
+            'https://drive.google.com/file/d/11tJWbdHZ2V44qS7xXpEq4faqX2tbu1Zs/view?usp=drive_link',
+            'https://drive.google.com/file/d/1DHkf92S5-Flv4pt4ILTOqz3LBJuA9F2T/view?usp=drive_link',
+            'https://drive.google.com/file/d/1C1g1qjJIDy5wnFL3KLaCfebqEjoV5pov/view?usp=drive_link',
+            'https://drive.google.com/file/d/1CdRZpGnmNo8jXrWlKdj5d1LQHXhUXUSi/view?usp=drive_link',
+            'https://drive.google.com/file/d/1dGsAPFWiqybjJUr7mDBnsI08nHRiWGED/view?usp=drive_link',
+            'https://drive.google.com/file/d/1MDhIeq3RmPwjCSCdbBnHpsIqsnNkYwiA/view?usp=drive_link',
+            'https://drive.google.com/file/d/1zY09jW_A1AsYNuWsvbQKrkKlHIfz8onA/view?usp=drive_link',
+            'https://drive.google.com/file/d/1k1dURW2l1ICpHaDZ0z1DfTGPCao1N_Mr/view?usp=drive_link',
+            'https://drive.google.com/file/d/1HQ0xuMQvhdBGjtVAIWg2TM_6q4zK5Y0G/view?usp=drive_link',
+            'https://drive.google.com/file/d/1dvE7Vr51lbpq0t3ruzMDLHZO3ddN5bj-/view?usp=drive_link',
+            'https://drive.google.com/file/d/1bN0PSN0xg6Mx9lxeNfMufhCa5TOEfpiM/view?usp=drive_link',
+            'https://drive.google.com/file/d/1RfbSjwHNWfPDr9RhiOjXO1x7xXGSRtet/view?usp=drive_link',
+            'https://drive.google.com/file/d/1v8OvMbXg1nxePgN4WyCfqgm2pmIVQ_l9/view?usp=drive_link',
+            'https://drive.google.com/file/d/1hi7LPpe-7drOI2d1Bifg8SKvUSCoUyoH/view?usp=drive_link',
+            'https://drive.google.com/file/d/1pIkFY9UYyWEFjqG-7t-8aCmUg5-A6g1M/view?usp=drive_link'
+        ];
+
+        // Nomes dos arquivos na ordem fornecida
+        const nomes = [
+            'Edital-02-de-2025-Gabarito-PSC-2.pdf',
+            'Edital-02-de-2025-Prova-PSC-2.pdf',
+            'PSC-2013-Etapa-II-Gabarito.pdf',
+            'PSC-2013-Etapa-II-Prova.pdf',
+            'PSC-2014-Etapa-II-Gabarito.pdf',
+            'PSC-2014-Etapa-II-Prova.pdf',
+            'PSC-2015-Etapa-II-Gabarito.pdf',
+            'PSC-2015-Etapa-II-Prova.pdf',
+            'PSC-2016-Etapa-II-Gabarito.pdf',
+            'PSC-2016-Etapa-II-Prova.pdf',
+            'PSC-2017-Etapa-II-Gabarito.pdf',
+            'PSC-2017-Etapa-II-Prova.pdf',
+            'PSC-2018-Etapa-II-Gabarito.pdf',
+            'PSC-2018-Etapa-II-Prova.pdf',
+            'PSC-2019-Etapa-II-Gabarito.pdf',
+            'PSC-2019-Etapa-II-Prova.pdf',
+            'PSC-2020-Etapa-II-Gabarito.pdf',
+            'PSC-2020-Etapa-II-Prova.pdf',
+            'PSC-2021-Etapa-II-Gabarito.pdf',
+            'PSC-2021-Etapa-II-Prova.pdf',
+            'PSC-2022-Etapa-II-Gabarito.pdf',
+            'PSC-2022-Etapa-II-Prova.pdf',
+            'PSC-2023---Etapa-II---Gabarito.pdf',
+            'PSC-2023---Etapa-II---Prova.pdf',
+            'PSC-2024---Etapa-II---Gabarito.pdf',
+            'PSC-2024---Etapa-II---Prova.pdf'
+        ];
+
+        // Organizar por ano
+        const provas = [];
+        for (let i = 0; i < nomes.length; i += 2) {
+            const nomeGabarito = nomes[i];
+            const nomeProva = nomes[i + 1];
+            let ano = this.extractAnoFromNome(nomeGabarito || nomeProva);
+
+            // Tratar caso especial do edital 2025
+            if (nomeGabarito.includes('2025')) {
+                ano = '2025';
+            }
+
+            provas.push({
+                ano: ano,
+                etapa: 'II',
+                gabarito: {
+                    nome: nomeGabarito,
+                    link: links[i]
+                },
+                prova: {
+                    nome: nomeProva,
+                    link: links[i + 1]
+                }
+            });
+        }
+
+        return provas;
+    }
+
+    getPSCProvasIII() {
+        // Links fornecidos para PSC III
+        const links = [
+            'https://drive.google.com/open?id=1_RD2lq3ohZpBBWtXPgbxR14ixZjtor19&usp=drive_copy',
+            'https://drive.google.com/file/d/1G1NZLepKZ8DwPzXdMTqSKKpEPwJU-06r/view?usp=drive_link',
+            'https://drive.google.com/open?id=1cDOx8z2nT7u3fphfm5gzE9-yeyF_tkzB&usp=drive_copy',
+            'https://drive.google.com/open?id=1R4eH3ZKSz4L8A3m5epjEkraF-uEHzZ_q&usp=drive_copy',
+            'https://drive.google.com/open?id=1OPkrVgbrPOA3GIO9kZgNJfxHSIbLvBRp&usp=drive_copy',
+            'https://drive.google.com/open?id=1yIWqbwvO-0D8lOB3hJHimem3p8FBJTUq&usp=drive_copy',
+            'https://drive.google.com/open?id=1gadpV-JJeGRIVDiQyKwYOcFvxWK6vbQh&usp=drive_copy',
+            'https://drive.google.com/open?id=18LlJOpKksTPwc_VppZLKM-C7ZKOkLxHV&usp=drive_copy',
+            'https://drive.google.com/open?id=1xrPV4Z1d-fZRkR__azbU4HUp1swY_cnq&usp=drive_copy',
+            'https://drive.google.com/open?id=16bkPvHza3NP5CEh091uCtqbftF9tFXiE&usp=drive_copy',
+            'https://drive.google.com/open?id=1XO8OQgqqv013LVEFRl8E_5-HMeezmJ6Q&usp=drive_copy',
+            'https://drive.google.com/open?id=1YsmExjDBdBr0BiSd8wX2ZuIuFv4lnMqY&usp=drive_copy',
+            'https://drive.google.com/open?id=1cnb6uheNVhWcuFM9Vyv4XKhBIFZgrCQB&usp=drive_copy',
+            'https://drive.google.com/open?id=1igzj0l-EqCz5oBq-5kzWRmFSisDSzTMY&usp=drive_copy',
+            'https://drive.google.com/open?id=10VMYELOG-ZRJtnY3jlf_28629iGeEs92&usp=drive_copy',
+            'https://drive.google.com/open?id=1Jq8MKh22etQr2QI9KR5lvg_l4_irj1jc&usp=drive_copy',
+            'https://drive.google.com/open?id=1p94Cz4L32nH0ARH3A_mWJqjBvUVM-FAo&usp=drive_copy',
+            'https://drive.google.com/open?id=1KALbf82PAcFQ_JiXj3CV6hiQ2hu7eX5W&usp=drive_copy',
+            'https://drive.google.com/open?id=1Be6sjajOy9TpU-uKRRxLR7V_Y0fhrObj&usp=drive_copy',
+            'https://drive.google.com/open?id=1-VOSdpex7iIcCY7NDZiW8AvPEQ2dxru3&usp=drive_copy',
+            'https://drive.google.com/open?id=1fLn7mSL_A2qGMtR79BTjfU9bIr9TyDtN&usp=drive_copy',
+            'https://drive.google.com/open?id=1q6R_p9rjniHQidx6qODP1DBKWLO3_6c3&usp=drive_copy',
+            'https://drive.google.com/open?id=1JEtUbHyv18uJGSEJYJLHOjJZRDh6FED8&usp=drive_copy',
+            'https://drive.google.com/open?id=16DM0ikRNcxC3zxZStjADalAfC-Otzpnp&usp=drive_copy',
+            'https://drive.google.com/open?id=1u52PGgTaJh6BlFEtiZl98vuYXFgeqqiT&usp=drive_copy',
+            'https://drive.google.com/open?id=1VcyXZyEo8YjiQJGmiJsbQ-kDklIIF9pJ&usp=drive_copy'
+        ];
+
+        // Nomes dos arquivos na ordem fornecida
+        const nomes = [
+            'Edital 12 de 2025 - Gabarito Definitivo.pdf',
+            'Edital 12 de 2025 - Prova.pdf',
+            'PSC-2013-Etapa-III-Gabarito.pdf',
+            'PSC-2013-Etapa-III-Prova.pdf',
+            'PSC-2014-Etapa-III-Gabarito.pdf',
+            'PSC-2014-Etapa-III-Prova.pdf',
+            'PSC-2015-Etapa-III-Gabarito.pdf',
+            'PSC-2015-Etapa-III-Prova.pdf',
+            'PSC-2016-Etapa-III-Gabarito.pdf',
+            'PSC-2016-Etapa-III-Prova.pdf',
+            'PSC-2017-Etapa-III-Gabarito.pdf',
+            'PSC-2017-Etapa-III-Prova.pdf',
+            'PSC-2018-Etapa-III-Gabarito.pdf',
+            'PSC-2018-Etapa-III-Prova.pdf',
+            'PSC-2019-Etapa-III-Gabarito.pdf',
+            'PSC-2019-Etapa-III-Prova.pdf',
+            'PSC-2020-Etapa-III-Gabarito.pdf',
+            'PSC-2020-Etapa-III-Prova.pdf',
+            'PSC-2021-Etapa-III-Gabarito.pdf',
+            'PSC-2021-Etapa-III-Prova.pdf',
+            'PSC-2022-Etapa-III-Gabarito.pdf',
+            'PSC-2022-Etapa-III-Prova.pdf',
+            'PSC-2023-Etapa-III-Gabarito.pdf',
+            'PSC-2023-Etapa-III-Prova.pdf',
+            'PSC-2024---Etapa-III---Gabarito.pdf',
+            'PSC-2024---Etapa-III---Prova.pdf'
+        ];
+
+        // Organizar por ano
+        const provas = [];
+        for (let i = 0; i < nomes.length; i += 2) {
+            const nomeGabarito = nomes[i];
+            const nomeProva = nomes[i + 1];
+            let ano = this.extractAnoFromNome(nomeGabarito || nomeProva);
+
+            // Tratar caso especial do edital 2025
+            if (nomeGabarito.includes('2025')) {
+                ano = '2025';
+            }
+
+            provas.push({
+                ano: ano,
+                etapa: 'III',
+                gabarito: {
+                    nome: nomeGabarito,
+                    link: links[i]
+                },
+                prova: {
+                    nome: nomeProva,
+                    link: links[i + 1]
+                }
+            });
+        }
+
+        return provas;
+    }
+
     extractAnoFromNome(nome) {
         // Extrai o ano do nome do arquivo
         const match = nome.match(/\b(20\d{2})\b/);
         return match ? match[1] : 'N/A';
     }
-
-    showSISProvas() {
-        const provas = this.provasData.sis[this.currentEtapa];
+    showProvas() {
         const grid = document.getElementById('provasGrid');
         const noProvas = document.getElementById('noProvas');
+        const comingSoon = document.getElementById('comingSoon');
 
-        if (!provas || provas.length === 0) {
-            grid.innerHTML = '';
-            noProvas.classList.add('active');
-            return;
-        }
-
-        noProvas.classList.remove('active');
+        // Limpar tudo primeiro
         grid.innerHTML = '';
+        noProvas.classList.remove('active');
+        comingSoon.classList.remove('active');
 
-        // Ordenar provas por ano (mais recente primeiro)
-        const provasOrdenadas = [...provas].sort((a, b) => b.ano - a.ano);
+        if (this.currentVestibular === 'sis' || this.currentVestibular === 'psc') {
+            const provas = this.provasData[this.currentVestibular][this.currentEtapa];
 
-        provasOrdenadas.forEach(prova => {
-            const card = this.createProvaCard(prova);
-            grid.appendChild(card);
-        });
+            if (!provas || provas.length === 0) {
+                noProvas.classList.add('active');
+                return;
+            }
 
-        this.updateStats();
+            // Ordenar provas por ano (mais recente primeiro)
+            const provasOrdenadas = [...provas].sort((a, b) => b.ano - a.ano);
+
+            provasOrdenadas.forEach(prova => {
+                const card = this.createProvaCard(prova);
+                grid.appendChild(card);
+            });
+
+            this.updateStats();
+        } else {
+            // Para outros vestibulares não implementados
+            comingSoon.classList.add('active');
+        }
     }
-
     createProvaCard(prova) {
         const card = document.createElement('div');
         card.className = 'prova-card';
 
-        // Converter etapa romana para número
-        const etapaNum = prova.etapa === 'I' ? 'i' : prova.etapa === 'II' ? 'ii' : 'iii';
-        
+        // Determinar o nome do vestibular baseado no vestibular atual
+        const vestibularNome = this.currentVestibular === 'sis' ? 'SIS' : 'PSC';
+
         card.innerHTML = `
-            <div class="prova-header">
-                <span class="prova-ano">${prova.ano}</span>
-                <span class="prova-etapa">Etapa ${prova.etapa}</span>
-            </div>
-            <h3 class="prova-titulo">
-                <i class="fas fa-file-pdf"></i>
-                SIS ${prova.ano} - Etapa ${prova.etapa}
-            </h3>
-            <div class="prova-botoes">
-                <a href="${prova.prova.link}" 
-                   target="_blank" 
-                   class="btn-prova"
-                   title="Baixar Prova">
-                    <i class="fas fa-download"></i>
-                    Prova
-                </a>
-                <a href="${prova.gabarito.link}" 
-                   target="_blank" 
-                   class="btn-gabarito"
-                   title="Baixar Gabarito">
-                    <i class="fas fa-check-circle"></i>
-                    Gabarito
-                </a>
-            </div>
-        `;
+        <div class="prova-header">
+            <span class="prova-ano">${prova.ano}</span>
+            <span class="prova-etapa">Etapa ${prova.etapa}</span>
+        </div>
+        <h3 class="prova-titulo">
+            <i class="fas fa-file-pdf"></i>
+            ${vestibularNome} ${prova.ano} - Etapa ${prova.etapa}
+        </h3>
+        <div class="prova-botoes">
+            <a href="${prova.prova.link}" 
+               target="_blank" 
+               class="btn-prova"
+               title="Baixar Prova">
+                <i class="fas fa-download"></i>
+                Prova
+            </a>
+            <a href="${prova.gabarito.link}" 
+               target="_blank" 
+               class="btn-gabarito"
+               title="Baixar Gabarito">
+                <i class="fas fa-check-circle"></i>
+                Gabarito
+            </a>
+        </div>
+    `;
 
         return card;
     }
@@ -380,13 +652,21 @@ class BancoDeProvas {
         const grid = document.getElementById('provasGrid');
         grid.innerHTML = '';
     }
-
     updateStats() {
-        // Calcular estatísticas baseadas nas provas SIS
+        // Calcular estatísticas baseadas nas provas SIS e PSC
         let totalProvas = 0;
         const anosSet = new Set();
 
+        // Contar provas SIS
         Object.values(this.provasData.sis).forEach(etapaProvas => {
+            totalProvas += etapaProvas.length * 2; // Cada ano tem prova e gabarito
+            etapaProvas.forEach(prova => {
+                anosSet.add(prova.ano);
+            });
+        });
+
+        // Contar provas PSC
+        Object.values(this.provasData.psc).forEach(etapaProvas => {
             totalProvas += etapaProvas.length * 2; // Cada ano tem prova e gabarito
             etapaProvas.forEach(prova => {
                 anosSet.add(prova.ano);
