@@ -6,25 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Método | Calculadora de Notas</title>
 
-    <!-- Mesmas fontes da index.html -->
+    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap"
         rel="stylesheet">
 
-    <!-- Mesmo Font Awesome -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- CSS da calculadora -->
+    <!-- CSS -->
     <link rel="stylesheet" href="calculadora.css">
-
-    <!-- Mesmo favicon -->
     <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
 </head>
 
 <body>
-    <!-- Header IDÊNTICO ao index.html -->
+    <!-- Header -->
     <header class="header" id="header">
         <div class="container header-content">
             <a href="/index.html" class="logo">
@@ -64,10 +62,11 @@
         <div class="container">
             <div class="calculator-hero-content">
                 <div class="calculator-hero-info">
-                    <span class="calculator-badge">PSC 2026</span>
+                    <span class="calculator-badge" id="vestibularBadge">PSC 2026</span>
                     <h1 class="calculator-title">Calculadora de Notas</h1>
                     <p class="calculator-subtitle">
-                        Insira suas notas e descubra em quais cursos você tem chances de aprovação no PSC, SIS e ENEM.
+                        Insira suas notas e descubra em quais cursos você tem chances de aprovação no PSC, SIS, ENEM,
+                        MACRO e PSI.
                     </p>
                 </div>
                 <div class="calculator-stats">
@@ -94,8 +93,9 @@
     <main class="calculator-main">
         <div class="container">
             <div class="calculator-layout">
-                <!-- Painel de Entrada -->
-                <div class="calculator-input">
+                <!-- COLUNA ESQUERDA -->
+                <div class="calculator-left-column">
+                    <!-- Painel de Entrada -->
                     <div class="input-card">
                         <div class="input-header">
                             <h3><i class="fas fa-calculator"></i> Insira suas notas</h3>
@@ -103,9 +103,11 @@
                                 <button class="toggle-vest active" data-vestibular="psc">PSC</button>
                                 <button class="toggle-vest" data-vestibular="sis">SIS</button>
                                 <button class="toggle-vest" data-vestibular="enem">ENEM</button>
+                                <button class="toggle-vest" data-vestibular="macro">MACRO</button>
+                                <button class="toggle-vest" data-vestibular="psi">PSI</button>
                             </div>
                         </div>
-                        
+
                         <!-- Formulário PSC -->
                         <div class="input-form" id="pscForm">
                             <div class="form-group">
@@ -114,56 +116,48 @@
                                     PSC 1 (0-54)
                                 </label>
                                 <div class="input-with-info">
-                                    <input type="number" id="psc1" min="0" max="54" step="0.001" placeholder="Ex: 42.500">
-                                    <span class="input-info">× 3 = <span id="psc1Peso">0</span> pontos</span>
-                                </div>
-                                <div class="input-slider">
-                                    <input type="range" id="psc1Slider" min="0" max="54" step="0.001" value="0">
+                                    <input type="number" id="psc1" min="0" max="54" step="0.001" value="0"
+                                        placeholder="Ex: 42.500">
+                                    <span class="input-info">× 3 = <span id="psc1Peso">0.000</span> pts</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="psc2">
                                     <i class="fas fa-2"></i>
                                     PSC 2 (0-54)
                                 </label>
                                 <div class="input-with-info">
-                                    <input type="number" id="psc2" min="0" max="54" step="0.001" placeholder="Ex: 38.750">
-                                    <span class="input-info">× 3 = <span id="psc2Peso">0</span> pontos</span>
-                                </div>
-                                <div class="input-slider">
-                                    <input type="range" id="psc2Slider" min="0" max="54" step="0.001" value="0">
+                                    <input type="number" id="psc2" min="0" max="54" step="0.001" value="0"
+                                        placeholder="Ex: 38.750">
+                                    <span class="input-info">× 3 = <span id="psc2Peso">0.000</span> pts</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="psc3">
                                     <i class="fas fa-3"></i>
                                     PSC 3 (0-54)
                                 </label>
                                 <div class="input-with-info">
-                                    <input type="number" id="psc3" min="0" max="54" step="0.001" placeholder="Ex: 45.250">
-                                    <span class="input-info">× 3 = <span id="psc3Peso">0</span> pontos</span>
-                                </div>
-                                <div class="input-slider">
-                                    <input type="range" id="psc3Slider" min="0" max="54" step="0.001" value="0">
+                                    <input type="number" id="psc3" min="0" max="54" step="0.001" value="0"
+                                        placeholder="Ex: 45.250">
+                                    <span class="input-info">× 3 = <span id="psc3Peso">0.000</span> pts</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="redacaoPsc">
                                     <i class="fas fa-pen-fancy"></i>
                                     Redação PSC 3 (0-9)
                                 </label>
                                 <div class="input-with-info">
-                                    <input type="number" id="redacaoPsc" min="0" max="9" step="0.001" placeholder="Ex: 7.500">
-                                    <span class="input-info">× 6 = <span id="redacaoPeso">0</span> pontos</span>
-                                </div>
-                                <div class="input-slider">
-                                    <input type="range" id="redacaoSlider" min="0" max="9" step="0.001" value="0">
+                                    <input type="number" id="redacaoPsc" min="0" max="9" step="0.001" value="0"
+                                        placeholder="Ex: 7.500">
+                                    <span class="input-info">× 6 = <span id="redacaoPscPeso">0.000</span> pts</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-result">
                                 <div class="result-header">
                                     <h4>Sua Nota Total PSC</h4>
@@ -176,47 +170,232 @@
                                     <span class="total-score" id="pscTotal">0.000</span>
                                     <span class="total-max">Máximo: 477.000</span>
                                 </div>
-                                <div class="result-breakdown">
-                                    <div class="breakdown-item">
-                                        <span>PSC 1</span>
-                                        <strong id="breakdownPsc1">0.000</strong>
-                                    </div>
-                                    <div class="breakdown-item">
-                                        <span>PSC 2</span>
-                                        <strong id="breakdownPsc2">0.000</strong>
-                                    </div>
-                                    <div class="breakdown-item">
-                                        <span>PSC 3</span>
-                                        <strong id="breakdownPsc3">0.000</strong>
-                                    </div>
-                                    <div class="breakdown-item">
-                                        <span>Redação</span>
-                                        <strong id="breakdownRedacao">0.000</strong>
-                                    </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulário SIS -->
+                        <div class="input-form hidden" id="sisForm">
+                            <div class="form-group">
+                                <label for="sis1">
+                                    <i class="fas fa-1"></i>
+                                    SIS 1 (0-60)
+                                </label>
+                                <div class="input-with-info">
+                                    <input type="number" id="sis1" min="0" max="60" step="0.001" value="0"
+                                        placeholder="Ex: 45.500">
+                                    <span class="input-info">Nota: <span id="sis1Nota">0.000</span> pts</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sis2">
+                                    <i class="fas fa-2"></i>
+                                    SIS 2 (0-60)
+                                </label>
+                                <div class="input-with-info">
+                                    <input type="number" id="sis2" min="0" max="60" step="0.001" value="0"
+                                        placeholder="Ex: 50.250">
+                                    <span class="input-info">Nota: <span id="sis2Nota">0.000</span> pts</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="redacaoSis2">
+                                    <i class="fas fa-pen-fancy"></i>
+                                    Redação SIS 2 (0-10)
+                                </label>
+                                <div class="input-with-info">
+                                    <input type="number" id="redacaoSis2" min="0" max="10" step="0.001" value="0"
+                                        placeholder="Ex: 8.500">
+                                    <span class="input-info">× 2 = <span id="redacaoSis2Peso">0.000</span> pts</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sis3">
+                                    <i class="fas fa-3"></i>
+                                    SIS 3 (0-60)
+                                </label>
+                                <div class="input-with-info">
+                                    <input type="number" id="sis3" min="0" max="60" step="0.001" value="0"
+                                        placeholder="Ex: 48.750">
+                                    <span class="input-info">Nota: <span id="sis3Nota">0.000</span> pts</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="redacaoSis3">
+                                    <i class="fas fa-pen-fancy"></i>
+                                    Redação SIS 3 (0-10)
+                                </label>
+                                <div class="input-with-info">
+                                    <input type="number" id="redacaoSis3" min="0" max="10" step="0.001" value="0"
+                                        placeholder="Ex: 9.000">
+                                    <span class="input-info">× 2 = <span id="redacaoSis3Peso">0.000</span> pts</span>
+                                </div>
+                            </div>
+
+                            <div class="form-result">
+                                <div class="result-header">
+                                    <h4>Sua Nota Total SIS</h4>
+                                    <button class="btn-reset" id="resetSis">
+                                        <i class="fas fa-redo"></i>
+                                        Limpar
+                                    </button>
+                                </div>
+                                <div class="result-total">
+                                    <span class="total-score" id="sisTotal">0.000</span>
+                                    <span class="total-max">Máximo: 180.000</span>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Formulário SIS (oculto inicialmente) -->
-                        <div class="input-form hidden" id="sisForm">
-                            <!-- Será implementado posteriormente -->
-                            <div class="empty-form">
-                                <i class="fas fa-tools"></i>
-                                <p>Calculadora SIS em desenvolvimento</p>
+
+                        <!-- Formulário ENEM -->
+                        <div class="input-form hidden" id="enemForm">
+                            <div class="form-group">
+                                <label for="enemLinguagens">
+                                    <i class="fas fa-language"></i>
+                                    Linguagens (0-1000)
+                                </label>
+                                <input type="number" id="enemLinguagens" min="0" max="1000" step="0.001" value="0"
+                                    placeholder="Ex: 750.500">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="enemHumanas">
+                                    <i class="fas fa-landmark"></i>
+                                    Humanas (0-1000)
+                                </label>
+                                <input type="number" id="enemHumanas" min="0" max="1000" step="0.001" value="0"
+                                    placeholder="Ex: 720.250">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="enemNatureza">
+                                    <i class="fas fa-leaf"></i>
+                                    Natureza (0-1000)
+                                </label>
+                                <input type="number" id="enemNatureza" min="0" max="1000" step="0.001" value="0"
+                                    placeholder="Ex: 680.750">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="enemMatematica">
+                                    <i class="fas fa-calculator"></i>
+                                    Matemática (0-1000)
+                                </label>
+                                <input type="number" id="enemMatematica" min="0" max="1000" step="0.001" value="0"
+                                    placeholder="Ex: 810.500">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="enemRedacao">
+                                    <i class="fas fa-pen-fancy"></i>
+                                    Redação ENEM (0-1000)
+                                </label>
+                                <input type="number" id="enemRedacao" min="0" max="1000" step="0.001" value="0"
+                                    placeholder="Ex: 920.000">
+                            </div>
+
+                            <div class="form-result">
+                                <div class="result-header">
+                                    <h4>Sua Média ENEM</h4>
+                                    <button class="btn-reset" id="resetEnem">
+                                        <i class="fas fa-redo"></i>
+                                        Limpar
+                                    </button>
+                                </div>
+                                <div class="result-total">
+                                    <span class="total-score" id="enemTotal">0.000</span>
+                                    <span class="total-max">Média simples</span>
+                                </div>
                             </div>
                         </div>
-                        
-                        <!-- Formulário ENEM (oculto inicialmente) -->
-                        <div class="input-form hidden" id="enemForm">
-                            <!-- Será implementado posteriormente -->
-                            <div class="empty-form">
-                                <i class="fas fa-tools"></i>
-                                <p>Calculadora ENEM em desenvolvimento</p>
+
+                        <!-- Formulário MACRO -->
+                        <div class="input-form hidden" id="macroForm">
+                            <div class="form-group">
+                                <label for="macroCG">
+                                    <i class="fas fa-book"></i>
+                                    CG - Conhecimentos Gerais (0-84)
+                                </label>
+                                <div class="input-with-info">
+                                    <input type="number" id="macroCG" min="0" max="84" step="1" value="0"
+                                        placeholder="Ex: 65">
+                                    <span class="input-info">Nota: <span id="macroCGNota">0.000</span></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="macroCE">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    CE - Conhecimentos Específicos (0-36)
+                                </label>
+                                <div class="input-with-info">
+                                    <input type="number" id="macroCE" min="0" max="36" step="1" value="0"
+                                        placeholder="Ex: 28">
+                                    <span class="input-info">× 2 = <span id="macroCEPeso">0.000</span> pts</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="macroRedacao">
+                                    <i class="fas fa-pen-fancy"></i>
+                                    Redação MACRO (0-28)
+                                </label>
+                                <input type="number" id="macroRedacao" min="0" max="28" step="0.001" value="0"
+                                    placeholder="Ex: 22.500">
+                            </div>
+
+                            <div class="form-result">
+                                <div class="result-header">
+                                    <h4>Sua Nota Total MACRO</h4>
+                                    <button class="btn-reset" id="resetMacro">
+                                        <i class="fas fa-redo"></i>
+                                        Limpar
+                                    </button>
+                                </div>
+                                <div class="result-total">
+                                    <span class="total-score" id="macroTotal">0.000</span>
+                                    <span class="total-max">Máximo: 100.000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulário PSI -->
+                        <div class="input-form hidden" id="psiForm">
+                            <div class="form-group">
+                                <label for="psiNotaTotal">
+                                    <i class="fas fa-star"></i>
+                                    Nota Total PSI
+                                </label>
+                                <div class="input-with-info">
+                                    <input type="number" id="psiNotaTotal" min="0" step="0.001" value="0"
+                                        placeholder="Ex: 685.250">
+                                    <span class="input-info">Nota final do PSI</span>
+                                </div>
+                                <div class="form-help">
+                                    <p><small>A nota do PSI já inclui todos os pesos específicos por curso (Português×2,
+                                            redação×2, etc.)</small></p>
+                                </div>
+                            </div>
+
+                            <div class="form-result">
+                                <div class="result-header">
+                                    <h4>Sua Nota PSI</h4>
+                                    <button class="btn-reset" id="resetPsi">
+                                        <i class="fas fa-redo"></i>
+                                        Limpar
+                                    </button>
+                                </div>
+                                <div class="result-total">
+                                    <span class="total-score" id="psiTotal">0.000</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Filtros -->
+
+                    <!-- Filtros Básicos -->
                     <div class="filter-card">
                         <div class="filter-header">
                             <h3><i class="fas fa-filter"></i> Filtros</h3>
@@ -231,7 +410,7 @@
                                     <option value="">Todas as universidades</option>
                                 </select>
                             </div>
-                            
+
                             <div class="filter-group">
                                 <label for="cursoFilter">
                                     <i class="fas fa-graduation-cap"></i>
@@ -241,7 +420,7 @@
                                     <option value="">Todos os cursos</option>
                                 </select>
                             </div>
-                            
+
                             <div class="filter-group">
                                 <label for="cotaFilter">
                                     <i class="fas fa-users"></i>
@@ -253,9 +432,10 @@
                                     <option value="PPI">PPI (Pretos, Pardos e Indígenas)</option>
                                     <option value="RENDA">Baixa Renda</option>
                                     <option value="PUBLICA">Escola Pública</option>
+                                    <option value="DEFICIENTE">PcD</option>
                                 </select>
                             </div>
-                            
+
                             <div class="filter-group">
                                 <label for="anoFilter">
                                     <i class="fas fa-calendar"></i>
@@ -263,12 +443,9 @@
                                 </label>
                                 <select id="anoFilter" class="filter-select">
                                     <option value="">Todos os anos</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2024">2024</option>
                                 </select>
                             </div>
-                            
+
                             <div class="filter-actions">
                                 <button class="btn btn-outline btn-block" id="resetFilters">
                                     <i class="fas fa-redo"></i>
@@ -277,48 +454,131 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Resultados -->
-                <div class="calculator-results">
-                    <div class="results-header">
-                        <div class="results-title">
-                            <h3><i class="fas fa-list-check"></i> Cursos Disponíveis</h3>
-                            <span class="results-count" id="resultsCount">0 cursos encontrados</span>
+
+                    <!-- Sistema de Cotas -->
+                    <div class="filter-card cota-filter-card">
+                        <div class="filter-header">
+                            <h3><i class="fas fa-users"></i> Sistema de Cotas</h3>
                         </div>
-                        <div class="results-actions">
-                            <div class="search-box">
-                                <i class="fas fa-search"></i>
-                                <input type="text" id="searchCourse" placeholder="Buscar curso ou universidade...">
+                        <div class="filter-content">
+                            <!-- Seletor de sistema de cota -->
+                            <div class="filter-group">
+                                <label for="sistemaCotaFilter">
+                                    <i class="fas fa-layer-group"></i>
+                                    Sistema de Cota
+                                </label>
+                                <select id="sistemaCotaFilter" class="filter-select">
+                                    <option value="TODAS">Todas as cotas</option>
+                                    <option value="AMPLA">Apenas Ampla Concorrência</option>
+                                    <option value="GRUPOS">Grupos de Cotas</option>
+                                    <option value="ESPECIFICAS">Cotas Específicas</option>
+                                </select>
                             </div>
-                            <button class="btn btn-sm" id="sortBy">
-                                <i class="fas fa-sort-amount-down"></i>
-                                Ordenar
-                            </button>
+
+                            <!-- Container dinâmico para grupos de cotas -->
+                            <div id="cotaGroupsContainer" class="cota-groups-container hidden">
+                                <!-- Será preenchido dinamicamente via JavaScript -->
+                            </div>
+
+                            <!-- Container para cotas específicas -->
+                            <div id="cotaEspecificaContainer" class="cota-especifica-container hidden">
+                                <div class="filter-group">
+                                    <label for="tipoCotaFilter">
+                                        <i class="fas fa-tag"></i>
+                                        Tipo de Cota
+                                    </label>
+                                    <select id="tipoCotaFilter" class="filter-select">
+                                        <option value="">Selecione uma cota</option>
+                                        <!-- Será preenchido dinamicamente -->
+                                    </select>
+                                </div>
+
+                                <!-- Filtro por bônus (PSI) -->
+                                <div class="filter-group bonus-filter hidden">
+                                    <label>
+                                        <i class="fas fa-percentage"></i>
+                                        Bônus do Interior (PSI)
+                                    </label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="bonusInterior" value="20">
+                                            <span>Incluir 20% de bônus</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modo comparação -->
+                            <div class="filter-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="modoComparacao" value="true">
+                                    <span><i class="fas fa-exchange-alt"></i> Comparar todas as cotas</span>
+                                </label>
+                                <small class="help-text">Mostra todas as cotas disponíveis para cada curso</small>
+                            </div>
+
+                            <!-- Filtro por preenchimento de vagas -->
+                            <div class="filter-group">
+                                <label>
+                                    <i class="fas fa-clipboard-check"></i>
+                                    Status das Vagas
+                                </label>
+                                <select id="statusVagasFilter" class="filter-select">
+                                    <option value="">Todos os status</option>
+                                    <option value="preenchidas">Apenas cotas preenchidas</option>
+                                    <option value="disponiveis">Apenas cotas com vagas</option>
+                                    <option value="migradas">Cotas com migração de vagas</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="results-container" id="resultsContainer">
-                        <!-- Cursos serão carregados aqui -->
-                        <div class="loading-results">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>Carregando cursos disponíveis...</p>
+                </div>
+
+                <!-- COLUNA DIREITA -->
+                <div class="calculator-right-column">
+                    <!-- Resultados -->
+                    <div class="calculator-results">
+                        <div class="results-header">
+                            <div class="results-title">
+                                <h3><i class="fas fa-list-check"></i> Cursos Disponíveis</h3>
+                                <span class="results-count" id="resultsCount">0 cursos encontrados</span>
+                            </div>
+                            <div class="results-actions">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="searchCourse" placeholder="Buscar curso ou universidade...">
+                                </div>
+                                <select class="sort-select" id="sortSelect">
+                                    <option value="relevancia">Mais relevantes</option>
+                                    <option value="nota-asc">Menor nota de corte</option>
+                                    <option value="nota-desc">Maior nota de corte</option>
+                                    <option value="curso-asc">A-Z Curso</option>
+                                    <option value="universidade-asc">A-Z Universidade</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Legendas -->
-                    <div class="results-legend">
-                        <div class="legend-item">
-                            <div class="legend-color legend-pass"></div>
-                            <span>Você passaria (nota acima da média)</span>
+
+                        <div class="results-container" id="resultsContainer">
+                            <div class="loading-results">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Carregando cursos disponíveis...</p>
+                            </div>
                         </div>
-                        <div class="legend-item">
-                            <div class="legend-color legend-close"></div>
-                            <span>Próximo da nota de corte (± 5%)</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color legend-fail"></div>
-                            <span>Nota abaixo da de corte</span>
+
+                        <!-- Legendas -->
+                        <div class="results-legend">
+                            <div class="legend-item">
+                                <div class="legend-color legend-pass"></div>
+                                <span>Você passaria (nota acima da média)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-close"></div>
+                                <span>Próximo da nota de corte (± 5%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-fail"></div>
+                                <span>Nota abaixo da de corte</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -341,7 +601,7 @@
         </div>
     </div>
 
-    <!-- Footer IDÊNTICO ao index.html -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -356,36 +616,16 @@
                     <p>Transformando sonhos em aprovações. O cursinho que mais entende o vestibulando amazonense.</p>
                     <div class="social-links">
                         <a href="https://instagram.com/metodo.prevest" aria-label="Instagram">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                            </svg>
+                            <i class="fab fa-instagram"></i>
                         </a>
                         <a href="https://www.facebook.com/metodo.prevest/" aria-label="Facebook">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                            </svg>
+                            <i class="fab fa-facebook"></i>
                         </a>
                         <a href="https://www.youtube.com/metodoprevestibular" aria-label="YouTube">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
-                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
-                            </svg>
+                            <i class="fab fa-youtube"></i>
                         </a>
                         <a href="https://wa.me/559294860365" aria-label="WhatsApp">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="currentColor">
-                                <path
-                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                            </svg>
+                            <i class="fab fa-whatsapp"></i>
                         </a>
                     </div>
                 </div>
@@ -412,30 +652,15 @@
                     <h4>Contato</h4>
                     <ul>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                <circle cx="12" cy="10" r="3" />
-                            </svg>
+                            <i class="fas fa-map-marker-alt"></i>
                             <span>R. Elisa Lispector, 213, bairro Tarumã<br>Manaus - AM</span>
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg>
+                            <i class="fas fa-phone"></i>
                             <span>(92) 99486-0365</span>
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                                <polyline points="22,6 12,13 2,6" />
-                            </svg>
+                            <i class="fas fa-envelope"></i>
                             <span>metodoprevest@gmail.com</span>
                         </li>
                     </ul>
@@ -449,4 +674,5 @@
 
     <script src="calculadora.js"></script>
 </body>
+
 </html>

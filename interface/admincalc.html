@@ -3,344 +3,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Adicionar Cursos Calculadora</title>
+    <title>Admin - Calculadora | Método Pré-Vestibular</title>
     
-    <!-- Bootstrap CSS para facilitar -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .container {
-            max-width: 900px;
-        }
-        
-        .card {
-            border-radius: 10px;
-            border: none;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        
-        .card-header {
-            background: linear-gradient(135deg, #070738, #1A1A5E);
-            color: white;
-            border-radius: 10px 10px 0 0 !important;
-            padding: 1rem 1.5rem;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #FE0000, #ff4444);
-            border: none;
-            padding: 0.5rem 2rem;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #e00000, #ff3333);
-        }
-        
-        .alert {
-            border-radius: 10px;
-            border: none;
-        }
-        
-        .form-control, .form-select {
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
-            padding: 0.75rem 1rem;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: #FE0000;
-            box-shadow: 0 0 0 0.25rem rgba(254, 0, 0, 0.25);
-        }
-        
-        .badge {
-            padding: 0.5em 0.75em;
-            border-radius: 20px;
-        }
-        
-        .badge-success {
-            background-color: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-        }
-        
-        .badge-warning {
-            background-color: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
-        }
-        
-        .badge-danger {
-            background-color: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-        }
-        
-        .table th {
-            background-color: #f1f5f9;
-            color: #475569;
-            font-weight: 600;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        
-        .table-hover tbody tr:hover {
-            background-color: #f8fafc;
-        }
-        
-        .spinner-border {
-            width: 1rem;
-            height: 1rem;
-            border-width: 0.15em;
-        }
-    </style>
+    <!-- Mesmos estilos da calculadora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Admin (pode usar o mesmo da calculadora + extras) -->
+    <link rel="stylesheet" href="calculadora.css">
+    <link rel="stylesheet" href="admincalc.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
 </head>
+
 <body>
-    <div class="container py-4">
-        <!-- Cabeçalho -->
-        <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold text-dark mb-3">
-                <i class="fas fa-calculator text-danger"></i>
-                Admin - Calculadora de Notas
-            </h1>
-            <p class="text-muted">Adicione e gerencie as notas de corte dos cursos</p>
+    <!-- Header IDÊNTICO ao index.html -->
+    <header class="header" id="header">
+        <div class="container header-content">
+            <a href="/index.html" class="logo">
+                <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
+                <div class="logo-text">
+                    <span class="logo-name">Método</span>
+                    <span class="logo-subtitle">Pré-Vestibular</span>
+                </div>
+            </a>
+            <nav class="nav-desktop">
+                <a href="/sobre.html">SOBRE</a>
+                <a href="#">ESTUDANTES</a>
+                <a href="#">PROFESSORES</a>
+                <a href="#">ESCOLAS</a>
+                <a href="/calculadora.html">CALCULADORA</a>
+                <a href="/ranking.html">RANKING</a>
+                <a href="/admin-calc.html" class="active">ADMIN</a>
+            </nav>
+            <a href="" class="btn btn-accent" id="logoutBtn">Sair</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-        
-        <!-- Alertas -->
-        <div id="alertContainer"></div>
-        
-        <div class="row">
-            <!-- Formulário de Adição -->
-            <div class="col-lg-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Adicionar Novo Curso</h5>
+        <nav class="nav-mobile" id="navMobile">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/courses.html">Cursos</a>
+            <a href="/question.html">Questões</a>
+            <a href="/redacao.html">Redação</a>
+            <a href="/calculator.html">Calculadora</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/admin-calc.html" class="active">Admin</a>
+        </nav>
+    </header>
+
+    <!-- Hero Admin -->
+    <section class="admin-hero">
+        <div class="container">
+            <div class="admin-hero-content">
+                <div class="admin-hero-info">
+                    <span class="admin-badge">Painel Administrativo</span>
+                    <h1 class="admin-title">Gerenciar Cursos e Notas</h1>
+                    <p class="admin-subtitle">
+                        Adicione, edite ou remova cursos, notas de corte e informações sobre cotas.
+                    </p>
+                </div>
+                <div class="admin-stats">
+                    <div class="admin-stat">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <strong id="totalCursosAdmin">0</strong>
+                            <span>Cursos cadastrados</span>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form id="courseForm">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">Universidade *</label>
-                                    <input type="text" class="form-control" id="universidade" required>
+                    <div class="admin-stat">
+                        <i class="fas fa-list-check"></i>
+                        <div>
+                            <strong id="vestibularesAtivos">0</strong>
+                            <span>Vestibulares ativos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Admin Content -->
+    <main class="admin-main">
+        <div class="container">
+            <div class="admin-tabs" id="adminTabs">
+                <button class="admin-tab active" data-tab="adicionar">
+                    <i class="fas fa-plus-circle"></i>
+                    Adicionar Curso
+                </button>
+                <button class="admin-tab" data-tab="gerenciar">
+                    <i class="fas fa-edit"></i>
+                    Gerenciar Cursos
+                </button>
+                <button class="admin-tab" data-tab="cotas">
+                    <i class="fas fa-users"></i>
+                    Gerenciar Cotas
+                </button>
+                <button class="admin-tab" data-tab="importar">
+                    <i class="fas fa-file-import"></i>
+                    Importar CSV
+                </button>
+            </div>
+
+            <!-- Abas de conteúdo -->
+            <div class="admin-content">
+                <!-- Aba 1: Adicionar Curso -->
+                <div class="admin-tab-content active" id="adicionarContent">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3><i class="fas fa-plus"></i> Adicionar Novo Curso</h3>
+                            <p>Preencha os dados do curso e suas notas de corte</p>
+                        </div>
+                        
+                        <form id="formAdicionarCurso" class="admin-form">
+                            <!-- Informações Básicas -->
+                            <div class="form-section">
+                                <h4><i class="fas fa-info-circle"></i> Informações Básicas</h4>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="universidade">
+                                            <i class="fas fa-university"></i>
+                                            Universidade *
+                                        </label>
+                                        <input type="text" id="universidade" required 
+                                               placeholder="Ex: UFAM, UEA, UNINORTE">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="curso">
+                                            <i class="fas fa-graduation-cap"></i>
+                                            Curso *
+                                        </label>
+                                        <input type="text" id="curso" required 
+                                               placeholder="Ex: Medicina, Direito, Engenharia">
+                                    </div>
                                 </div>
                                 
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">Curso *</label>
-                                    <input type="text" class="form-control" id="curso" required>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="campus">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Campus
+                                        </label>
+                                        <input type="text" id="campus" 
+                                               placeholder="Ex: Manaus, Parintins, Coari">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="vestibular">
+                                            <i class="fas fa-file-alt"></i>
+                                            Vestibular *
+                                        </label>
+                                        <select id="vestibular" required>
+                                            <option value="">Selecione...</option>
+                                            <option value="PSC">PSC</option>
+                                            <option value="SIS">SIS</option>
+                                            <option value="ENEM">ENEM</option>
+                                            <option value="MACRO">MACRO</option>
+                                            <option value="PSI">PSI</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="ano">
+                                            <i class="fas fa-calendar"></i>
+                                            Ano *
+                                        </label>
+                                        <input type="number" id="ano" required min="2020" max="2030" 
+                                               value="2026" placeholder="2026">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="edicao">
+                                            <i class="fas fa-hashtag"></i>
+                                            Edição
+                                        </label>
+                                        <input type="text" id="edicao" 
+                                               placeholder="Ex: PSC 2026, SIS 1 2025">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="periodo">
+                                            <i class="fas fa-clock"></i>
+                                            Período
+                                        </label>
+                                        <select id="periodo">
+                                            <option value="">Selecione...</option>
+                                            <option value="MATUTINO">Matutino</option>
+                                            <option value="VESPERTINO">Vespertino</option>
+                                            <option value="NOTURNO">Noturno</option>
+                                            <option value="INTEGRAL">Integral</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="vagasTotal">
+                                            <i class="fas fa-door-open"></i>
+                                            Vagas Totais
+                                        </label>
+                                        <input type="number" id="vagasTotal" min="0" 
+                                               placeholder="Ex: 50">
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Campus</label>
-                                <input type="text" class="form-control" id="campus">
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">Vestibular *</label>
-                                    <select class="form-select" id="vestibular" required>
-                                        <option value="">Selecione...</option>
-                                        <option value="PSC">PSC</option>
-                                        <option value="SIS">SIS</option>
-                                        <option value="ENEM">ENEM</option>
-                                        <option value="PSI">PSI</option>
-                                        <option value="MACRO">MACRO</option>
-                                    </select>
-                                </div>
+                            <!-- Notas Gerais (Ampla Concorrência) -->
+                            <div class="form-section">
+                                <h4><i class="fas fa-chart-line"></i> Nota Ampla Concorrência</h4>
                                 
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">Ano *</label>
-                                    <select class="form-select" id="ano" required>
-                                        <option value="">Selecione...</option>
-                                        <option value="2026">2026</option>
-                                        <option value="2025">2025</option>
-                                        <option value="2024">2024</option>
-                                        <option value="2023">2023</option>
-                                        <option value="2022">2022</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="notaGeral">
+                                        Nota de Corte (Ampla) *
+                                    </label>
+                                    <input type="number" id="notaGeral" step="0.001" required
+                                           placeholder="Ex: 850.500">
+                                    <small class="help-text">Nota total do último classificado na ampla concorrência</small>
                                 </div>
                             </div>
                             
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Edição (opcional)</label>
-                                <input type="text" class="form-control" id="edicao" placeholder="Ex: PSC 2026, SIS 1 2025">
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">Sistema de Cotas *</label>
-                                    <select class="form-select" id="cotaTipo" required>
-                                        <option value="AMPLA">Ampla Concorrência</option>
-                                        <option value="PPI">PPI (Pretos, Pardos e Indígenas)</option>
-                                        <option value="RENDA">Baixa Renda</option>
-                                        <option value="PUBLICA">Escola Pública</option>
-                                        <option value="DEFICIENTE">PcD (Pessoa com Deficiência)</option>
-                                        <option value="OUTRA">Outra</option>
-                                    </select>
+                            <!-- Sistema de Cotas -->
+                            <div class="form-section">
+                                <h4><i class="fas fa-users"></i> Sistema de Cotas</h4>
+                                <p class="section-help">Adicione as notas de corte para cada tipo de cota disponível</p>
+                                
+                                <div class="cotas-container" id="cotasContainer">
+                                    <!-- Cotas serão adicionadas dinamicamente -->
                                 </div>
                                 
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">Descrição da Cota (opcional)</label>
-                                    <input type="text" class="form-control" id="cotaDescricao">
+                                <div class="form-actions">
+                                    <button type="button" id="adicionarCota" class="btn btn-outline">
+                                        <i class="fas fa-plus"></i>
+                                        Adicionar Cota
+                                    </button>
                                 </div>
                             </div>
                             
-                            <hr class="my-4">
-                            <h6 class="fw-bold mb-3"><i class="fas fa-chart-line"></i> Notas de Corte</h6>
-                            
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">PSC 1 (0-54)</label>
-                                    <input type="number" step="0.001" class="form-control" id="notaPsc1">
-                                </div>
-                                
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">PSC 2 (0-54)</label>
-                                    <input type="number" step="0.001" class="form-control" id="notaPsc2">
-                                </div>
-                                
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">PSC 3 (0-54)</label>
-                                    <input type="number" step="0.001" class="form-control" id="notaPsc3">
-                                </div>
-                                
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Redação PSC (0-9)</label>
-                                    <input type="number" step="0.001" class="form-control" id="notaRedacao">
-                                </div>
-                            </div>
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">SIS 1 (0-60)</label>
-                                    <input type="number" step="0.001" class="form-control" id="notaSis1">
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label class="form-label">SIS 2 (0-60)</label>
-                                    <input type="number" step="0.001" class="form-control" id="notaSis2">
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Nota Total *</label>
-                                <input type="number" step="0.001" class="form-control" id="notaTotal" required>
-                                <div class="form-text">Nota total já calculada com os pesos do vestibular</div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Vagas (opcional)</label>
-                                    <input type="number" class="form-control" id="vagas">
-                                </div>
-                                
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Período (opcional)</label>
-                                    <input type="text" class="form-control" id="periodo" placeholder="Ex: Matutino, Integral">
-                                </div>
-                                
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Colocação (opcional)</label>
-                                    <input type="number" class="form-control" id="colocacao" placeholder="Posição do último">
-                                </div>
-                            </div>
-                            
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
-                                    <i class="fas fa-save"></i> Salvar Curso
+                            <!-- Botões do Formulário -->
+                            <div class="form-actions">
+                                <button type="button" id="previewCurso" class="btn btn-outline">
+                                    <i class="fas fa-eye"></i>
+                                    Visualizar
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    Salvar Curso
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Lista de Cursos -->
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="fas fa-list"></i> Cursos Cadastrados</h5>
-                        <button class="btn btn-sm btn-light" onclick="loadCourses()">
-                            <i class="fas fa-sync-alt"></i> Atualizar
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="coursesTable">
-                                <thead>
-                                    <tr>
-                                        <th>Curso</th>
-                                        <th>Universidade</th>
-                                        <th>Ano</th>
-                                        <th>Nota</th>
-                                        <th>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="coursesList">
-                                    <!-- Cursos serão carregados aqui -->
-                                </tbody>
-                            </table>
+                
+                <!-- Aba 2: Gerenciar Cursos -->
+                <div class="admin-tab-content" id="gerenciarContent">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3><i class="fas fa-edit"></i> Gerenciar Cursos Cadastrados</h3>
+                            <p>Edite, remova ou desative cursos existentes</p>
                         </div>
-                        <div class="text-center mt-3">
-                            <div class="spinner-border text-primary" role="status" id="loadingSpinner">
-                                <span class="visually-hidden">Carregando...</span>
+                        
+                        <!-- Filtros de Busca -->
+                        <div class="filtros-container">
+                            <div class="filtros-row">
+                                <div class="filtro-group">
+                                    <label for="filtroVestibular"><i class="fas fa-filter"></i> Vestibular</label>
+                                    <select id="filtroVestibular">
+                                        <option value="">Todos</option>
+                                        <option value="PSC">PSC</option>
+                                        <option value="SIS">SIS</option>
+                                        <option value="ENEM">ENEM</option>
+                                        <option value="MACRO">MACRO</option>
+                                        <option value="PSI">PSI</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filtro-group">
+                                    <label for="filtroUniversidade"><i class="fas fa-university"></i> Universidade</label>
+                                    <select id="filtroUniversidade">
+                                        <option value="">Todas</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filtro-group">
+                                    <label for="filtroAno"><i class="fas fa-calendar"></i> Ano</label>
+                                    <select id="filtroAno">
+                                        <option value="">Todos</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filtro-group">
+                                    <label for="filtroAtivo"><i class="fas fa-eye"></i> Status</label>
+                                    <select id="filtroAtivo">
+                                        <option value="">Todos</option>
+                                        <option value="ativo">Ativos</option>
+                                        <option value="inativo">Inativos</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="filtros-row">
+                                <div class="busca-group">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="buscaCurso" placeholder="Buscar por curso ou código...">
+                                </div>
+                                
+                                <button id="limparFiltros" class="btn btn-outline">
+                                    <i class="fas fa-redo"></i>
+                                    Limpar Filtros
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Lista de Cursos -->
+                        <div class="cursos-container" id="cursosContainer">
+                            <!-- Cursos serão carregados aqui -->
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Carregando cursos...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Paginação -->
+                        <div class="paginacao" id="paginacao">
+                            <!-- Paginação dinâmica -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aba 3: Gerenciar Cotas -->
+                <div class="admin-tab-content" id="cotasContent">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3><i class="fas fa-users"></i> Configurar Sistema de Cotas</h3>
+                            <p>Configure as descrições e tipos de cota para cada vestibular</p>
+                        </div>
+                        
+                        <div class="cotas-config">
+                            <!-- Configuração por vestibular -->
+                            <div class="config-section">
+                                <h4>Tipos de Cota por Vestibular</h4>
+                                
+                                <div class="vestibular-cotas">
+                                    <!-- PSC -->
+                                    <div class="vestibular-section">
+                                        <h5><span class="vest-badge">PSC</span> Sistema de Cotas</h5>
+                                        <div class="cotas-lista" id="cotasPsc">
+                                            <!-- Tipos de cota do PSC -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- SIS -->
+                                    <div class="vestibular-section">
+                                        <h5><span class="vest-badge">SIS</span> Sistema de Cotas</h5>
+                                        <div class="cotas-lista" id="cotasSis">
+                                            <!-- Tipos de cota do SIS -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- ENEM -->
+                                    <div class="vestibular-section">
+                                        <h5><span class="vest-badge">ENEM</span> Sistema de Cotas</h5>
+                                        <div class="cotas-lista" id="cotasEnem">
+                                            <!-- Tipos de cota do ENEM -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- MACRO -->
+                                    <div class="vestibular-section">
+                                        <h5><span class="vest-badge">MACRO</span> Sistema de Cotas</h5>
+                                        <div class="cotas-lista" id="cotasMacro">
+                                            <!-- Tipos de cota do MACRO -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- PSI -->
+                                    <div class="vestibular-section">
+                                        <h5><span class="vest-badge">PSI</span> Sistema de Cotas</h5>
+                                        <div class="cotas-lista" id="cotasPsi">
+                                            <!-- Tipos de cota do PSI -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Editor de Descrição -->
+                            <div class="config-section">
+                                <h4>Editor de Descrições</h4>
+                                
+                                <div class="desc-editor" id="descEditor">
+                                    <div class="editor-header">
+                                        <h5>Selecione uma cota para editar</h5>
+                                    </div>
+                                    <div class="editor-body">
+                                        <div class="form-group">
+                                            <label for="editCodigo">Código da Cota</label>
+                                            <input type="text" id="editCodigo" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editDescricao">Descrição Completa</label>
+                                            <textarea id="editDescricao" rows="3" 
+                                                      placeholder="Descreva esta cota de forma clara..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editAbreviacao">Abreviação</label>
+                                            <input type="text" id="editAbreviacao" 
+                                                   placeholder="Ex: EP + PPI c/ renda">
+                                        </div>
+                                        <div class="form-actions">
+                                            <button id="salvarDescricao" class="btn btn-primary">
+                                                <i class="fas fa-save"></i>
+                                                Salvar Descrição
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Calculadora Rápida PSC -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-calculator"></i> Calculadora Rápida PSC</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <label class="form-label">PSC 1</label>
-                                <input type="number" step="0.001" class="form-control" id="calcPsc1" value="0">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">Peso: ×3</label>
-                                <input type="text" class="form-control bg-light" id="calcPsc1Peso" value="0.000" readonly>
-                            </div>
-                            
-                            <div class="col-6">
-                                <label class="form-label">PSC 2</label>
-                                <input type="number" step="0.001" class="form-control" id="calcPsc2" value="0">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">Peso: ×3</label>
-                                <input type="text" class="form-control bg-light" id="calcPsc2Peso" value="0.000" readonly>
-                            </div>
-                            
-                            <div class="col-6">
-                                <label class="form-label">PSC 3</label>
-                                <input type="number" step="0.001" class="form-control" id="calcPsc3" value="0">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">Peso: ×3</label>
-                                <input type="text" class="form-control bg-light" id="calcPsc3Peso" value="0.000" readonly>
-                            </div>
-                            
-                            <div class="col-6">
-                                <label class="form-label">Redação</label>
-                                <input type="number" step="0.001" class="form-control" id="calcRedacao" value="0">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">Peso: ×6</label>
-                                <input type="text" class="form-control bg-light" id="calcRedacaoPeso" value="0.000" readonly>
+                <!-- Aba 4: Importar CSV -->
+                <div class="admin-tab-content" id="importarContent">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3><i class="fas fa-file-import"></i> Importar em Massa (CSV)</h3>
+                            <p>Importe múltiplos cursos de uma vez usando arquivo CSV</p>
+                        </div>
+                        
+                        <div class="import-container">
+                            <!-- Upload de CSV -->
+                            <div class="upload-section">
+                                <h4>1. Preparar Arquivo CSV</h4>
+                                <div class="upload-info">
+                                    <p>Baixe o modelo de arquivo CSV:</p>
+                                    <a href="#" id="downloadTemplate" class="btn btn-outline">
+                                        <i class="fas fa-download"></i>
+                                        Baixar Template CSV
+                                    </a>
+                                    <p class="help-text">Preencha o template com os dados dos cursos e faça o upload abaixo</p>
+                                </div>
+                                
+                                <h4>2. Upload do Arquivo</h4>
+                                <div class="upload-area" id="uploadArea">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Arraste e solte o arquivo CSV aqui</p>
+                                    <p>ou</p>
+                                    <label for="fileInput" class="btn btn-primary">
+                                        <i class="fas fa-folder-open"></i>
+                                        Selecionar Arquivo
+                                    </label>
+                                    <input type="file" id="fileInput" accept=".csv" hidden>
+                                    <p class="help-text">Apenas arquivos .csv são permitidos</p>
+                                </div>
+                                
+                                <div class="file-info" id="fileInfo">
+                                    <!-- Informações do arquivo serão exibidas aqui -->
+                                </div>
                             </div>
                             
-                            <div class="col-12">
-                                <hr>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>Total:</strong>
-                                        <h4 class="mt-1 text-primary" id="calcTotal">0.000</h4>
-                                    </div>
-                                    <button class="btn btn-primary" onclick="calculatePsc()">
-                                        <i class="fas fa-calculator"></i> Calcular
+                            <!-- Pré-visualização -->
+                            <div class="preview-section" id="previewSection">
+                                <h4>3. Pré-visualização dos Dados</h4>
+                                <div class="preview-table-container">
+                                    <table class="preview-table" id="previewTable">
+                                        <!-- Dados CSV serão exibidos aqui -->
+                                    </table>
+                                </div>
+                                
+                                <div class="preview-stats" id="previewStats">
+                                    <!-- Estatísticas da importação -->
+                                </div>
+                            </div>
+                            
+                            <!-- Configuração de Importação -->
+                            <div class="config-import">
+                                <h4>4. Configurar Importação</h4>
+                                
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="skipDuplicates" checked>
+                                        <span>Ignorar duplicados (recomendado)</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="validateData" checked>
+                                        <span>Validar dados antes de importar</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="deactivateOld" checked>
+                                        <span>Desativar dados antigos do mesmo ano</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button id="processImport" class="btn btn-primary" disabled>
+                                        <i class="fas fa-play"></i>
+                                        Processar Importação
+                                    </button>
+                                    <button id="cancelImport" class="btn btn-outline">
+                                        <i class="fas fa-times"></i>
+                                        Cancelar
                                     </button>
                                 </div>
                             </div>
@@ -349,371 +525,114 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Modal de Edição -->
-    <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar Curso</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm">
-                        <input type="hidden" id="editId">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Universidade</label>
-                                <input type="text" class="form-control" id="editUniversidade" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Curso</label>
-                                <input type="text" class="form-control" id="editCurso" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Nota Total</label>
-                                <input type="number" step="0.001" class="form-control" id="editNotaTotal" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Cota</label>
-                                <select class="form-select" id="editCotaTipo" required>
-                                    <option value="AMPLA">Ampla Concorrência</option>
-                                    <option value="PPI">PPI</option>
-                                    <option value="RENDA">Baixa Renda</option>
-                                    <option value="PUBLICA">Escola Pública</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Observações</label>
-                            <textarea class="form-control" id="editObservacoes" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveEdit()">Salvar Alterações</button>
+    <!-- Modais -->
+    <div class="modal" id="cursoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalCursoTitle">Curso</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalCursoContent">
+                    <!-- Conteúdo do modal -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-        const API_BASE_URL = '/api/calculator';
-        
-        // Mostrar alerta
-        function showAlert(message, type = 'success') {
-            const alertContainer = document.getElementById('alertContainer');
-            const alertId = 'alert-' + Date.now();
-            
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type} alert-dismissible fade show`;
-            alert.role = 'alert';
-            alert.id = alertId;
-            
-            alert.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" onclick="document.getElementById('${alertId}').remove()"></button>
-            `;
-            
-            alertContainer.appendChild(alert);
-            
-            // Remover automaticamente após 5 segundos
-            setTimeout(() => {
-                if (document.getElementById(alertId)) {
-                    document.getElementById(alertId).remove();
-                }
-            }, 5000);
-        }
-        
-        // Carregar cursos
-        async function loadCourses() {
-            const spinner = document.getElementById('loadingSpinner');
-            const coursesList = document.getElementById('coursesList');
-            
-            spinner.style.display = 'block';
-            coursesList.innerHTML = '';
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/courses?limit=20`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    renderCourses(data.courses);
-                } else {
-                    throw new Error(data.message);
-                }
-            } catch (error) {
-                console.error('Erro ao carregar cursos:', error);
-                coursesList.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center text-danger">
-                            <i class="fas fa-exclamation-circle"></i> Erro ao carregar cursos
-                        </td>
-                    </tr>
-                `;
-            } finally {
-                spinner.style.display = 'none';
-            }
-        }
-        
-        // Renderizar cursos na tabela
-        function renderCourses(courses) {
-            const coursesList = document.getElementById('coursesList');
-            
-            if (courses.length === 0) {
-                coursesList.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center text-muted">
-                            <i class="fas fa-inbox"></i> Nenhum curso cadastrado
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            coursesList.innerHTML = courses.map(course => `
-                <tr>
-                    <td>
-                        <strong>${course.curso}</strong>
-                        <small class="d-block text-muted">${course.campus || ''}</small>
-                    </td>
-                    <td>${course.universidade}</td>
-                    <td>
-                        ${course.ano}
-                        <br>
-                        <span class="badge ${course.vestibular === 'PSC' ? 'badge-danger' : 'badge-warning'}">
-                            ${course.vestibular}
-                        </span>
-                    </td>
-                    <td>
-                        <strong class="text-primary">${course.notas.total.toFixed(3)}</strong>
-                        <br>
-                        <small class="text-muted">${course.cota.tipo}</small>
-                    </td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-primary" onclick="editCourse('${course._id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-outline-danger" onclick="deleteCourse('${course._id}', '${course.curso}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
+    <div class="modal" id="confirmModal">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3>Confirmar Ação</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Tem certeza que deseja realizar esta ação?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="confirmCancel">Cancelar</button>
+                <button class="btn btn-danger" id="confirmOk">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer IDÊNTICO -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/index.html" class="logo light">
+                        <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
+                        <div class="logo-text">
+                            <span class="logo-name">Método</span>
+                            <span class="logo-subtitle">Pré-Vestibular</span>
                         </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        // Adicionar novo curso
-        document.getElementById('courseForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.innerHTML;
-            
-            try {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-                submitBtn.disabled = true;
-                
-                // Preparar dados das notas
-                const notas = {
-                    psc1: document.getElementById('notaPsc1').value ? parseFloat(document.getElementById('notaPsc1').value) : undefined,
-                    psc2: document.getElementById('notaPsc2').value ? parseFloat(document.getElementById('notaPsc2').value) : undefined,
-                    psc3: document.getElementById('notaPsc3').value ? parseFloat(document.getElementById('notaPsc3').value) : undefined,
-                    redacao: document.getElementById('notaRedacao').value ? parseFloat(document.getElementById('notaRedacao').value) : undefined,
-                    sis1: document.getElementById('notaSis1').value ? parseFloat(document.getElementById('notaSis1').value) : undefined,
-                    sis2: document.getElementById('notaSis2').value ? parseFloat(document.getElementById('notaSis2').value) : undefined,
-                    total: parseFloat(document.getElementById('notaTotal').value)
-                };
-                
-                // Preparar dados do curso
-                const courseData = {
-                    universidade: document.getElementById('universidade').value,
-                    curso: document.getElementById('curso').value,
-                    campus: document.getElementById('campus').value || undefined,
-                    vestibular: document.getElementById('vestibular').value,
-                    ano: document.getElementById('ano').value,
-                    edicao: document.getElementById('edicao').value || undefined,
-                    cota: {
-                        tipo: document.getElementById('cotaTipo').value,
-                        descricao: document.getElementById('cotaDescricao').value || undefined
-                    },
-                    notas: notas,
-                    vagas: document.getElementById('vagas').value || undefined,
-                    periodo: document.getElementById('periodo').value || undefined,
-                    colocacao: document.getElementById('colocacao').value || undefined
-                };
-                
-                // Enviar para API
-                const response = await fetch(`${API_BASE_URL}/courses`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(courseData)
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showAlert(`Curso "${courseData.curso}" adicionado com sucesso!`, 'success');
-                    
-                    // Limpar formulário
-                    document.getElementById('courseForm').reset();
-                    
-                    // Atualizar lista
-                    loadCourses();
-                } else {
-                    throw new Error(data.message);
-                }
-            } catch (error) {
-                console.error('Erro ao adicionar curso:', error);
-                showAlert(`Erro: ${error.message}`, 'danger');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-        
-        // Editar curso
-        async function editCourse(courseId) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/courses/${courseId}`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    const course = data.course;
-                    
-                    // Preencher formulário de edição
-                    document.getElementById('editId').value = course._id;
-                    document.getElementById('editUniversidade').value = course.universidade;
-                    document.getElementById('editCurso').value = course.curso;
-                    document.getElementById('editNotaTotal').value = course.notas.total;
-                    document.getElementById('editCotaTipo').value = course.cota.tipo;
-                    
-                    // Mostrar modal
-                    const modal = new bootstrap.Modal(document.getElementById('editModal'));
-                    modal.show();
-                } else {
-                    throw new Error(data.message);
-                }
-            } catch (error) {
-                console.error('Erro ao carregar curso para edição:', error);
-                showAlert('Erro ao carregar curso para edição', 'danger');
-            }
-        }
-        
-        // Salvar edição
-        async function saveEdit() {
-            try {
-                const courseId = document.getElementById('editId').value;
-                
-                const updateData = {
-                    universidade: document.getElementById('editUniversidade').value,
-                    curso: document.getElementById('editCurso').value,
-                    'notas.total': parseFloat(document.getElementById('editNotaTotal').value),
-                    'cota.tipo': document.getElementById('editCotaTipo').value
-                };
-                
-                const response = await fetch(`${API_BASE_URL}/courses/${courseId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(updateData)
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showAlert('Curso atualizado com sucesso!', 'success');
-                    
-                    // Fechar modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
-                    modal.hide();
-                    
-                    // Atualizar lista
-                    loadCourses();
-                } else {
-                    throw new Error(data.message);
-                }
-            } catch (error) {
-                console.error('Erro ao atualizar curso:', error);
-                showAlert('Erro ao atualizar curso', 'danger');
-            }
-        }
-        
-        // Excluir curso
-        async function deleteCourse(courseId, courseName) {
-            if (confirm(`Tem certeza que deseja excluir o curso "${courseName}"?`)) {
-                try {
-                    const response = await fetch(`${API_BASE_URL}/courses/${courseId}`, {
-                        method: 'DELETE'
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        showAlert(`Curso "${courseName}" excluído com sucesso!`, 'success');
-                        loadCourses();
-                    } else {
-                        throw new Error(data.message);
-                    }
-                } catch (error) {
-                    console.error('Erro ao excluir curso:', error);
-                    showAlert('Erro ao excluir curso', 'danger');
-                }
-            }
-        }
-        
-        // Calculadora rápida PSC
-        function calculatePsc() {
-            const psc1 = parseFloat(document.getElementById('calcPsc1').value) || 0;
-            const psc2 = parseFloat(document.getElementById('calcPsc2').value) || 0;
-            const psc3 = parseFloat(document.getElementById('calcPsc3').value) || 0;
-            const redacao = parseFloat(document.getElementById('calcRedacao').value) || 0;
-            
-            const psc1Peso = psc1 * 3;
-            const psc2Peso = psc2 * 3;
-            const psc3Peso = psc3 * 3;
-            const redacaoPeso = redacao * 6;
-            const total = psc1Peso + psc2Peso + psc3Peso + redacaoPeso;
-            
-            // Atualizar campos
-            document.getElementById('calcPsc1Peso').value = psc1Peso.toFixed(3);
-            document.getElementById('calcPsc2Peso').value = psc2Peso.toFixed(3);
-            document.getElementById('calcPsc3Peso').value = psc3Peso.toFixed(3);
-            document.getElementById('calcRedacaoPeso').value = redacaoPeso.toFixed(3);
-            document.getElementById('calcTotal').textContent = total.toFixed(3);
-            
-            // Preencher no formulário principal
-            document.getElementById('notaPsc1').value = psc1;
-            document.getElementById('notaPsc2').value = psc2;
-            document.getElementById('notaPsc3').value = psc3;
-            document.getElementById('notaRedacao').value = redacao;
-            document.getElementById('notaTotal').value = total.toFixed(3);
-            
-            showAlert('Cálculo realizado! Notas preenchidas no formulário.', 'info');
-        }
-        
-        // Eventos da calculadora rápida
-        document.querySelectorAll('#calcPsc1, #calcPsc2, #calcPsc3, #calcRedacao').forEach(input => {
-            input.addEventListener('input', calculatePsc);
-        });
-        
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
-            loadCourses();
-        });
-    </script>
+                    </a>
+                    <p>Transformando sonhos em aprovações. O cursinho que mais entende o vestibulando amazonense.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/metodo.prevest" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/metodo.prevest/" aria-label="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://www.youtube.com/metodoprevestibular" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://wa.me/559294860365" aria-label="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="/sobre.html">Sobre Nós</a></li>
+                        <li><a href="/pricing.html">Matricule-se</a></li>
+                        <li><a href="/ranking.html">Ranking</a></li>
+                        <li><a href="/dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="/pricing.html">Turmas PSC</a></li>
+                        <li><a href="/pricing.html">Turmas SIS</a></li>
+                        <li><a href="/pricing.html">Turmas Macro</a></li>
+                        <li><a href="/pricing.html">Turmas ENEM</a></li>
+                        <li><a href="/pricing.html">Turmas PSI</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>R. Elisa Lispector, 213, bairro Tarumã<br>Manaus - AM</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>(92) 99486-0365</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>metodoprevest@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+                <p class="footer-admin">
+                    <i class="fas fa-lock"></i>
+                    Área Administrativa
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="admincalc.js"></script>
 </body>
 </html>

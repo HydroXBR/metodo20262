@@ -1,70 +1,82 @@
+// calculadoraModel.js - Modelo atualizado com sistema de cotas completo
 import pkg from "mongoose"
 const {Schema, model} = pkg
 
+// Definição de tipos de cota por vestibular
+const TIPOS_COTA = {
+    // PSC/PSI
+    PSC: [
+        'AMPLA', 'PP1', 'PP2', 'IND1', 'IND2', 'QLB1', 'QLB2', 
+        'NDC1', 'NDC2', 'PCD1', 'PCD2', 'BONIFICA'
+    ],
+    
+    // ENEM/SISU
+    ENEM: [
+        'AMPLA', 'L1', 'L2', 'L5', 'L6', 'L9', 'L10', 'L13', 'L14'
+    ],
+    
+    // SIS UEA
+    SIS: [
+        'AMPLA', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'
+    ],
+    
+    // MACRO UEA
+    MACRO: [
+        'AMPLA', 'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G12'
+    ],
+    
+    // PSI UFAM
+    PSI: [
+        'AMPLA', 'PP1', 'PP2', 'IND1', 'IND2', 'QLB1', 'QLB2', 
+        'NDC1', 'NDC2', 'PCD1', 'PCD2', 'INTERIOR'
+    ]
+};
+
 const calculadoraSchema = Schema({
-    // Identificação do curso
+    // Identificação básica
     universidade: { type: String, required: true },
     curso: { type: String, required: true },
     campus: { type: String },
     
-    // Informações sobre o vestibular
+    // Vestibular e ano
     vestibular: { 
         type: String, 
         enum: ['PSC', 'SIS', 'ENEM', 'PSI', 'MACRO'], 
         required: true 
     },
     ano: { type: Number, required: true },
-    edicao: { type: String }, // Ex: "PSC 2026", "SIS 1 2025"
+    edicao: { type: String },
     
-    // Sistema de cotas
-    cota: {
+    // Sistema de cotas - estrutura complexa
+    cotas: [{
         tipo: { 
-            type: String, 
-            enum: ['AMPLA', 'PPI', 'RENDA', 'PUBLICA', 'DEFICIENTE', 'OUTRA'],
-            default: 'AMPLA'
+            type: String,
+            required: true
         },
-        descricao: { type: String }
-    },
+        codigo: { type: String }, // Código específico (L1, A, G1, etc)
+        descricao: { type: String, required: true },
+        notaCorte: { type: Number, required: true },
+        vagas: { type: Number },
+        colocacao: { type: Number },
+        percentualBonus: { type: Number, default: 0 }, // Para bônus como PSI interior
+        
+        // Metadados
+        preenchida: { type: Boolean, default: false },
+        observacoes: { type: String }
+    }],
     
-    // Notas de corte
-    notas: {
-        // Notas separadas por prova (para cálculo detalhado)
-        psc1: { type: Number, min: 0, max: 54 },
-        psc2: { type: Number, min: 0, max: 54 },
-        psc3: { type: Number, min: 0, max: 54 },
-        redacao: { type: Number, min: 0, max: 9 },
-        
-        // SIS (60 questões cada + redação 0-10)
-        sis1: { type: Number, min: 0, max: 60 },
-        sis2: { type: Number, min: 0, max: 60 },
-        sis3: { type: Number, min: 0, max: 60 },
-        redacaoSis2: { type: Number, min: 0, max: 10 },
-        redacaoSis3: { type: Number, min: 0, max: 10 },
-        
-        // ENEM com pesos
-        linguagens: { type: Number, min: 0, max: 1000 },
-        humanas: { type: Number, min: 0, max: 1000 },
-        natureza: { type: Number, min: 0, max: 1000 },
-        matematica: { type: Number, min: 0, max: 1000 },
-        redacaoEnem: { type: Number, min: 0, max: 1000 },
-        
-        // Pesos ENEM (se aplicável)
-        pesos: {
-            linguagens: { type: Number, default: 1 },
-            humanas: { type: Number, default: 1 },
-            natureza: { type: Number, default: 1 },
-            matematica: { type: Number, default: 1 },
-            redacao: { type: Number, default: 1 }
-        },
-        
-        // Nota total (já calculada com pesos)
-        total: { type: Number, required: true },
-        
-        // Informações adicionais
-        colocacao: { type: Number }, // Posição do último classificado
-        vagas: { type: Number }, // Número de vagas
-        periodo: { type: String } // Matutino, Vespertino, Noturno, Integral
-    },
+    // Nota geral (ampla concorrência) - mantida para compatibilidade
+    notaGeral: { type: Number },
+    
+    // Informações do curso
+    periodo: { type: String }, // Matutino, Vespertino, Noturno, Integral
+    turno: { type: String },
+    duracao: { type: Number }, // Em semestres
+    modalidade: { type: String }, // Presencial, EAD
+    
+    // Totais
+    totalVagas: { type: Number },
+    vagasAmpla: { type: Number },
     
     // Metadados
     ativo: { type: Boolean, default: true },
@@ -72,11 +84,38 @@ const calculadoraSchema = Schema({
     atualizadoEm: { type: Date, default: Date.now }
 });
 
-// Índices para busca eficiente
-calculadoraSchema.index({ vestibular: 1, ano: 1, cota: 1 });
-calculadoraSchema.index({ universidade: 1, curso: 1 });
-calculadoraSchema.index({ 'notas.total': 1 });
+// Middleware para validação de cotas
+calculadoraSchema.pre('save', function(next) {
+    if (this.cotas && this.cotas.length > 0) {
+        // Garantir que AMPLA seja a primeira
+        this.cotas.sort((a, b) => {
+            if (a.tipo === 'AMPLA') return -1;
+            if (b.tipo === 'AMPLA') return 1;
+            return 0;
+        });
+        
+        // Validar tipos de cota conforme vestibular
+        const tiposPermitidos = TIPOS_COTA[this.vestibular] || [];
+        this.cotas = this.cotas.filter(cota => 
+            tiposPermitidos.includes(cota.tipo) || 
+            tiposPermitidos.includes(cota.codigo)
+        );
+    }
+    next();
+});
+
+// Método para obter descrição da cota
+calculadoraSchema.methods.getDescricaoCota = function(tipoCota) {
+    const cota = this.cotas.find(c => c.tipo === tipoCota || c.codigo === tipoCota);
+    return cota ? cota.descricao : tipoCota;
+};
+
+// Método para obter nota de corte por cota
+calculadoraSchema.methods.getNotaCorte = function(tipoCota) {
+    const cota = this.cotas.find(c => c.tipo === tipoCota || c.codigo === tipoCota);
+    return cota ? cota.notaCorte : this.notaGeral;
+};
 
 const Calculadora = model('Calculadora', calculadoraSchema);
 
-export { Calculadora };
+export { Calculadora, TIPOS_COTA };

@@ -21,7 +21,7 @@
     <header class="header" id="header">
         <div class="container header-content">
             <a href="/index.html" class="logo">
-                <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg"></img>
+                <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
                 <div class="logo-text">
                     <span class="logo-name">Método</span>
                     <span class="logo-subtitle">Pré-Vestibular</span>
@@ -34,6 +34,7 @@
                 <a id="d" href="#">ESCOLAS</a>
                 <a id="g" href="/calculadora.html">CALCULADORA</a>
                 <a href="/ranking.html">RANKING</a>
+                <a href="/bancodeprovas.html">BANCO DE PROVAS</a>
             </nav>
             <a href="/login" class="btn btn-accent">Login</a>
             <button class="menu-toggle" id="menuToggle" aria-label="Menu">
@@ -54,6 +55,9 @@
 
     <!-- Hero Section -->
     <section class="hero">
+        <!-- Background Image para Hero Section -->
+        <div class="hero-bg-image"></div>
+        
         <div class="hero-content">
             <div class="hero-left">
                 <span class="hero-badge">Referência em aprovações no Amazonas</span>
@@ -89,11 +93,11 @@
                 </div>
             </div>
         </div>
-        </div>
     </section>
 
     <!-- Sobre Section -->
     <section class="sobre" id="sobre">
+        <div class="sobre-bg-image"></div>
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Quem Somos</span>
@@ -235,42 +239,69 @@
         </div>
     </section>
 
-    <!-- Professores Section -->
-    <section class="professores" id="professores">
+    <!-- Nova Section: Banco de Provas -->
+    <section class="banco-provas" id="banco-provas">
+        <div class="banco-provas-bg"></div>
         <div class="container">
-            <div class="professores-content">
-                <h2 class="professores-title">A Melhor Equipe</h2>
-                <p class="professores-subtitle">Professores experientes, apaixonados pelo ensino e comprometidos com a
-                    sua aprovação</p>
-            </div>
-            <div class="professores-image-container">
-                <div class="professores-image-wrapper">
-                    <div class="professores-placeholder">
-                        <div class="professores-overlay">
-                            <img src="https://i.ibb.co/7djPWQf6/profess.png"></img>
-                        </div>
+            <div class="banco-provas-content">
+                <h2 class="banco-provas-title">Banco de Provas</h2>
+                <p class="banco-provas-description">
+                    Acesso exclusivo a provas anteriores de todos os vestibulares regionais. 
+                    Pratique com questões reais e aumente suas chances de aprovação.
+                </p>
+                <a href="/bancodeprovas.html" class="btn btn-accent btn-lg">Acessar Banco de Provas</a>
+                <div class="banco-provas-stats">
+                    <div class="banco-stat">
+                        <span class="banco-stat-number">500+</span>
+                        <span class="banco-stat-label">Provas Completas</span>
                     </div>
-                </div>
-                <div class="professores-stats">
-                    <div class="prof-stat">
-                        <span class="prof-stat-number">10+</span>
-                        <span class="prof-stat-label">Professores</span>
+                    <div class="banco-stat">
+                        <span class="banco-stat-number">10k+</span>
+                        <span class="banco-stat-label">Questões</span>
                     </div>
-                    <div class="prof-stat">
-                        <span class="prof-stat-number">10+</span>
-                        <span class="prof-stat-label">Anos de experiência média</span>
-                    </div>
-                    <div class="prof-stat">
-                        <span class="prof-stat-number">100%</span>
-                        <span class="prof-stat-label">Dedicação exclusiva</span>
+                    <div class="banco-stat">
+                        <span class="banco-stat-number">100%</span>
+                        <span class="banco-stat-label">Gabaritadas</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Depoimentos Section -->
-    <section class="depoimentos" id="depoimentos">
+    <!-- Professores Section (NOVA VERSÃO CARROSSEL) -->
+    <section class="professores-carrossel" id="professores">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Equipe</span>
+                <h2 class="section-title">Nossos <span class="text-accent">aprovados</span></h2>
+                <p class="section-description">
+                    Confira alguns dos nossos aprovados nos mais diversos cursos!
+                </p>
+            </div>
+            
+            <div class="professores-carousel-container">
+                <div class="professores-track" id="profTrack">
+                    <!-- Professores serão adicionados via JavaScript -->
+                </div>
+                <button class="prof-carousel-btn prev" id="profPrev" aria-label="Professor anterior">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                </button>
+                <button class="prof-carousel-btn next" id="profNext" aria-label="Próximo professor">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </button>
+            </div>
+            <div class="professores-dots" id="profDots"></div>
+        </div>
+    </section>
+
+    <!-- Depoimentos Section (NOVA VERSÃO CARROSSEL) -->
+    <section class="depoimentos-carrossel" id="depoimentos">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Aprovados</span>
@@ -279,124 +310,18 @@
                     Conheça as histórias de quem conquistou a aprovação com o Método
                 </p>
             </div>
-            <div class="depoimentos-carousel">
-                <button class="carousel-btn prev" id="depoPrev" aria-label="Anterior">
+            
+            <div class="depoimentos-carousel-container">
+                <div class="depoimentos-track" id="depoTrack">
+                    <!-- Depoimentos serão adicionados via JavaScript -->
+                </div>
+                <button class="depo-carousel-btn prev" id="depoPrev" aria-label="Depoimento anterior">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6" />
                     </svg>
                 </button>
-                <div class="depoimentos-track" id="depoTrack">
-                    <div class="depoimento-card">
-                        <div class="quote-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="currentColor">
-                                <path
-                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
-                            </svg>
-                        </div>
-                        <p class="depoimento-text">"O Método foi fundamental para minha aprovação em Medicina na UFAM.
-                            Os professores são incríveis e o material é muito focado nos vestibulares daqui."</p>
-                        <div class="depoimento-author">
-                            <div class="author-avatar">MA</div>
-                            <div class="author-info">
-                                <strong>Maria Almeida</strong>
-                                <span>Medicina - UFAM (1º lugar PSC)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="depoimento-card">
-                        <div class="quote-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="currentColor">
-                                <path
-                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
-                            </svg>
-                        </div>
-                        <p class="depoimento-text">"Estudei 2 anos no Método e consegui minha vaga em Direito na UEA. O
-                            diferencial são os simulados semanais que nos deixam preparados para qualquer prova."</p>
-                        <div class="depoimento-author">
-                            <div class="author-avatar">JS</div>
-                            <div class="author-info">
-                                <strong>João Santos</strong>
-                                <span>Direito - UEA (SIS)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="depoimento-card">
-                        <div class="quote-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="currentColor">
-                                <path
-                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
-                            </svg>
-                        </div>
-                        <p class="depoimento-text">"Graças ao Método consegui uma ótima nota no ENEM e entrei em
-                            Engenharia Civil. O plantão de dúvidas fez toda a diferença na minha preparação."</p>
-                        <div class="depoimento-author">
-                            <div class="author-avatar">AC</div>
-                            <div class="author-info">
-                                <strong>Ana Costa</strong>
-                                <span>Engenharia Civil - UFAM (ENEM)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="depoimento-card">
-                        <div class="quote-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="currentColor">
-                                <path
-                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
-                            </svg>
-                        </div>
-                        <p class="depoimento-text">"O material focado no PSI foi essencial. Consegui minha vaga no
-                            campus de Parintins e hoje curso Pedagogia. Recomendo demais!"</p>
-                        <div class="depoimento-author">
-                            <div class="author-avatar">PO</div>
-                            <div class="author-info">
-                                <strong>Pedro Oliveira</strong>
-                                <span>Pedagogia - UFAM Parintins (PSI)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="depoimento-card">
-                        <div class="quote-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="currentColor">
-                                <path
-                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
-                            </svg>
-                        </div>
-                        <p class="depoimento-text">"Passei no Macro para Odontologia! Os professores conhecem a prova
-                            como ninguém e sabem exatamente o que a UEA cobra."</p>
-                        <div class="depoimento-author">
-                            <div class="author-avatar">LS</div>
-                            <div class="author-info">
-                                <strong>Larissa Souza</strong>
-                                <span>Odontologia - UEA (Macro)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="depoimento-card">
-                        <div class="quote-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="currentColor">
-                                <path
-                                    d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.165 1.4.615 2.52 1.35 3.35.732.833 1.646 1.25 2.742 1.25.967 0 1.768-.29 2.402-.876.627-.576.942-1.365.942-2.368v.01z" />
-                            </svg>
-                        </div>
-                        <p class="depoimento-text">"Fiz o intensivo de 6 meses e consegui passar em Enfermagem. A
-                            dedicação dos professores é impressionante, estão sempre disponíveis."</p>
-                        <div class="depoimento-author">
-                            <div class="author-avatar">RF</div>
-                            <div class="author-info">
-                                <strong>Rafael Ferreira</strong>
-                                <span>Enfermagem - UEA (SIS)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-btn next" id="depoNext" aria-label="Próximo">
+                <button class="depo-carousel-btn next" id="depoNext" aria-label="Próximo depoimento">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="9 18 15 12 9 6" />
@@ -479,7 +404,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="/index.html" class="logo light">
-                        <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg"></img>
+                        <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
                         <div class="logo-text">
                             <span class="logo-name">Método</span>
                             <span class="logo-subtitle">Pré-Vestibular</span>
@@ -526,6 +451,9 @@
                     <h4>Links Rápidos</h4>
                     <ul>
                         <li><a href="/sobre.html">Sobre Nós</a></li>
+                        <li><a href="#banco-provas">Banco de Provas</a></li>
+                        <li><a href="#professores">Professores</a></li>
+                        <li><a href="#depoimentos">Aprovados</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">

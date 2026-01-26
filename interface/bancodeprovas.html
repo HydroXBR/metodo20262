@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Provas | Método Pré-Vestibular</title>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="bancodeprovas.css">
+    <link rel="icon" href="https://i.ibb.co/jryH3q8/Min-Branca.png">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container header-content">
+            <a href="/index.html" class="logo">
+                <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
+                <div class="logo-text">
+                    <span class="logo-name">Método</span>
+                    <span class="logo-subtitle">Pré-Vestibular</span>
+                </div>
+            </a>
+            <nav class="nav-desktop">
+                <a id="a" href="/sobre.html">SOBRE</a>
+                <a id="v" href="#">ESTUDANTES</a>
+                <a id="c" href="#">PROFESSORES</a>
+                <a id="d" href="#">ESCOLAS</a>
+                <a id="g" href="/calculadora.html">CALCULADORA</a>
+                <a href="/ranking.html">RANKING</a>
+                <a href="/bancodeprovas.html" class="active">BANCO DE PROVAS</a>
+            </nav>
+            <a href="" class="btn btn-accent" id="logoutBtn">Sair</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <nav class="nav-mobile" id="navMobile">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/courses.html">Cursos</a>
+            <a href="/question.html">Questões</a>
+            <a href="/redacao.html">Redação</a>
+            <a href="/calculator.html">Calculadora</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/bancodeprovas.html" class="active">Banco de Provas</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="provas-hero">
+        <div class="container">
+            <div class="provas-hero-content">
+                <div class="provas-hero-info">
+                    <span class="provas-badge">Banco Completo</span>
+                    <h1 class="provas-title">Banco de Provas</h1>
+                    <p class="provas-subtitle">
+                        Acesse todas as provas anteriores dos principais vestibulares do Amazonas. 
+                        Pratique com exames reais e prepare-se para o sucesso!
+                    </p>
+                </div>
+                <div class="provas-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-file-pdf"></i>
+                        <div>
+                            <strong id="totalProvas">0</strong>
+                            <span>Provas disponíveis</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div>
+                            <strong id="totalAnos">0</strong>
+                            <span>Anos de provas</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <strong id="totalVestibulares">5</strong>
+                            <span>Vestibulares</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="provas-main">
+        <div class="container">
+            <!-- Seletor de Vestibular -->
+            <div class="vestibular-selector">
+                <h2><i class="fas fa-university"></i> Selecione o Vestibular</h2>
+                <div class="vestibular-tabs">
+                    <button class="vest-tab active" data-vestibular="sis">
+                        <i class="fas fa-book-open"></i>
+                        SIS UEA
+                    </button>
+                    <button class="vest-tab" data-vestibular="psc">
+                        <i class="fas fa-graduation-cap"></i>
+                        PSC UEA
+                    </button>
+                    <button class="vest-tab" data-vestibular="macro">
+                        <i class="fas fa-chart-bar"></i>
+                        MACRO UEA
+                    </button>
+                    <button class="vest-tab" data-vestibular="psi">
+                        <i class="fas fa-star"></i>
+                        PSI UEA
+                    </button>
+                    <button class="vest-tab" data-vestibular="enem">
+                        <i class="fas fa-globe-americas"></i>
+                        ENEM
+                    </button>
+                </div>
+            </div>
+
+            <!-- Seletor de Etapa (SIS) -->
+            <div class="etapa-selector" id="sisEtapaSelector">
+                <h3><i class="fas fa-layer-group"></i> Selecione a Etapa do SIS</h3>
+                <div class="etapa-tabs">
+                    <button class="etapa-tab active" data-etapa="i">
+                        <i class="fas fa-1"></i>
+                        Etapa I
+                    </button>
+                    <button class="etapa-tab" data-etapa="ii">
+                        <i class="fas fa-2"></i>
+                        Etapa II
+                    </button>
+                    <button class="etapa-tab" data-etapa="iii">
+                        <i class="fas fa-3"></i>
+                        Etapa III
+                    </button>
+                </div>
+            </div>
+
+            <!-- Container de Provas -->
+            <div class="provas-container">
+                <div class="provas-grid" id="provasGrid">
+                    <!-- Provas serão carregadas aqui via JavaScript -->
+                    <div class="loading-provas">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Carregando provas disponíveis...</p>
+                    </div>
+                </div>
+
+                <!-- Mensagem quando não há provas -->
+                <div class="no-provas hidden" id="noProvas">
+                    <i class="fas fa-folder-open"></i>
+                    <h4>Nenhuma prova encontrada</h4>
+                    <p>Selecione um vestibular e etapa para visualizar as provas disponíveis.</p>
+                </div>
+            </div>
+
+            <!-- Aviso de Preparação para outros vestibulares -->
+            <div class="coming-soon" id="comingSoon">
+                <div class="coming-soon-content">
+                    <i class="fas fa-tools"></i>
+                    <h3>Em breve disponível!</h3>
+                    <p>Estamos organizando as provas deste vestibular. Em breve você terá acesso completo ao material.</p>
+                    <p class="small">No momento, as provas do SIS estão todas disponíveis.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/index.html" class="logo light">
+                        <img src="https://i.ibb.co/jryH3q8/Min-Branca.png" class="logoimg">
+                        <div class="logo-text">
+                            <span class="logo-name">Método</span>
+                            <span class="logo-subtitle">Pré-Vestibular</span>
+                        </div>
+                    </a>
+                    <p>Transformando sonhos em aprovações. O cursinho que mais entende o vestibulando amazonense.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/metodo.prevest" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/metodo.prevest/" aria-label="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://www.youtube.com/metodoprevestibular" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://wa.me/559294860365" aria-label="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="/sobre.html">Sobre Nós</a></li>
+                        <li><a href="/pricing.html">Matricule-se</a></li>
+                        <li><a href="/ranking.html">Ranking</a></li>
+                        <li><a href="/dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Cursos</h4>
+                    <ul>
+                        <li><a href="/pricing.html">Turmas PSC</a></li>
+                        <li><a href="/pricing.html">Turmas SIS</a></li>
+                        <li><a href="/pricing.html">Turmas Macro</a></li>
+                        <li><a href="/pricing.html">Turmas ENEM</a></li>
+                        <li><a href="/pricing.html">Turmas PSI</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>R. Elisa Lispector, 213, bairro Tarumã<br>Manaus - AM</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>(92) 99486-0365</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>metodoprevest@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Método Pré-Vestibular. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="bancodeprovas.js"></script>
+</body>
+
+</html>

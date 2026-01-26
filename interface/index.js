@@ -29,8 +29,8 @@ if (menuToggle && navMobile) {
   });
 }
 
-// ===== CARROSSEL DE IMAGENS (15+ ALUNOS) =====
-function initCarousel() {
+// ===== CARROSSEL DE IMAGENS (HERO) =====
+function initHeroCarousel() {
   const carousel = document.getElementById('heroCarousel');
   const dotsContainer = document.getElementById('heroDots');
   const prevBtn = document.getElementById('heroPrev');
@@ -38,14 +38,16 @@ function initCarousel() {
   
   if (!carousel) return;
   
-  // ===== LISTA DE IMAGENS - COLOQUE AQUI SUAS 15+ IMAGENS =====
+  // Lista de imagens dos alunos (aumentei o carrossel como solicitado)
   const imagensAlunos = [
-    // SUAS IMAGENS PNG (substitua pelos seus links)
     { src: 'https://i.ibb.co/HD8cdZ1t/5.png', alt: 'Aluno 1' },
     { src: 'https://i.ibb.co/xSWsPPV0/3.png', alt: 'Aluno 2' },
     { src: 'https://i.ibb.co/VpJb2JFd/1.png', alt: 'Aluno 3' },
     { src: 'https://i.ibb.co/Y4ZZ2TSb/2.png', alt: 'Aluno 4' },
-    { src: 'https://i.ibb.co/ZpZF6Ymh/4.png', alt: 'Aluno 5' }
+    { src: 'https://i.ibb.co/ZpZF6Ymh/4.png', alt: 'Aluno 5' },
+    // Adicione mais imagens aqui se necessário
+    { src: 'https://i.ibb.co/HD8cdZ1t/5.png', alt: 'Aluno 6' },
+    { src: 'https://i.ibb.co/xSWsPPV0/3.png', alt: 'Aluno 7' },
   ];
   
   // Limpar carrossel se já tiver slides
@@ -69,7 +71,7 @@ function initCarousel() {
   const slides = carousel.querySelectorAll('.carousel-slide');
   let currentIndex = 0;
   let autoSlideInterval;
-  const slideDuration = 3000; // 3 segundos
+  const slideDuration = 4000; // 4 segundos
 
   // Criar dots
   if (dotsContainer) {
@@ -196,7 +198,7 @@ function initCarousel() {
     }
     
     isDragging = false;
-    setTimeout(startAutoSlide, 3000); // Retoma auto-slide depois de 3 segundos
+    setTimeout(startAutoSlide, 4000);
   });
 
   // Inicializar
@@ -204,7 +206,214 @@ function initCarousel() {
   startAutoSlide();
 }
 
-// ===== DEPOIMENTOS CAROUSEL =====
+// ===== CARROSSEL DE PROFESSORES =====
+function initProfessoresCarousel() {
+  const profTrack = document.getElementById('profTrack');
+  const profPrev = document.getElementById('profPrev');
+  const profNext = document.getElementById('profNext');
+  const profDots = document.getElementById('profDots');
+  
+  if (!profTrack) return;
+  
+  // Dados dos professores
+  const professores = [
+    {
+      name: "Luana Dias",
+      subject: "Medicina",
+      experience: "UFAM PSC",
+      image: "https://i.ibb.co/nqYrpxLy/luana.png"
+    },
+    {
+      name: "Yuri Silveira",
+      subject: "Ciências Contábeis",
+      experience: "UFAM PSC",
+      image: "https://i.ibb.co/qL8yK4RN/yuri.png"
+    },
+    {
+      name: "Silas Santos",
+      subject: "Direito",
+      experience: "UFAM PSC",
+      image: "https://i.ibb.co/GfGMGTBM/silas.png"
+    },
+    {
+      name: "Joana Victoria",
+      subject: "Direito",
+      experience: "UFAM PSC",
+      image: "https://i.ibb.co/PZ09559S/Joana.png"
+    },
+    {
+      name: "Samuel Vicente",
+      subject: "Medicina",
+      experience: "UFAM PSC",
+      image: "https://i.ibb.co/S76vDsLQ/samuelv.png"
+    },
+    {
+      name: "Paulo Eduardo",
+      subject: "Eng. da Computação",
+      experience: "UFAM PSC",
+      image: "https://i.ibb.co/HLV9QHd4/paulo.png"
+    },
+    {
+      name: "Anna Jaques",
+      subject: "Medicina",
+      experience: "UFAM PSC",
+      image: "https://i.ibb.co/Jjh4nYmj/jaques.png"
+    }
+  ];
+  
+  // Limpar track
+  profTrack.innerHTML = '';
+  
+  // Criar slides dos professores
+  professores.forEach(professor => {
+    const slide = document.createElement('div');
+    slide.className = 'professor-slide';
+    
+    slide.innerHTML = `
+      <div class="professor-image">
+        <img src="${professor.image}" alt="${professor.name}" loading="lazy">
+      </div>
+      <div class="professor-info">
+        <h3>${professor.name}</h3>
+        <span class="professor-subject">${professor.subject}</span>
+        <div class="professor-experience">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/>
+          </svg>
+          <span>${professor.experience}</span>
+        </div>
+      </div>
+    `;
+    
+    profTrack.appendChild(slide);
+  });
+  
+  const slides = profTrack.querySelectorAll('.professor-slide');
+  let currentIndex = 0;
+  const slidesPerView = getSlidesPerView();
+  let autoSlideInterval;
+  
+  function getSlidesPerView() {
+    const width = window.innerWidth;
+    if (width >= 1200) return 4;
+    if (width >= 768) return 3;
+    if (width >= 480) return 2;
+    return 1;
+  }
+  
+  function createDots() {
+    if (!profDots) return;
+    
+    profDots.innerHTML = '';
+    const totalDots = Math.ceil(slides.length / slidesPerView);
+    
+    for (let i = 0; i < totalDots; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      if (i === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Ir para grupo ${i + 1}`);
+      dot.addEventListener('click', () => goToSlide(i));
+      profDots.appendChild(dot);
+    }
+  }
+  
+  function updateTrack() {
+    const trackWidth = profTrack.clientWidth;
+    const slideWidth = trackWidth / slidesPerView;
+    const offset = currentIndex * slideWidth * slidesPerView;
+    
+    profTrack.style.transform = `translateX(-${offset}px)`;
+    updateDots();
+  }
+  
+  function goToSlide(index) {
+    const maxIndex = Math.ceil(slides.length / slidesPerView) - 1;
+    currentIndex = Math.max(0, Math.min(index, maxIndex));
+    updateTrack();
+    restartAutoSlide();
+  }
+  
+  function nextSlide() {
+    const maxIndex = Math.ceil(slides.length / slidesPerView) - 1;
+    if (currentIndex < maxIndex) {
+      goToSlide(currentIndex + 1);
+    } else {
+      goToSlide(0);
+    }
+  }
+  
+  function prevSlide() {
+    if (currentIndex > 0) {
+      goToSlide(currentIndex - 1);
+    } else {
+      const maxIndex = Math.ceil(slides.length / slidesPerView) - 1;
+      goToSlide(maxIndex);
+    }
+  }
+  
+  function updateDots() {
+    if (!profDots) return;
+    
+    const dots = profDots.querySelectorAll('.carousel-dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentIndex);
+    });
+  }
+  
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  }
+  
+  function restartAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+  }
+  
+  function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+  }
+  
+  // Event listeners
+  if (profPrev) {
+    profPrev.addEventListener('click', () => {
+      prevSlide();
+      restartAutoSlide();
+    });
+  }
+  
+  if (profNext) {
+    profNext.addEventListener('click', () => {
+      nextSlide();
+      restartAutoSlide();
+    });
+  }
+  
+  // Pausar no hover
+  profTrack.addEventListener('mouseenter', stopAutoSlide);
+  profTrack.addEventListener('mouseleave', startAutoSlide);
+  
+  // Responsividade
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const newSlidesPerView = getSlidesPerView();
+      if (newSlidesPerView !== slidesPerView) {
+        currentIndex = 0;
+        createDots();
+        updateTrack();
+      }
+    }, 250);
+  });
+  
+  // Inicializar
+  createDots();
+  updateTrack();
+  startAutoSlide();
+}
+
+// ===== CARROSSEL DE DEPOIMENTOS =====
 function initDepoimentosCarousel() {
   const depoTrack = document.getElementById('depoTrack');
   const depoPrev = document.getElementById('depoPrev');
@@ -213,97 +422,210 @@ function initDepoimentosCarousel() {
   
   if (!depoTrack) return;
   
-  const depoCards = depoTrack.querySelectorAll('.depoimento-card');
-  if (depoCards.length === 0) return;
+  // Dados dos depoimentos (com imagens maiores)
+  const depoimentos = [
+    {
+      name: "Maria Almeida",
+      course: "Medicina",
+      university: "UFAM",
+      position: "1º lugar PSC",
+      text: "O Método foi fundamental para minha aprovação em Medicina na UFAM. Os professores são incríveis e o material é muito focado nos vestibulares daqui.",
+      image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "João Santos",
+      course: "Direito",
+      university: "UEA",
+      position: "SIS",
+      text: "Estudei 2 anos no Método e consegui minha vaga em Direito na UEA. O diferencial são os simulados semanais que nos deixam preparados para qualquer prova.",
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Ana Costa",
+      course: "Engenharia Civil",
+      university: "UFAM",
+      position: "ENEM",
+      text: "Graças ao Método consegui uma ótima nota no ENEM e entrei em Engenharia Civil. O plantão de dúvidas fez toda a diferença na minha preparação.",
+      image: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Pedro Oliveira",
+      course: "Pedagogia",
+      university: "UFAM Parintins",
+      position: "PSI",
+      text: "O material focado no PSI foi essencial. Consegui minha vaga no campus de Parintins e hoje curso Pedagogia. Recomendo demais!",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Larissa Souza",
+      course: "Odontologia",
+      university: "UEA",
+      position: "Macro",
+      text: "Passei no Macro para Odontologia! Os professores conhecem a prova como ninguém e sabem exatamente o que a UEA cobra.",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      name: "Rafael Ferreira",
+      course: "Enfermagem",
+      university: "UEA",
+      position: "SIS",
+      text: "Fiz o intensivo de 6 meses e consegui passar em Enfermagem. A dedicação dos professores é impressionante, estão sempre disponíveis.",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    }
+  ];
   
-  let depoCurrentIndex = 0;
-  let depoResizeTimeout;
-
-  function getCardsPerView() {
+  // Limpar track
+  depoTrack.innerHTML = '';
+  
+  // Criar slides dos depoimentos
+  depoimentos.forEach(depoimento => {
+    const slide = document.createElement('div');
+    slide.className = 'depoimento-slide';
+    
+    slide.innerHTML = `
+      <div class="depoimento-header">
+        <img src="${depoimento.image}" alt="${depoimento.name}" class="depoimento-image" loading="lazy">
+        <div class="depoimento-overlay">
+          <div class="depoimento-course">${depoimento.course}</div>
+          <div class="depoimento-university">${depoimento.university} • ${depoimento.position}</div>
+        </div>
+      </div>
+      <div class="depoimento-content">
+        <p class="depoimento-text">${depoimento.text}</p>
+        <div class="depoimento-author">
+          <div class="author-avatar">${depoimento.name.split(' ').map(n => n[0]).join('')}</div>
+          <div class="author-info">
+            <strong>${depoimento.name}</strong>
+            <span>${depoimento.course} - ${depoimento.university} (${depoimento.position})</span>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    depoTrack.appendChild(slide);
+  });
+  
+  const slides = depoTrack.querySelectorAll('.depoimento-slide');
+  let currentIndex = 0;
+  const slidesPerView = getSlidesPerView();
+  let autoSlideInterval;
+  
+  function getSlidesPerView() {
     const width = window.innerWidth;
-    if (width >= 1024) return 3;
+    if (width >= 1200) return 3;
     if (width >= 768) return 2;
     return 1;
   }
-
-  function createDepoDots() {
+  
+  function createDots() {
     if (!depoDots) return;
     
     depoDots.innerHTML = '';
-    const cardsPerView = getCardsPerView();
-    const totalDots = Math.ceil(depoCards.length / cardsPerView);
+    const totalDots = Math.ceil(slides.length / slidesPerView);
     
     for (let i = 0; i < totalDots; i++) {
       const dot = document.createElement('button');
       dot.className = 'carousel-dot';
       if (i === 0) dot.classList.add('active');
       dot.setAttribute('aria-label', `Ir para grupo ${i + 1}`);
-      dot.addEventListener('click', () => goToDepoSlide(i));
+      dot.addEventListener('click', () => goToSlide(i));
       depoDots.appendChild(dot);
     }
   }
-
-  function goToDepoSlide(index) {
-    const cardsPerView = getCardsPerView();
-    const maxIndex = Math.ceil(depoCards.length / cardsPerView) - 1;
-    depoCurrentIndex = Math.max(0, Math.min(index, maxIndex));
+  
+  function updateTrack() {
+    const trackWidth = depoTrack.clientWidth;
+    const slideWidth = trackWidth / slidesPerView;
+    const offset = currentIndex * slideWidth * slidesPerView;
     
-    if (window.innerWidth >= 768) {
-      const trackRect = depoTrack.getBoundingClientRect();
-      const cardWidth = trackRect.width / cardsPerView;
-      const offset = depoCurrentIndex * cardsPerView * cardWidth;
-      depoTrack.style.transform = `translateX(-${offset}px)`;
-    } else {
-      const card = depoCards[depoCurrentIndex * cardsPerView];
-      if (card) {
-        card.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'start'
-        });
-      }
-    }
-    
-    updateDepoDots();
+    depoTrack.style.transform = `translateX(-${offset}px)`;
+    updateDots();
   }
-
-  function updateDepoDots() {
+  
+  function goToSlide(index) {
+    const maxIndex = Math.ceil(slides.length / slidesPerView) - 1;
+    currentIndex = Math.max(0, Math.min(index, maxIndex));
+    updateTrack();
+    restartAutoSlide();
+  }
+  
+  function nextSlide() {
+    const maxIndex = Math.ceil(slides.length / slidesPerView) - 1;
+    if (currentIndex < maxIndex) {
+      goToSlide(currentIndex + 1);
+    } else {
+      goToSlide(0);
+    }
+  }
+  
+  function prevSlide() {
+    if (currentIndex > 0) {
+      goToSlide(currentIndex - 1);
+    } else {
+      const maxIndex = Math.ceil(slides.length / slidesPerView) - 1;
+      goToSlide(maxIndex);
+    }
+  }
+  
+  function updateDots() {
     if (!depoDots) return;
     
     const dots = depoDots.querySelectorAll('.carousel-dot');
     dots.forEach((dot, index) => {
-      dot.classList.toggle('active', index === depoCurrentIndex);
+      dot.classList.toggle('active', index === currentIndex);
     });
   }
-
+  
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(nextSlide, 6000);
+  }
+  
+  function restartAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+  }
+  
+  function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+  }
+  
+  // Event listeners
   if (depoPrev) {
     depoPrev.addEventListener('click', () => {
-      goToDepoSlide(depoCurrentIndex - 1);
+      prevSlide();
+      restartAutoSlide();
     });
   }
-
+  
   if (depoNext) {
     depoNext.addEventListener('click', () => {
-      goToDepoSlide(depoCurrentIndex + 1);
+      nextSlide();
+      restartAutoSlide();
     });
   }
-
-  function handleResize() {
-    clearTimeout(depoResizeTimeout);
-    depoResizeTimeout = setTimeout(() => {
-      createDepoDots();
-      goToDepoSlide(0);
-      depoTrack.style.transition = 'none';
-      setTimeout(() => {
-        depoTrack.style.transition = 'transform 0.3s ease';
-      }, 50);
-    }, 250);
-  }
-
-  createDepoDots();
-  goToDepoSlide(0);
   
-  window.addEventListener('resize', handleResize);
+  // Pausar no hover
+  depoTrack.addEventListener('mouseenter', stopAutoSlide);
+  depoTrack.addEventListener('mouseleave', startAutoSlide);
+  
+  // Responsividade
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const newSlidesPerView = getSlidesPerView();
+      if (newSlidesPerView !== slidesPerView) {
+        currentIndex = 0;
+        createDots();
+        updateTrack();
+      }
+    }, 250);
+  });
+  
+  // Inicializar
+  createDots();
+  updateTrack();
+  startAutoSlide();
 }
 
 // ===== SMOOTH SCROLL =====
@@ -350,7 +672,7 @@ function initAnimations() {
   }, observerOptions);
 
   const animateElements = document.querySelectorAll(
-    '.sobre-card, .vestibular-card, .diferencial-card, .depoimento-card, .section-header'
+    '.sobre-card, .vestibular-card, .diferencial-card, .depoimento-slide, .professor-slide, .section-header'
   );
   
   animateElements.forEach(element => {
@@ -365,14 +687,14 @@ function initAnimations() {
 
 // ===== INICIALIZAR TUDO =====
 document.addEventListener('DOMContentLoaded', () => {
-  initCarousel();
+  initHeroCarousel();
+  initProfessoresCarousel();
   initDepoimentosCarousel();
   initSmoothScroll();
   initAnimations();
 });
 
 // ===== CSS DINÂMICO PARA IMAGENS PNG =====
-// Remove qualquer fundo ou borda das imagens
 const dynamicCSS = document.createElement('style');
 dynamicCSS.textContent = `
   /* Garantir que as imagens PNG fiquem sem fundo */
@@ -412,6 +734,15 @@ dynamicCSS.textContent = `
   .carousel-slide.active {
     opacity: 1;
     pointer-events: all;
+  }
+  
+  /* Melhorar performance em mobile */
+  @media (max-width: 768px) {
+    .carousel-slide,
+    .professor-slide,
+    .depoimento-slide {
+      will-change: transform;
+    }
   }
 `;
 
