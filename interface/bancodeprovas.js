@@ -18,8 +18,7 @@ class BancoDeProvas {
                 provas: []
             },
             psi: {
-                // Será preenchido posteriormente
-                provas: []
+                provas: this.getPSIProvas()
             },
             enem: {
                 // Será preenchido posteriormente
@@ -574,22 +573,144 @@ class BancoDeProvas {
         return provas;
     }
 
+    getPSIProvas() {
+        // Links fornecidos para PSI
+        const links = [
+            'https://drive.google.com/open?id=1S8tLoaAoocCnlGN15FWCOd1lBw1PgK-K&usp=drive_copy',
+            'https://drive.google.com/open?id=16sdOdI0mWA7WBw_lo_PJhSolKb4eSYAU&usp=drive_copy',
+            'https://drive.google.com/open?id=1C17MZM0bLUR3WXRAKbs1D5KY_0qhfrcG&usp=drive_copy',
+            'https://drive.google.com/open?id=1JZywVPjI3B7khIeLWhpHljG1MYIrdYcD&usp=drive_copy',
+            'https://drive.google.com/open?id=1ZppeKv8thexLGnZrA09Bu4N-YZC1nmT5&usp=drive_copy',
+            'https://drive.google.com/open?id=1KEHh19syRlQG3NjwnyT9uygZfsJpLOzK&usp=drive_copy',
+            'https://drive.google.com/open?id=1pm3GLkqXmHnZG20XV0THdjGhiDxFlmyX&usp=drive_copy',
+            'https://drive.google.com/open?id=1JJDHDgLerG5BOORsmBHyGgBZpdo7Cpl-&usp=drive_copy',
+            'https://drive.google.com/open?id=19CTaqW-babMlmjzdseu0roCnhMMhgT24&usp=drive_copy',
+            'https://drive.google.com/open?id=10F0UmnliRMRRTfH12Ll_YG7-iUYah4a8&usp=drive_copy',
+            'https://drive.google.com/open?id=1zbW960YfsXxJCgG83oexrRf62IqeGUEs&usp=drive_copy',
+            'https://drive.google.com/open?id=13maq9nlpLkaRhhY9D_9sA5NACpZQ7V6R&usp=drive_copy',
+            'https://drive.google.com/open?id=1ualTHRjS-rT0frGgxy_VqRecW_Srt0w4&usp=drive_copy',
+            'https://drive.google.com/open?id=1MJnIy3PFHT-Kuw0q0LMj2fZgMe8eQtua&usp=drive_copy',
+            'https://drive.google.com/open?id=1ok_YHe8Ew4vuEGrdhj-r8BnePlBquUrD&usp=drive_copy',
+            'https://drive.google.com/open?id=12v1-pmvl3JaocP1debBeiAY716Hy37bN&usp=drive_copy',
+            'https://drive.google.com/open?id=1JCKkcheLg8fTToqimLhaHnzDo9Q2Jm8k&usp=drive_copy',
+            'https://drive.google.com/open?id=1ZqpRe9IShotcQPEiiP3s1MlU35EBS4zc&usp=drive_copy',
+            'https://drive.google.com/open?id=1rNgm0Cask-5SLCyh4W9cf7DtUnn-II3a&usp=drive_copy',
+            'https://drive.google.com/open?id=1i-lQRwJR4jfZ5qMtUKiXa8B4I-O3jlCM&usp=drive_copy',
+            'https://drive.google.com/open?id=1CAuXZ2JXHI7zvChT0yVkQClCfhEb_smC&usp=drive_copy',
+            'https://drive.google.com/open?id=19vdN3eLNGEZOJRxATxrbYPWZm7vOZnaE&usp=drive_copy',
+            'https://drive.google.com/open?id=1rTYGu4wlVHhyigCpXChj7AXNtRBK2Vr4&usp=drive_copy',
+            'https://drive.google.com/open?id=10fnCDFhDkErKF5s6yqmoNTHXSowBI--z&usp=drive_copy',
+            'https://drive.google.com/open?id=1P89nGR5D4D3kFZB_mYWAcZ5Kbqpu8ndV&usp=drive_copy',
+            'https://drive.google.com/open?id=1elpA5Yo6vf8Zrj-8MFg-16JrsNZUTmEe&usp=drive_copy',
+            'https://drive.google.com/open?id=1DZlBUMMh3vcg2P9_IIfhY87UieUNf-OX&usp=drive_copy',
+            'https://drive.google.com/open?id=1HAcESGQaTGXz-2qS6bYNNIPyQbAmcY9i&usp=drive_copy',
+            'https://drive.google.com/open?id=1J9xFGm6-3CdrnVKQF2Zt1MH7ffugCUnC&usp=drive_copy'
+        ];
+
+        // Nomes dos arquivos na ordem fornecida
+        const nomes = [
+            'PSI-17-Gabarito-CG-I.pdf',
+            'PSI-17-Gabarito-CG-II.pdf',
+            'PSI-17-Prova-CG-I.pdf',
+            'PSI-17-Prova-CG-II.pdf',
+            'PSI-18-Gabarito-CG-I.pdf',
+            'PSI-18-Gabarito-CG-II.pdf',
+            'PSI-18-Prova-CG-I.pdf',
+            'PSI-18-Prova-CG-II.pdf',
+            'PSI-19-Gabarito-CG-I.pdf',
+            'PSI-19-Gabarito-CG-II.pdf',
+            'PSI-19-Prova-CG-I.pdf',
+            'PSI-19-Prova-CG-II.pdf',
+            'PSI-22-Gabarito-CG-I.pdf',
+            'PSI-22-Gabarito-CG-II.pdf',
+            'PSI-22-Prova-CG-I.pdf',
+            'PSI-22-Prova-CG-II.pdf',
+            'PSI-23-Gabarito-CG-I.pdf',
+            'PSI-23-Gabarito-CG-II.pdf',
+            'PSI-23-Prova-CG-I.pdf',
+            'PSI-23-Prova-CG-II (1).pdf',
+            'PSI-23-Prova-CG-II.pdf',
+            'PSI-24-Gabarito-CG-I.pdf',
+            'PSI-24-Gabarito-CG-II.pdf',
+            'PSI-24-Prova-CG-I.pdf',
+            'PSI-24-Prova-CG-II.pdf',
+            'PSI-25-Gabarito-CG-I.pdf',
+            'PSI-25-Gabarito-CG-II.pdf',
+            'PSI-25-Prova-CG-I.pdf',
+            'PSI-25-Prova-CG-II.pdf'
+        ];
+
+        const provas = [];
+
+        for (let i = 0; i < nomes.length; i += 4) {
+            const nomeGabaritoCGI = nomes[i];
+            const nomeGabaritoCGII = nomes[i + 1];
+            const nomeProvaCGI = nomes[i + 2];
+            const nomeProvaCGII = nomes[i + 3];
+
+            const ano = this.extractAnoFromNome(nomeGabaritoCGI);
+
+            provas.push({
+                ano: ano,
+                tipo: 'CG-I',
+                gabarito: {
+                    nome: nomeGabaritoCGI,
+                    link: links[i]
+                },
+                prova: {
+                    nome: nomeProvaCGI,
+                    link: links[i + 2]
+                }
+            });
+
+            provas.push({
+                ano: ano,
+                tipo: 'CG-II',
+                gabarito: {
+                    nome: nomeGabaritoCGII,
+                    link: links[i + 1]
+                },
+                prova: {
+                    nome: nomeProvaCGII,
+                    link: links[i + 3]
+                }
+            });
+        }
+
+        return provas;
+    }
+
     extractAnoFromNome(nome) {
-        // Extrai o ano do nome do arquivo
-        const match = nome.match(/\b(20\d{2})\b/);
+        let match = nome.match(/\b(20\d{2})\b/); 
+
+        if (!match) {
+            match = nome.match(/PSI-(\d{2})/);
+            if (match) {
+                const anoDoisDigitos = parseInt(match[1]);
+                if (anoDoisDigitos >= 0 && anoDoisDigitos <= 99) {
+                    return `20${match[1].padStart(2, '0')}`;
+                }
+            }
+        }
+
+        if (!match) {
+            match = nome.match(/\b(\d{4})\b/);
+        }
+
         return match ? match[1] : 'N/A';
     }
     showProvas() {
         const grid = document.getElementById('provasGrid');
         const noProvas = document.getElementById('noProvas');
         const comingSoon = document.getElementById('comingSoon');
+        const etapaSelector = document.getElementById('etapaSelector');
 
-        // Limpar tudo primeiro
         grid.innerHTML = '';
         noProvas.classList.remove('active');
         comingSoon.classList.remove('active');
 
         if (this.currentVestibular === 'sis' || this.currentVestibular === 'psc') {
+            etapaSelector.classList.add('active');
             const provas = this.provasData[this.currentVestibular][this.currentEtapa];
 
             if (!provas || provas.length === 0) {
@@ -597,7 +718,6 @@ class BancoDeProvas {
                 return;
             }
 
-            // Ordenar provas por ano (mais recente primeiro)
             const provasOrdenadas = [...provas].sort((a, b) => b.ano - a.ano);
 
             provasOrdenadas.forEach(prova => {
@@ -606,8 +726,32 @@ class BancoDeProvas {
             });
 
             this.updateStats();
+
+        } else if (this.currentVestibular === 'psi') {
+            etapaSelector.classList.remove('active');
+            const provas = this.provasData.psi.provas;
+
+            if (!provas || provas.length === 0) {
+                noProvas.classList.add('active');
+                return;
+            }
+
+            const provasOrdenadas = [...provas].sort((a, b) => {
+                if (b.ano !== a.ano) return b.ano - a.ano;
+                if (a.tipo === 'CG-I' && b.tipo === 'CG-II') return -1;
+                if (a.tipo === 'CG-II' && b.tipo === 'CG-I') return 1;
+                return 0;
+            });
+
+            provasOrdenadas.forEach(prova => {
+                const card = this.createProvaCard(prova);
+                grid.appendChild(card);
+            });
+
+            this.updateStats();
+
         } else {
-            // Para outros vestibulares não implementados
+            etapaSelector.classList.remove('active');
             comingSoon.classList.add('active');
         }
     }
@@ -615,17 +759,31 @@ class BancoDeProvas {
         const card = document.createElement('div');
         card.className = 'prova-card';
 
-        // Determinar o nome do vestibular baseado no vestibular atual
-        const vestibularNome = this.currentVestibular === 'sis' ? 'SIS' : 'PSC';
+        let vestibularNome, titulo;
+
+        if (this.currentVestibular === 'sis') {
+            vestibularNome = 'SIS';
+            titulo = `${vestibularNome} ${prova.ano} - Etapa ${prova.etapa}`;
+        } else if (this.currentVestibular === 'psc') {
+            vestibularNome = 'PSC';
+            titulo = `${vestibularNome} ${prova.ano} - Etapa ${prova.etapa}`;
+        } else if (this.currentVestibular === 'psi') {
+            vestibularNome = 'PSI';
+            titulo = `${vestibularNome} ${prova.ano} - ${prova.tipo}`;
+        } else {
+            vestibularNome = this.currentVestibular.toUpperCase();
+            titulo = `${vestibularNome} ${prova.ano}`;
+        }
 
         card.innerHTML = `
         <div class="prova-header">
             <span class="prova-ano">${prova.ano}</span>
-            <span class="prova-etapa">Etapa ${prova.etapa}</span>
+            ${prova.etapa ? `<span class="prova-etapa">Etapa ${prova.etapa}</span>` : ''}
+            ${prova.tipo ? `<span class="prova-etapa">${prova.tipo}</span>` : ''}
         </div>
         <h3 class="prova-titulo">
             <i class="fas fa-file-pdf"></i>
-            ${vestibularNome} ${prova.ano} - Etapa ${prova.etapa}
+            ${titulo}
         </h3>
         <div class="prova-botoes">
             <a href="${prova.prova.link}" 
@@ -653,33 +811,36 @@ class BancoDeProvas {
         grid.innerHTML = '';
     }
     updateStats() {
-        // Calcular estatísticas baseadas nas provas SIS e PSC
         let totalProvas = 0;
         const anosSet = new Set();
 
-        // Contar provas SIS
         Object.values(this.provasData.sis).forEach(etapaProvas => {
-            totalProvas += etapaProvas.length * 2; // Cada ano tem prova e gabarito
+            totalProvas += etapaProvas.length * 2; 
             etapaProvas.forEach(prova => {
                 anosSet.add(prova.ano);
             });
         });
 
-        // Contar provas PSC
         Object.values(this.provasData.psc).forEach(etapaProvas => {
-            totalProvas += etapaProvas.length * 2; // Cada ano tem prova e gabarito
+            totalProvas += etapaProvas.length * 2;
             etapaProvas.forEach(prova => {
                 anosSet.add(prova.ano);
             });
         });
 
-        // Atualizar elementos
+        if (this.provasData.psi.provas) {
+            const provasPSI = this.provasData.psi.provas;
+            totalProvas += provasPSI.length; 
+            provasPSI.forEach(prova => {
+                anosSet.add(prova.ano);
+            });
+        }
+
         document.getElementById('totalProvas').textContent = totalProvas;
         document.getElementById('totalAnos').textContent = anosSet.size;
     }
 }
 
-// Inicializar quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', () => {
     const bancoDeProvas = new BancoDeProvas();
 });
